@@ -173,8 +173,8 @@ HOWTO = {
    ('Adjust the strength', 'Lower the overlay opacity to 40–80% for a subtle look, or keep it at 100% for a bold effect.')]),
  'scene': ('How to use this illustrated scene', [
    ('Use it as a background', 'Add the clip as the first layer. It loops seamlessly, so you can repeat it for a longer greeting, story or lesson.'),
-   ('Square and portrait sizes', 'Square (1:1) and portrait (4:5) clips fit Facebook and Instagram posts as they are. For a 16:9 video, place the clip on one side of the frame and use the other side for your title or message.'),
-   ('White backgrounds blend in', 'Scenes with a white background look like a storybook page. Set your project background to white and the edges disappear, or add a soft colour behind it.')]),
+   ('Add your title or greeting', 'Most scenes leave open sky or space on one side. Put your text there, with a soft shadow so it stays readable.'),
+   ('Make it vertical if needed', 'For TikTok, Reels or Shorts, set the project to 9:16 and zoom in on the part of the scene you like best. The motion still loops smoothly.')]),
  'background': ('How to use this background', [
    ('Put it on the bottom track', 'Add the clip as the first layer of your video. It is a seamless loop, so you can repeat it as many times as you need without a visible jump.'),
    ('Add your text or photo on top', 'Type your greeting, quote, title or announcement over it. Light text with a soft shadow reads best on darker backgrounds.'),
@@ -268,7 +268,7 @@ def home():
   <video class="hero-bg" src="/media/preview/golden-bokeh-lights-loop.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
   <div class="hero-shade"></div>
   <div class="wrap hero-in">
-    <p class="eyebrow">{n} free clips · HD · No sign-up</p>
+    <p class="eyebrow">{n} free clips · Full HD · No sign-up</p>
     <h1>Free motion backgrounds, illustrated scenes &amp; green screens</h1>
     <p class="hero-sub">Seamless loops and animated illustrations for your greetings, intros, reels, and school, church or community videos. Download, drop into CapCut or Canva, done.</p>
     <form class="search" action="/" method="get" role="search">
@@ -312,7 +312,7 @@ def category(cat):
 <section class="wrap section page-head">
   <h1>{"Free animated illustrated scenes" if cat == "Illustrated Scenes" else f"Free {E(cat)} clips"}</h1>
   <p class="lead">{E(CAT_BLURB[cat])}</p>
-  <p class="muted">{len(cl)} clips · {"HD" if cat == "Illustrated Scenes" else "Full HD"} · free download</p>
+  <p class="muted">{len(cl)} clips · Full HD · free download</p>
 </section>
 {('<section class="wrap section"><h2>Browse by holiday</h2>' + holiday_chips() + '</section>') if cat == 'World Celebrations' else ''}
 <section class="wrap section">{grid(cl, "list_grid")}</section>
@@ -411,9 +411,9 @@ def static_pages():
 <p>Overlays like light leaks, dust, embers, sparkles and snow on black are made to sit on top of your video. The <b>Screen</b> blend mode hides the black and keeps only the light.</p>
 <ol><li>Put the overlay on the track above your video.</li><li>CapCut: select it → <b>Blend → Screen</b>. Premiere: <b>Effect Controls → Opacity → Blend Mode → Screen</b>. Resolve: <b>Inspector → Composite Mode → Screen</b>.</li><li>Lower the opacity for a softer effect.</li></ol>
 <h2 id="scenes">4. Illustrated scenes</h2>
-<p>Illustrated scenes are animated storybook pictures in square (1:1) or portrait (4:5) size, made for posts, stories and greetings.</p>
-<ol><li>For a Facebook or Instagram post, use the clip as it is and add your text on top or below.</li><li>For a 16:9 video, place the scene on one side of the frame and put your title on the other side.</li>
-<li>Scenes on white look like a page from a picture book. Use a white or soft pastel project background so the edges blend in.</li></ol>
+<p>Illustrated scenes are animated storybook pictures with gentle motion: falling snow, glowing lanterns, fireworks, rain and petals. They are Full HD 16:9 and loop seamlessly.</p>
+<ol><li>Put the scene on the bottom track as your background.</li><li>Add your greeting or title in the open sky or empty side of the picture.</li>
+<li>For vertical videos, set the project to 9:16 and zoom in on the part of the scene you like best.</li></ol>
 <h2 id="vertical">5. Making vertical videos (TikTok, Reels, Shorts)</h2>
 <p>Most clips are horizontal 16:9. For a vertical video, set your project to <b>9:16</b> and zoom the clip until it fills the screen. Bokeh, gradients, snow and confetti still look great cropped. Some clips, like the Christmas lights frame, also come in a ready-made vertical version.</p>
 <h2 id="tips">Tips</h2>
