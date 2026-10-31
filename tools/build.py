@@ -28,6 +28,22 @@ CAT_BLURB = {
     'Nature & Seasons': 'Autumn leaves, fireflies, bubbles and starry skies for seasonal greetings, relaxing, sleep, kids and storytelling videos.',
     'Tech & Abstract': 'Network lines, hexagons and retro neon grids for tech, gaming and corporate videos.',
 }
+
+# ---------------------------------------------------------------- Telar Labs family links
+FAMILY = [f for f in CFG.get('family', []) if f['name'] != CFG['site_name']]
+HUB = CFG.get('studio_url', '')
+
+def family_row():
+    if not FAMILY: return ''
+    head = f'<a href="{E(HUB)}">More from {E(CFG["studio"])}</a>' if HUB else f'More from {E(CFG["studio"])}'
+    links = ''.join(f'<a href="{E(f["url"])}" title="{E(f["blurb"])}">{E(f["name"])}</a>' for f in FAMILY)
+    return f'<div class="wrap family"><span class="family-h">{head}:</span>{links}</div>'
+
+def family_promo(title):
+    if not FAMILY: return ''
+    links = ''.join(f'<a href="{E(f["url"])}"><b>{E(f["name"])}</b><span>{E(f["blurb"])}</span></a>' for f in FAMILY)
+    return f'<section class="wrap section family-promo"><h2>{title}</h2><div class="family-links">{links}</div></section>'
+
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
 CATS = [c for c in CAT_ORDER if any(x['category'] == c for x in CLIPS)]
 GREEN_ALSO = lambda c: c['green_screen'] and c['category'] != 'Green Screen'
@@ -122,7 +138,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
       <div><h4>{E(CFG["studio"])}</h4><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
     </div>
   </div>
-  <div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. Motion graphics and illustrated scenes by {E(CFG["studio"])}.</div>
+  {family_row()}<div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. Motion graphics and illustrated scenes by {E(CFG["studio"])}.</div>
 </footer>
 <script src="/assets/site.js" defer></script>
 {cfa}
@@ -301,6 +317,7 @@ def home():
   <div><h3>Made to loop</h3><p>Every background and illustrated scene is a seamless 8-second loop, so you can stretch it under a long greeting or stream.</p></div>
   <div><h3>For every culture</h3><p>Lunar New Year, Chuseok, sakura season, Halloween, Christmas, the Fourth of July and more, with new clips before every major holiday.</p></div>
 </section>'''
+    body += family_promo('For teachers: free classroom tools')
     page('/', f'{NAME} – Free Motion Backgrounds, Illustrated Scenes & Green Screens',
          f'Download {n} free HD motion backgrounds, animated illustrated scenes, overlays and green screen clips: Christmas, Lunar New Year, Halloween, sakura, bokeh, confetti, snow and more. No sign-up, OK for commercial use.', body)
 

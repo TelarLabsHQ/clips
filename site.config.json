@@ -13,5 +13,28 @@
     "list_grid": ""
   },
   "cloudflare_analytics_token": "",
-  "launch_date": "2026-10-31"
+  "launch_date": "2026-10-31",
+  "family": [
+    {
+      "name": "Telar Clips",
+      "url": "https://telarclips.pages.dev",
+      "blurb": "Free motion backgrounds and illustrated scenes for class videos, greetings and school programs."
+    },
+    {
+      "name": "PizarraPad",
+      "url": "https://pizarrapad.pages.dev",
+      "blurb": "Free online whiteboard, blackboard and greenboard for the classroom projector."
+    },
+    {
+      "name": "QuizPolice",
+      "url": "https://quizpolice.pages.dev",
+      "blurb": "Free quiz monitor that shows you when students leave an online quiz."
+    },
+    {
+      "name": "DraftTrail",
+      "url": "https://drafttrail-c4t.pages.dev",
+      "blurb": "Free writing recorder that replays how an essay was written, step by step."
+    }
+  ],
+  "studio_url": ""
 }
