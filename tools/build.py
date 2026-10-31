@@ -106,7 +106,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
       <div><h4>{E(CFG["studio"])}</h4><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
     </div>
   </div>
-  <div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. All clips are designed by {E(CFG["studio"])} and animated with AI assistance.</div>
+  <div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. All clips are motion graphics by {E(CFG["studio"])}.</div>
 </footer>
 <script src="/assets/site.js" defer></script>
 {cfa}
@@ -299,7 +299,7 @@ def static_pages():
 <h1>About {E(NAME)}</h1>
 <p class="lead">{E(NAME)} is a small library of free motion backgrounds, overlays and green screen clips from {E(st)}, an independent studio.</p>
 <p>We started it because creators, teachers, churches and small businesses everywhere keep needing the same things: red lanterns for a Lunar New Year greeting, a full moon for Chuseok, falling sakura for a spring post, bats for a Halloween invite, a parol for a Filipino Christmas, confetti for a giveaway winner, a calm loop behind a quote. The big stock sites have millions of clips, but the good holiday ones are often hard to find or need a paid plan.</p>
-<p>We choose the themes, colors and moods for every clip, then animate them with AI assistance. Nothing is copied from other sites or stock libraries. They are free to download without an account, and you can use them in personal and commercial projects. See the <a href="/license/">license</a> for the details.</p>
+<p>Every clip is made by {E(st)} for this site; nothing is copied from other sites or stock libraries. They are free to download without an account, and you can use them in personal and commercial projects. See the <a href="/license/">license</a> for the details.</p>
 <h2>What you'll find</h2>
 <ul>{''.join(f'<li><a href="/category/{slug(c)}/">{E(c)}</a>: {E(CAT_BLURB[c])}</li>' for c in CATS)}</ul>
 <h2>New clips every week</h2>
@@ -335,7 +335,7 @@ def static_pages():
 <h2>Credit</h2>
 <p>Credit is not required, but it helps us a lot. If you'd like to, write: <em>Background by {E(NAME)}</em>.</p>
 <h2>No warranty</h2>
-<p>The clips are provided as they are. The clips are designed by {E(st)} and animated with AI assistance. {E(st)} is not responsible for how they are used.</p>
+<p>The clips are provided as they are. {E(st)} is not responsible for how the clips are used.</p>
 <p class="muted">Last updated {E(CFG["launch_date"])}.</p>''')
     ads_txt = ('<p>We use Google AdSense to show ads. Google and its partners use cookies to show ads based on your visits to this and other websites. '
                'You can turn off personalized ads in <a href="https://adssettings.google.com" rel="noopener">Google Ads Settings</a>, and learn more at '
