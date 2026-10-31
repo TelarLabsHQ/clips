@@ -14,17 +14,17 @@ URL = CFG['site_url'].rstrip('/')
 MEDIA = CFG['media_base']
 NAME = CFG['site_name']
 
-CAT_ORDER = ['Christmas & New Year', 'Filipino', 'Green Screen', 'Bokeh Lights', 'Gradients', 'Overlays',
-             'Celebrations & Events', 'Nature & Calm', 'Tech & Abstract']
+CAT_ORDER = ['World Celebrations', 'Christmas & New Year', 'Green Screen', 'Bokeh Lights', 'Gradients', 'Overlays',
+             'Celebrations & Events', 'Nature & Seasons', 'Tech & Abstract']
 CAT_BLURB = {
     'Christmas & New Year': 'Snow, string lights, ornaments, fireworks and a New Year countdown for your holiday greetings and promos.',
-    'Filipino': 'Parol, star lanterns and fiesta banderitas: backgrounds made for Pasko, Simbang Gabi, barangay and school events.',
+    'World Celebrations': 'Holidays from around the world: Lunar New Year lanterns, the Chuseok and Mid-Autumn moon, Japanese cherry blossoms, Halloween, the Fourth of July, the Filipino parol and festival bunting.',
     'Green Screen': 'Pure chroma green (#00B140) clips you can drop over any video and key out in CapCut, Canva, Premiere or DaVinci Resolve.',
     'Bokeh Lights': 'Soft out-of-focus lights in many colors, perfect behind titles, quotes and greetings.',
     'Gradients': 'Smooth, slowly flowing color gradients for intros, presentations and social posts.',
     'Overlays': 'Light rays, light leaks, sparkles, snow, dust and embers to lay over your footage with Screen blend mode.',
     'Celebrations & Events': 'Confetti, balloons, hearts and graduation colors for birthdays, weddings, debuts and awards.',
-    'Nature & Calm': 'Fireflies, bubbles and starry skies for relaxing, sleep, kids and storytelling videos.',
+    'Nature & Seasons': 'Autumn leaves, fireflies, bubbles and starry skies for seasonal greetings, relaxing, sleep, kids and storytelling videos.',
     'Tech & Abstract': 'Network lines, hexagons and retro neon grids for tech, gaming and corporate videos.',
 }
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -61,8 +61,8 @@ def page(path, title, desc, body, extra_head='', og_image=None):
            'crossorigin="anonymous"></script>') if CFG['adsense_client'] else ''
     cfa = (f'<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{E(CFG["cloudflare_analytics_token"])}"}}\'></script>'
            if CFG['cloudflare_analytics_token'] else '')
-    nav = ''.join(f'<a href="/category/{slug(c)}/">{E(c.replace(" & New Year", "").replace(" & Events", "").replace(" & Abstract", "").replace(" & Calm", ""))}</a>'
-                  for c in ['Christmas & New Year', 'Filipino', 'Green Screen', 'Overlays'])
+    nav = ''.join(f'<a href="/category/{slug(c)}/">{E(c.replace(" & New Year", "").replace(" & Events", "").replace(" & Abstract", "").replace("World ", ""))}</a>'
+                  for c in ['World Celebrations', 'Christmas & New Year', 'Green Screen', 'Overlays'])
     doc = f'''<!doctype html>
 <html lang="en">
 <head>
@@ -225,7 +225,10 @@ def chips():
 
 # ---------------------------------------------------------------- pages
 def home():
-    xmas = [c for c in CLIPS if c['category'] in ('Christmas & New Year', 'Filipino')][:8]
+    pick = ['halloween-full-moon-bats-loop', 'twinkling-christmas-string-lights-loop', 'chinese-red-lanterns-lunar-new-year-loop', 'falling-cherry-blossom-sakura-petals-loop',
+            'full-moon-sky-lanterns-chuseok-mid-autumn-loop', 'parol-light-sequence-loop', 'red-white-blue-stars-falling-loop', 'new-year-fireworks-city-loop']
+    byid = {c['id']: c for c in CLIPS}
+    xmas = [byid[i] for i in pick if i in byid]
     n = len(CLIPS)
     body = f'''
 <section class="hero">
@@ -237,13 +240,13 @@ def home():
     <p class="hero-sub">Seamless loops for your greetings, intros, reels and school or church videos. Download, drop into CapCut or Canva, done.</p>
     <form class="search" action="/" method="get" role="search">
       <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input type="search" name="q" id="q" placeholder="Search: snow, parol, confetti, green screen…" aria-label="Search clips" autocomplete="off">
+      <input type="search" name="q" id="q" placeholder="Search: snow, lanterns, sakura, confetti, green screen…" aria-label="Search clips" autocomplete="off">
     </form>
-    <div class="hero-pills"><a href="/category/christmas-new-year/">Christmas</a><a href="/category/filipino/">Parol &amp; fiesta</a><a href="/category/green-screen/">Green screen</a><a href="/category/overlays/">Overlays</a><a href="/category/bokeh-lights/">Bokeh</a></div>
+    <div class="hero-pills"><a href="/category/world-celebrations/">World celebrations</a><a href="/category/christmas-new-year/">Christmas &amp; New Year</a><a href="/category/green-screen/">Green screen</a><a href="/category/overlays/">Overlays</a><a href="/category/bokeh-lights/">Bokeh</a></div>
   </div>
 </section>
 <section class="wrap section">
-  <div class="section-head"><h2>Ready for Pasko 🎄</h2><a href="/category/christmas-new-year/">All Christmas clips →</a></div>
+  <div class="section-head"><h2>Celebrations around the world</h2><a href="/category/world-celebrations/">See all →</a></div>
   {grid(xmas)}
 </section>
 {ad("home_grid", "wrap ad")}
@@ -256,10 +259,10 @@ def home():
 <section class="wrap section why">
   <div><h3>Really free</h3><p>No account, no watermark, no credit required. Use them for personal and commercial videos.</p></div>
   <div><h3>Made to loop</h3><p>Every background is a seamless 8-second loop, so you can stretch it under a long greeting or stream.</p></div>
-  <div><h3>Made in the Philippines</h3><p>Parol, banderitas and Simbang Gabi clips you won't find on the big stock sites, plus new clips every week.</p></div>
+  <div><h3>For every culture</h3><p>Lunar New Year, Chuseok, sakura season, Halloween, Christmas, the Fourth of July and more, with new clips before every major holiday.</p></div>
 </section>'''
     page('/', f'{NAME} – Free Motion Backgrounds, Overlays & Green Screen Clips',
-         f'Download {n} free HD motion backgrounds, overlays and green screen clips: Christmas, parol, bokeh, confetti, snow and more. No sign-up, OK for commercial use.', body)
+         f'Download {n} free HD motion backgrounds, overlays and green screen clips: Christmas, Lunar New Year, Halloween, sakura, bokeh, confetti, snow and more. No sign-up, OK for commercial use.', body)
 
 def category(cat):
     cl = [c for c in CLIPS if in_cat(c, cat)]
@@ -282,20 +285,20 @@ def static_pages():
     st = CFG['studio']; mail = CFG['contact_email']
     prose('/about/', 'About', f'About {NAME} by {st}.', f'''
 <h1>About {E(NAME)}</h1>
-<p class="lead">{E(NAME)} is a small library of free motion backgrounds, overlays and green screen clips made by {E(st)}, a small studio in the Philippines.</p>
-<p>We started it because creators, teachers, churches and small businesses here kept asking for the same things: a parol background for a Simbang Gabi announcement, banderitas for a barangay fiesta post, confetti for a giveaway winner, a calm loop behind a quote. The big stock sites have millions of clips, but very few made for these moments, and the best ones often need a paid plan.</p>
+<p class="lead">{E(NAME)} is a small library of free motion backgrounds, overlays and green screen clips made by {E(st)}, an independent studio.</p>
+<p>We started it because creators, teachers, churches and small businesses everywhere keep needing the same things: red lanterns for a Lunar New Year greeting, a full moon for Chuseok, falling sakura for a spring post, bats for a Halloween invite, a parol for a Filipino Christmas, confetti for a giveaway winner, a calm loop behind a quote. The big stock sites have millions of clips, but the good holiday ones are often hard to find or need a paid plan.</p>
 <p>Every clip here is an original motion graphic we designed and rendered ourselves. They are free to download without an account, and you can use them in personal and commercial projects. See the <a href="/license/">license</a> for the details.</p>
 <h2>What you'll find</h2>
 <ul>{''.join(f'<li><a href="/category/{slug(c)}/">{E(c)}</a>: {E(CAT_BLURB[c])}</li>' for c in CATS)}</ul>
 <h2>New clips every week</h2>
-<p>We add new clips regularly, especially before holidays like Christmas, New Year, Valentine's Day, graduation season and town fiestas. Have an idea for a clip you need? <a href="/contact/">Tell us</a>, and we may make it.</p>
+<p>We add new clips regularly, especially before holidays like Lunar New Year, Valentine's Day, cherry blossom season, Chuseok, Halloween, Christmas and New Year. Have an idea for a clip you need? <a href="/contact/">Tell us</a>, and we may make it.</p>
 <h2>How the site is supported</h2>
 <p>{E(NAME)} is free because it shows ads. The ads help pay for hosting and the time it takes to make new clips.</p>''')
     prose('/contact/', 'Contact', f'Contact {NAME}.', f'''
 <h1>Contact us</h1>
 <p class="lead">Questions, clip requests or problems with a download? We'd love to hear from you.</p>
 <p>Email: <a href="mailto:{E(mail)}">{E(mail)}</a></p>
-<p>We usually reply within two to three working days (Philippine time).</p>
+<p>We usually reply within two to three working days.</p>
 <h2>Requesting a clip</h2>
 <p>Tell us what the clip is for, the colors or mood you want, and whether you need it as a green screen or vertical (9:16). We can't promise every request, but we read them all and use them to plan new clips.</p>
 <h2>Reporting a problem</h2>
@@ -350,7 +353,7 @@ def static_pages():
 <p class="lead">Our clips come in three kinds. Here's how to use each one in the editors most people use: CapCut, Canva, Premiere Pro and DaVinci Resolve.</p>
 <nav class="toc"><a href="#backgrounds">Loop backgrounds</a><a href="#green">Green screen clips</a><a href="#overlays">Overlays (Screen blend)</a><a href="#vertical">Vertical videos</a><a href="#tips">Tips</a></nav>
 <h2 id="backgrounds">1. Loop backgrounds</h2>
-<p>Bokeh lights, gradients, parol and starry skies are full backgrounds. Put them on the bottom layer and add your text, photo or logo on top.</p>
+<p>Bokeh lights, gradients, lanterns and starry skies are full backgrounds. Put them on the bottom layer and add your text, photo or logo on top.</p>
 <ol><li>Start a new project and import the clip.</li><li>Put it on the first (lowest) track.</li><li>Add text on top. Light text with a soft shadow reads best on dark backgrounds.</li>
 <li>Need it longer than 8 seconds? Copy and paste the clip end to end. Each one is a seamless loop, so you won't see the cut.</li></ol>
 <h2 id="green">2. Green screen clips</h2>
