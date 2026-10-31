@@ -29,19 +29,24 @@ CAT_BLURB = {
     'Tech & Abstract': 'Network lines, hexagons and retro neon grids for tech, gaming and corporate videos.',
 }
 
+import hashlib as _h
+CSSV = _h.md5(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'public', 'assets', 'site.css'), 'rb').read()).hexdigest()[:8]
+
 # ---------------------------------------------------------------- Telar Labs family links
 FAMILY = [f for f in CFG.get('family', []) if f['name'] != CFG['site_name']]
 HUB = CFG.get('studio_url', '')
 
+def slug_app(n): return ''.join(ch for ch in n.lower() if ch.isalnum())
+
 def family_row():
     if not FAMILY: return ''
     head = f'<a href="{E(HUB)}">More from {E(CFG["studio"])}</a>' if HUB else f'More from {E(CFG["studio"])}'
-    links = ''.join(f'<a href="{E(f["url"])}" title="{E(f["blurb"])}">{E(f["name"])}</a>' for f in FAMILY)
+    links = ''.join(f'<a class="app-{slug_app(f["name"])}" href="{E(f["url"])}" title="{E(f["blurb"])}">{E(f["name"])}</a>' for f in FAMILY)
     return f'<div class="wrap family"><span class="family-h">{head}:</span>{links}</div>'
 
 def family_promo(title):
     if not FAMILY: return ''
-    links = ''.join(f'<a href="{E(f["url"])}"><b>{E(f["name"])}</b><span>{E(f["blurb"])}</span></a>' for f in FAMILY)
+    links = ''.join(f'<a class="app-{slug_app(f["name"])}" href="{E(f["url"])}"><b>{E(f["name"])}</b><span>{E(f["blurb"])}</span></a>' for f in FAMILY)
     return f'<section class="wrap section family-promo"><h2>{title}</h2><div class="family-links">{links}</div></section>'
 
 def slug(s): return re.sub(r'[^a-z0-9]+', '-', s.lower()).strip('-')
@@ -111,7 +116,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/site.css?v={CSSV}">
 {ads}{extra_head}
 </head>
 <body>
