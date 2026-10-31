@@ -1,0 +1,17 @@
+{
+  "site_name": "Telar Clips",
+  "studio": "Telar Labs",
+  "tagline": "Free motion backgrounds, overlays and green screens for your videos",
+  "site_url": "https://telarclips.com",
+  "media_base": "https://media.telarclips.com/",
+  "contact_email": "hello@telarclips.com",
+  "adsense_client": "",
+  "ad_slots": {
+    "home_grid": "",
+    "clip_below_download": "",
+    "clip_sidebar": "",
+    "list_grid": ""
+  },
+  "cloudflare_analytics_token": "",
+  "launch_date": "2026-10-31"
+}
