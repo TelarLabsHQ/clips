@@ -155,6 +155,7 @@ class Fall:
                                sp_ph=r.random(), rot=int(r.integers(1, 3)) * r.choice([-1, 1]), fl=int(r.integers(1, 4)),
                                a0=r.uniform(0, 360)))
         self.slant, self.alpha, self.rise, self.kind = slant, alpha, rise, kind
+        self.add_glow = False
 
     def draw(self, frame, t):
         for q in self.p:
@@ -167,7 +168,10 @@ class Fall:
             fl = math.cos(TAU * (q['fl'] * t + q['sp_ph']))
             fl = math.copysign(max(0.25, abs(fl)), fl)
             fade = min(1, u * 8, (1 - u) * 8) if self.rise else 1
-            blit(frame, q['sp'], x, y, self.alpha * fade, ang, fl if self.kind != 'glow' else 1)
+            if self.kind == 'glow':
+                blit(frame, q['sp'], x, y, self.alpha * fade, add=self.add_glow)
+            else:
+                blit(frame, q['sp'], x, y, self.alpha * fade, ang, fl)
 
 class Float:
     """Glowing dots / sparkles that drift around a home position and pulse (fireflies, dust, glints)."""
@@ -233,3 +237,40 @@ def render(name, img_path, size, focus, zoom, effects, layers, crf=18):
         p.stdin.write(np.clip(frame, 0, 255).astype(np.uint8).tobytes())
     p.stdin.close(); p.wait()
     print('rendered', name, flush=True)
+
+class Twinkle:
+    """Lights twinkle independently: masked bright areas pulse with a drifting noise pattern."""
+    def __init__(self, img, mask, strength=0.35, sigma=6, seed=13, bloom=0.0, color=(120, 200, 255)):
+        h, w = img.shape[:2]
+        self.m, self.s = mask, strength
+        self.n = tile_noise(h, w, sigma, seed) * 2 - 1
+        self.n2 = tile_noise(h, w, sigma, seed + 3) * 2 - 1
+        self.halo = cv2.GaussianBlur(mask[..., 0], (0, 0), 14)[..., None] if bloom else None
+        self.col, self.b = np.array(color, np.float32), bloom
+
+    def apply(self, base, out, t):
+        c, s = math.cos(TAU * t), math.sin(TAU * t)
+        f = (c * self.n + s * self.n2)[..., None]  # each pixel pulses once per loop with its own phase
+        out = out * (1 + self.s * f * self.m)
+        if self.halo is not None:
+            out = out + self.halo * self.col * self.b * (0.8 + 0.2 * f)
+        return out
+
+class Rain:
+    """Thin slanted rain streaks that loop."""
+    def __init__(self, W, H, n=260, length=(18, 38), slant=0.18, alpha=(0.18, 0.4), color=(235, 235, 245), seed=17, k=(3, 5)):
+        r = rng(seed)
+        self.W, self.H, self.sl, self.col = W, H, slant, color
+        self.p = [dict(x=r.uniform(-H * slant, W), ph=r.random(), L=r.uniform(*length), a=r.uniform(*alpha),
+                       k=int(r.integers(k[0], k[1] + 1))) for _ in range(n)]
+
+    def draw(self, frame, t):
+        ov = np.zeros_like(frame)
+        span = self.H + 80
+        for q in self.p:
+            y = ((q['ph'] + q['k'] * t) % 1.0) * span - 40
+            x = q['x'] + self.sl * y
+            dx, dy = self.sl * q['L'], q['L']
+            cv2.line(ov, (int(x * 4), int(y * 4)), (int((x + dx) * 4), int((y + dy) * 4)),
+                     tuple(float(c) * q['a'] for c in self.col), 1, cv2.LINE_AA, shift=2)
+        frame += ov * 0.9

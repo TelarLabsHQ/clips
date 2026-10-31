@@ -5,11 +5,11 @@ FULL = '/home/claude/scenes/upload'
 os.makedirs(FULL, exist_ok=True)
 clips = [c for c in json.load(open(f'{REPO}/data/clips.json')) if c.get('illustrated')]
 for c in clips:
-    src = f'/home/claude/scenes/out/{c["src"]}.mp4'
+    src = f'/home/claude/scenes{"2" if c.get("batch") == 2 else ""}/out/{c["src"]}.mp4'
     dst = f'{FULL}/{c["file"]}'
     shutil.copy(src, dst)
     w, h = c['width'], c['height']
-    sc = '480:480' if w == h else '432:540'
+    sc = '480:480' if w == h else ('640:360' if w > h else '432:540')
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', src, '-vf', f'scale={sc}', '-an', '-c:v', 'libx264', '-preset', 'veryfast',
                     '-crf', '28', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', f'{REPO}/public/media/preview/{c["id"]}.mp4'], check=True)
     subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', '4', '-i', src, '-frames:v', '1', '-vf', f'scale={sc}', '-q:v', '82',
