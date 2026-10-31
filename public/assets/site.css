@@ -123,3 +123,5 @@ section .chips:not([role]){flex-wrap:wrap}
 @media(max-width:760px){.foot-in{grid-template-columns:1fr}.foot-cols{grid-template-columns:1fr 1fr}}
 .mobile-dl{display:none;margin:0 0 20px}
 @media(max-width:920px){.mobile-dl{display:flex}}
+.chips-wrap{flex-wrap:wrap;overflow:visible}
+.sub-head{font-family:var(--body);font-size:15px;color:var(--muted);font-weight:600;margin:22px 0 10px}

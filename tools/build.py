@@ -18,7 +18,7 @@ CAT_ORDER = ['World Celebrations', 'Christmas & New Year', 'Green Screen', 'Boke
              'Celebrations & Events', 'Nature & Seasons', 'Tech & Abstract']
 CAT_BLURB = {
     'Christmas & New Year': 'Snow, string lights, ornaments, fireworks and a New Year countdown for your holiday greetings and promos.',
-    'World Celebrations': 'Holidays from around the world: Lunar New Year lanterns, the Chuseok and Mid-Autumn moon, Japanese cherry blossoms, Halloween, the Fourth of July, the Filipino parol and festival bunting.',
+    'World Celebrations': 'Holidays from around the world: Lunar New Year and the Lantern Festival, Ramadan and Eid, Hanukkah, Diwali, Holi, Nowruz, St. Patrick\'s Day, Carnival, Easter, cherry blossom season, Chuseok, Halloween, the Fourth of July and the Filipino parol.',
     'Green Screen': 'Pure chroma green (#00B140) clips you can drop over any video and key out in CapCut, Canva, Premiere or DaVinci Resolve.',
     'Bokeh Lights': 'Soft out-of-focus lights in many colors, perfect behind titles, quotes and greetings.',
     'Gradients': 'Smooth, slowly flowing color gradients for intros, presentations and social posts.',
@@ -106,7 +106,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
       <div><h4>{E(CFG["studio"])}</h4><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
     </div>
   </div>
-  <div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. All clips are original motion graphics made by {E(CFG["studio"])}.</div>
+  <div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. All clips are designed by {E(CFG["studio"])} and animated with AI assistance.</div>
 </footer>
 <script src="/assets/site.js" defer></script>
 {cfa}
@@ -219,16 +219,25 @@ def clip_page(c):
     page(f'/clip/{c["id"]}/', f'{c["title"]} – Free {"Green Screen" if c["green_screen"] else "Stock Video"} Download',
          c['description'][:155], body, jsonld(c), f"{URL}/media/poster/{c['id']}.webp")
 
+HOLIDAYS = [('Diwali', 'diwali'), ('Thanksgiving', 'thanksgiving'), ('Hanukkah', 'hanukkah'), ('Christmas', 'christmas'), ('New Year', 'new year'),
+            ('Lunar New Year', 'lunar new year'), ('Lantern Festival', 'lantern festival'), ("Valentine's Day", 'valentine'), ('Ramadan & Eid', 'ramadan'),
+            ('Carnival', 'carnival'), ("St. Patrick's Day", 'patrick'), ('Holi', 'holi'), ('Nowruz', 'nowruz'), ('Easter', 'easter'),
+            ('Cherry blossom', 'sakura'), ('Chuseok', 'chuseok'), ('Halloween', 'halloween'), ('Fourth of July', 'fourth of july')]
+
+def holiday_chips():
+    return '<div class="chips chips-wrap">' + ''.join(f'<a class="chip" href="/?q={E(q)}#browse">{E(n)}</a>' for n, q in HOLIDAYS) + '</div>'
+
 def chips():
     return ('<div class="chips" role="group" aria-label="Filter by category"><button class="chip is-on" data-cat="">All</button>' +
             ''.join(f'<button class="chip" data-cat="{E(c)}">{E(c)}</button>' for c in CATS) + '</div>')
 
 # ---------------------------------------------------------------- pages
 def home():
-    pick = ['halloween-full-moon-bats-loop', 'twinkling-christmas-string-lights-loop', 'chinese-red-lanterns-lunar-new-year-loop', 'falling-cherry-blossom-sakura-petals-loop',
-            'full-moon-sky-lanterns-chuseok-mid-autumn-loop', 'parol-light-sequence-loop', 'red-white-blue-stars-falling-loop', 'new-year-fireworks-city-loop']
+    pick = ['diwali-diya-lamps-loop', 'falling-autumn-maple-leaves-loop', 'hanukkah-menorah-candles-loop', 'snowy-christmas-tree-forest-night-loop',
+            'happy-new-year-2027-gold-loop', 'lantern-festival-rising-red-lanterns-loop', 'ramadan-lanterns-crescent-moon-loop', 'st-patricks-falling-shamrocks-loop']
     byid = {c['id']: c for c in CLIPS}
     xmas = [byid[i] for i in pick if i in byid]
+    if len(xmas) < 8: xmas += [c for c in CLIPS if c['category'] == 'World Celebrations' and c not in xmas][:8 - len(xmas)]
     n = len(CLIPS)
     body = f'''
 <section class="hero">
@@ -246,8 +255,10 @@ def home():
   </div>
 </section>
 <section class="wrap section">
-  <div class="section-head"><h2>Celebrations around the world</h2><a href="/category/world-celebrations/">See all →</a></div>
+  <div class="section-head"><h2>Coming up: holidays around the world</h2><a href="/category/world-celebrations/">See all →</a></div>
   {grid(xmas)}
+  <h3 class="sub-head">Browse by holiday</h3>
+  {holiday_chips()}
 </section>
 {ad("home_grid", "wrap ad")}
 <section class="wrap section" id="browse">
@@ -274,6 +285,7 @@ def category(cat):
   <p class="lead">{E(CAT_BLURB[cat])}</p>
   <p class="muted">{len(cl)} clips · Full HD · free download</p>
 </section>
+{('<section class="wrap section"><h2>Browse by holiday</h2>' + holiday_chips() + '</section>') if cat == 'World Celebrations' else ''}
 <section class="wrap section">{grid(cl, "list_grid")}</section>
 <section class="wrap section"><h2>Other categories</h2><div class="chips">{others}</div></section>'''
     page(f'/category/{slug(cat)}/', f'Free {cat} Stock Video Clips', f'{CAT_BLURB[cat]} {len(cl)} free HD clips, no sign-up.', body)
@@ -285,9 +297,9 @@ def static_pages():
     st = CFG['studio']; mail = CFG['contact_email']
     prose('/about/', 'About', f'About {NAME} by {st}.', f'''
 <h1>About {E(NAME)}</h1>
-<p class="lead">{E(NAME)} is a small library of free motion backgrounds, overlays and green screen clips made by {E(st)}, an independent studio.</p>
+<p class="lead">{E(NAME)} is a small library of free motion backgrounds, overlays and green screen clips from {E(st)}, an independent studio.</p>
 <p>We started it because creators, teachers, churches and small businesses everywhere keep needing the same things: red lanterns for a Lunar New Year greeting, a full moon for Chuseok, falling sakura for a spring post, bats for a Halloween invite, a parol for a Filipino Christmas, confetti for a giveaway winner, a calm loop behind a quote. The big stock sites have millions of clips, but the good holiday ones are often hard to find or need a paid plan.</p>
-<p>Every clip here is an original motion graphic we designed and rendered ourselves. They are free to download without an account, and you can use them in personal and commercial projects. See the <a href="/license/">license</a> for the details.</p>
+<p>We choose the themes, colors and moods for every clip, then animate them with AI assistance. Nothing is copied from other sites or stock libraries. They are free to download without an account, and you can use them in personal and commercial projects. See the <a href="/license/">license</a> for the details.</p>
 <h2>What you'll find</h2>
 <ul>{''.join(f'<li><a href="/category/{slug(c)}/">{E(c)}</a>: {E(CAT_BLURB[c])}</li>' for c in CATS)}</ul>
 <h2>New clips every week</h2>
@@ -323,7 +335,7 @@ def static_pages():
 <h2>Credit</h2>
 <p>Credit is not required, but it helps us a lot. If you'd like to, write: <em>Background by {E(NAME)}</em>.</p>
 <h2>No warranty</h2>
-<p>The clips are provided as they are. {E(st)} made every clip as an original motion graphic and is not responsible for how they are used.</p>
+<p>The clips are provided as they are. The clips are designed by {E(st)} and animated with AI assistance. {E(st)} is not responsible for how they are used.</p>
 <p class="muted">Last updated {E(CFG["launch_date"])}.</p>''')
     ads_txt = ('<p>We use Google AdSense to show ads. Google and its partners use cookies to show ads based on your visits to this and other websites. '
                'You can turn off personalized ads in <a href="https://adssettings.google.com" rel="noopener">Google Ads Settings</a>, and learn more at '
