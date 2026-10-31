@@ -221,7 +221,7 @@ def clip_page(c):
 
 HOLIDAYS = [('Diwali', 'diwali'), ('Thanksgiving', 'thanksgiving'), ('Hanukkah', 'hanukkah'), ('Christmas', 'christmas'), ('New Year', 'new year'),
             ('Lunar New Year', 'lunar new year'), ('Lantern Festival', 'lantern festival'), ("Valentine's Day", 'valentine'), ('Ramadan & Eid', 'ramadan'),
-            ('Carnival', 'carnival'), ("St. Patrick's Day", 'patrick'), ('Holi', 'holi'), ('Nowruz', 'nowruz'), ('Easter', 'easter'),
+            ('Carnival', 'carnival'), ("St. Patrick's Day", 'patrick'), ('Holi', 'festival of colors'), ('Nowruz', 'nowruz'), ('Easter', 'easter'),
             ('Cherry blossom', 'sakura'), ('Chuseok', 'chuseok'), ('Halloween', 'halloween'), ('Fourth of July', 'fourth of july')]
 
 def holiday_chips():
