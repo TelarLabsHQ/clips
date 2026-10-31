@@ -14,11 +14,12 @@ URL = CFG['site_url'].rstrip('/')
 MEDIA = CFG['media_base']
 NAME = CFG['site_name']
 
-CAT_ORDER = ['World Celebrations', 'Christmas & New Year', 'Green Screen', 'Bokeh Lights', 'Gradients', 'Overlays',
+CAT_ORDER = ['World Celebrations', 'Illustrated Scenes', 'Christmas & New Year', 'Green Screen', 'Bokeh Lights', 'Gradients', 'Overlays',
              'Celebrations & Events', 'Nature & Seasons', 'Tech & Abstract']
 CAT_BLURB = {
     'Christmas & New Year': 'Snow, string lights, ornaments, fireworks and a New Year countdown for your holiday greetings and promos.',
     'World Celebrations': 'Holidays from around the world: Lunar New Year and the Lantern Festival, Ramadan and Eid, Hanukkah, Diwali, Holi, Nowruz, St. Patrick\'s Day, Carnival, Easter, cherry blossom season, Chuseok, Halloween, the Fourth of July and the Filipino parol.',
+    'Illustrated Scenes': 'Illustrated scenes with gentle motion, perfect as story backgrounds, video greetings or reel openers: festivals, travel spots and cute characters from around the world.',
     'Green Screen': 'Pure chroma green (#00B140) clips you can drop over any video and key out in CapCut, Canva, Premiere or DaVinci Resolve.',
     'Bokeh Lights': 'Soft out-of-focus lights in many colors, perfect behind titles, quotes and greetings.',
     'Gradients': 'Smooth, slowly flowing color gradients for intros, presentations and social posts.',
@@ -36,10 +37,25 @@ def in_cat(c, cat):
 
 def kind(c):
     if c['green_screen']: return 'green'
+    if c.get('illustrated'): return 'scene'
     if c['category'] == 'Overlays' or 'overlay' in c['id']: return 'overlay'
     return 'background'
 
-def vertical(c): return c['height'] > c['width']
+def vertical(c): return c['height'] >= c['width'] * 1.7
+
+def aspect(c):
+    w, h = c['width'], c['height']
+    if w * 9 == h * 16: return '16:9'
+    if w * 16 == h * 9: return '9:16'
+    if w == h: return '1:1'
+    if w * 5 == h * 4: return '4:5'
+    return f'{w}×{h}'
+
+def res_label(c):
+    a = aspect(c)
+    if a == '16:9' and c['width'] >= 1920: return 'Full HD'
+    if a == '9:16' and c['height'] >= 1920: return 'Full HD, vertical 9:16'
+    return {'1:1': 'HD square 1:1', '4:5': 'HD portrait 4:5'}.get(a, 'HD')
 
 # ---------------------------------------------------------------- layout
 LOGO = ('<svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="var(--accent)"/>'
@@ -106,7 +122,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
       <div><h4>{E(CFG["studio"])}</h4><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
     </div>
   </div>
-  <div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. All clips are motion graphics by {E(CFG["studio"])}.</div>
+  <div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. Motion graphics and illustrated scenes by {E(CFG["studio"])}.</div>
 </footer>
 <script src="/assets/site.js" defer></script>
 {cfa}
@@ -120,15 +136,19 @@ def page(path, title, desc, body, extra_head='', og_image=None):
 def badges(c):
     b = []
     if c['green_screen']: b.append('<span class="badge badge-green">Green screen</span>')
-    if vertical(c): b.append('<span class="badge">9:16</span>')
+    if c.get('illustrated'): b.append('<span class="badge badge-ill">Illustrated</span>')
+    if aspect(c) != '16:9': b.append(f'<span class="badge">{aspect(c)}</span>')
     b.append(f'<span class="badge">{"Loop" if c["loop"] else str(int(c["duration"])) + "s"}</span>')
     return ''.join(b)
+
+def thumb_bg(c):
+    return f' style="background:{c["pad"]}"' if c.get('pad') else ''
 
 def card(c):
     text = ' '.join([c['title'], c['category'], ' '.join(c['tags'])]).lower()
     cats = '|'.join(x for x in CATS if in_cat(c, x))
     return (f'<a class="card" href="/clip/{c["id"]}/" data-cats="{E(cats)}" data-text="{E(text)}">'
-            f'<div class="thumb{" thumb-v" if vertical(c) else ""}"><img src="/media/poster/{c["id"]}.webp" alt="{E(c["title"])} preview" loading="lazy" width="{640 if not vertical(c) else 360}" height="{360 if not vertical(c) else 640}">'
+            f'<div class="thumb{" thumb-v" if (vertical(c) or c.get("pad") == "#ffffff") else ""}"{thumb_bg(c)}><img src="/media/poster/{c["id"]}.webp" alt="{E(c["title"])} preview" loading="lazy" width="{c["width"] // 3}" height="{c["height"] // 3}">'
             f'<video muted loop playsinline preload="none" data-src="/media/preview/{c["id"]}.mp4"></video>'
             f'<div class="badges">{badges(c)}</div></div>'
             f'<div class="card-meta"><h3>{E(c["title"])}</h3><span>{E(c["category"])}</span></div></a>')
@@ -151,6 +171,10 @@ HOWTO = {
    ('Put it above your video', 'Place this clip on the track above your footage or photo, stretched to the full frame.'),
    ('Set the blend mode to Screen', 'The black parts disappear and only the light stays. CapCut: select the overlay → <b>Blend → Screen</b>. Premiere: <b>Effect Controls → Opacity → Blend mode → Screen</b>. Canva: <b>Transparency</b> works, but Screen blend needs CapCut or a desktop editor.'),
    ('Adjust the strength', 'Lower the overlay opacity to 40–80% for a subtle look, or keep it at 100% for a bold effect.')]),
+ 'scene': ('How to use this illustrated scene', [
+   ('Use it as a background', 'Add the clip as the first layer. It loops seamlessly, so you can repeat it for a longer greeting, story or lesson.'),
+   ('Square and portrait sizes', 'Square (1:1) and portrait (4:5) clips fit Facebook and Instagram posts as they are. For a 16:9 video, place the clip on one side of the frame and use the other side for your title or message.'),
+   ('White backgrounds blend in', 'Scenes with a white background look like a storybook page. Set your project background to white and the edges disappear, or add a soft colour behind it.')]),
  'background': ('How to use this background', [
    ('Put it on the bottom track', 'Add the clip as the first layer of your video. It is a seamless loop, so you can repeat it as many times as you need without a visible jump.'),
    ('Add your text or photo on top', 'Type your greeting, quote, title or announcement over it. Light text with a soft shadow reads best on darker backgrounds.'),
@@ -171,9 +195,9 @@ def clip_page(c):
     related = [x for x in CLIPS if x['id'] != c['id'] and (x['category'] == c['category'] or (c['green_screen'] and x['green_screen']))][:8]
     if len(related) < 8: related += [x for x in CLIPS if x['id'] != c['id'] and x not in related][:8 - len(related)]
     res = f'{c["width"]}×{c["height"]}'
-    spec = [('Resolution', f'{res} (Full HD{", vertical 9:16" if vertical(c) else ""})'),
+    spec = [('Resolution', f'{res} ({res_label(c)})'),
             ('Length', f'{c["duration"]:g} seconds' + (', seamless loop' if c['loop'] else '')),
-            ('Frame rate', '30 fps'), ('Format', 'MP4 (H.264)'),
+            ('Frame rate', f'{c.get("fps", 30)} fps'), ('Format', 'MP4 (H.264)'),
             ('Background', 'Chroma green #00B140' if c['green_screen'] else ('Black (use Screen blend)' if k == 'overlay' else 'Included')),
             ('Price', 'Free, no sign-up')]
     tags = ''.join(f'<a class="tag" href="/?q={E(t)}#browse">{E(t)}</a>' for t in c['tags'])
@@ -181,7 +205,7 @@ def clip_page(c):
 <div class="wrap crumbs"><a href="/">Home</a> <span>/</span> <a href="/category/{slug(c["category"])}/">{E(c["category"])}</a> <span>/</span> {E(c["title"])}</div>
 <section class="wrap clip">
   <div class="clip-main">
-    <div class="player{" player-v" if vertical(c) else ""}">
+    <div class="player{" player-v" if vertical(c) else (" player-s" if aspect(c) != "16:9" else "")}"{f' style="aspect-ratio:{c["width"]}/{c["height"]}"' if aspect(c) not in ("16:9", "9:16") else ""}>
       <video src="/media/preview/{c["id"]}.mp4" poster="/media/poster/{c["id"]}.webp" autoplay muted loop playsinline controls></video>
     </div>
     <p class="preview-note muted">Preview is lower quality. The download is the full {res} file.</p>
@@ -216,7 +240,7 @@ def clip_page(c):
   <div class="section-head"><h2>More like this</h2><a href="/category/{slug(c["category"])}/">See all {E(c["category"])} →</a></div>
   {grid(related)}
 </section>'''
-    page(f'/clip/{c["id"]}/', f'{c["title"]} – Free {"Green Screen" if c["green_screen"] else "Stock Video"} Download',
+    page(f'/clip/{c["id"]}/', f'{c["title"]} – Free {"Green Screen" if c["green_screen"] else ("Animated Illustration" if c.get("illustrated") else "Stock Video")} Download',
          c['description'][:155], body, jsonld(c), f"{URL}/media/poster/{c['id']}.webp")
 
 HOLIDAYS = [('Diwali', 'diwali'), ('Thanksgiving', 'thanksgiving'), ('Hanukkah', 'hanukkah'), ('Christmas', 'christmas'), ('New Year', 'new year'),
@@ -244,14 +268,14 @@ def home():
   <video class="hero-bg" src="/media/preview/golden-bokeh-lights-loop.mp4" autoplay muted loop playsinline aria-hidden="true"></video>
   <div class="hero-shade"></div>
   <div class="wrap hero-in">
-    <p class="eyebrow">{n} free clips · Full HD · No sign-up</p>
-    <h1>Free motion backgrounds, overlays &amp; green screens</h1>
-    <p class="hero-sub">Seamless loops for your greetings, intros, reels and school or church videos. Download, drop into CapCut or Canva, done.</p>
+    <p class="eyebrow">{n} free clips · HD · No sign-up</p>
+    <h1>Free motion backgrounds, illustrated scenes &amp; green screens</h1>
+    <p class="hero-sub">Seamless loops and animated illustrations for your greetings, intros, reels, and school, church or community videos. Download, drop into CapCut or Canva, done.</p>
     <form class="search" action="/" method="get" role="search">
       <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
       <input type="search" name="q" id="q" placeholder="Search: snow, lanterns, sakura, confetti, green screen…" aria-label="Search clips" autocomplete="off">
     </form>
-    <div class="hero-pills"><a href="/category/world-celebrations/">World celebrations</a><a href="/category/christmas-new-year/">Christmas &amp; New Year</a><a href="/category/green-screen/">Green screen</a><a href="/category/overlays/">Overlays</a><a href="/category/bokeh-lights/">Bokeh</a></div>
+    <div class="hero-pills"><a href="/category/world-celebrations/">World celebrations</a><a href="/category/illustrated-scenes/">Illustrated scenes</a><a href="/category/christmas-new-year/">Christmas &amp; New Year</a><a href="/category/green-screen/">Green screen</a><a href="/category/overlays/">Overlays</a><a href="/category/bokeh-lights/">Bokeh</a></div>
   </div>
 </section>
 <section class="wrap section">
@@ -259,6 +283,11 @@ def home():
   {grid(xmas)}
   <h3 class="sub-head">Browse by holiday</h3>
   {holiday_chips()}
+</section>
+<section class="wrap section">
+  <div class="section-head"><h2>New: illustrated scenes</h2><a href="/category/illustrated-scenes/">See all →</a></div>
+  <p class="muted section-sub">{E(CAT_BLURB['Illustrated Scenes'])}</p>
+  {grid([c for c in CLIPS if c.get('illustrated')][:8])}
 </section>
 {ad("home_grid", "wrap ad")}
 <section class="wrap section" id="browse">
@@ -269,11 +298,11 @@ def home():
 </section>
 <section class="wrap section why">
   <div><h3>Really free</h3><p>No account, no watermark, no credit required. Use them for personal and commercial videos.</p></div>
-  <div><h3>Made to loop</h3><p>Every background is a seamless 8-second loop, so you can stretch it under a long greeting or stream.</p></div>
+  <div><h3>Made to loop</h3><p>Every background and illustrated scene is a seamless 8-second loop, so you can stretch it under a long greeting or stream.</p></div>
   <div><h3>For every culture</h3><p>Lunar New Year, Chuseok, sakura season, Halloween, Christmas, the Fourth of July and more, with new clips before every major holiday.</p></div>
 </section>'''
-    page('/', f'{NAME} – Free Motion Backgrounds, Overlays & Green Screen Clips',
-         f'Download {n} free HD motion backgrounds, overlays and green screen clips: Christmas, Lunar New Year, Halloween, sakura, bokeh, confetti, snow and more. No sign-up, OK for commercial use.', body)
+    page('/', f'{NAME} – Free Motion Backgrounds, Illustrated Scenes & Green Screens',
+         f'Download {n} free HD motion backgrounds, animated illustrated scenes, overlays and green screen clips: Christmas, Lunar New Year, Halloween, sakura, bokeh, confetti, snow and more. No sign-up, OK for commercial use.', body)
 
 def category(cat):
     cl = [c for c in CLIPS if in_cat(c, cat)]
@@ -281,9 +310,9 @@ def category(cat):
     body = f'''
 <div class="wrap crumbs"><a href="/">Home</a> <span>/</span> {E(cat)}</div>
 <section class="wrap section page-head">
-  <h1>Free {E(cat)} clips</h1>
+  <h1>{"Free animated illustrated scenes" if cat == "Illustrated Scenes" else f"Free {E(cat)} clips"}</h1>
   <p class="lead">{E(CAT_BLURB[cat])}</p>
-  <p class="muted">{len(cl)} clips · Full HD · free download</p>
+  <p class="muted">{len(cl)} clips · {"HD" if cat == "Illustrated Scenes" else "Full HD"} · free download</p>
 </section>
 {('<section class="wrap section"><h2>Browse by holiday</h2>' + holiday_chips() + '</section>') if cat == 'World Celebrations' else ''}
 <section class="wrap section">{grid(cl, "list_grid")}</section>
@@ -297,9 +326,9 @@ def static_pages():
     st = CFG['studio']; mail = CFG['contact_email']
     prose('/about/', 'About', f'About {NAME} by {st}.', f'''
 <h1>About {E(NAME)}</h1>
-<p class="lead">{E(NAME)} is a small library of free motion backgrounds, overlays and green screen clips from {E(st)}, an independent studio.</p>
+<p class="lead">{E(NAME)} is a small library of free motion backgrounds, illustrated scenes, overlays and green screen clips from {E(st)}, an independent studio.</p>
 <p>We started it because creators, teachers, churches and small businesses everywhere keep needing the same things: red lanterns for a Lunar New Year greeting, a full moon for Chuseok, falling sakura for a spring post, bats for a Halloween invite, a parol for a Filipino Christmas, confetti for a giveaway winner, a calm loop behind a quote. The big stock sites have millions of clips, but the good holiday ones are often hard to find or need a paid plan.</p>
-<p>Every clip is made by {E(st)} for this site; nothing is copied from other sites or stock libraries. They are free to download without an account, and you can use them in personal and commercial projects. See the <a href="/license/">license</a> for the details.</p>
+<p>Every clip is made by {E(st)} for this site; nothing is copied from other sites or stock libraries. Our illustrated scenes are designed by {E(st)} with AI-assisted illustration, then animated and finished by us. They are free to download without an account, and you can use them in personal and commercial projects. See the <a href="/license/">license</a> for the details.</p>
 <h2>What you'll find</h2>
 <ul>{''.join(f'<li><a href="/category/{slug(c)}/">{E(c)}</a>: {E(CAT_BLURB[c])}</li>' for c in CATS)}</ul>
 <h2>New clips every week</h2>
@@ -362,8 +391,8 @@ def static_pages():
     prose('/how-to-use/', 'How to Use Green Screens, Overlays and Loop Backgrounds',
           'Step-by-step guide to using green screen clips, light overlays and looping backgrounds in CapCut, Canva, Premiere and DaVinci Resolve.', f'''
 <h1>How to use our clips</h1>
-<p class="lead">Our clips come in three kinds. Here's how to use each one in the editors most people use: CapCut, Canva, Premiere Pro and DaVinci Resolve.</p>
-<nav class="toc"><a href="#backgrounds">Loop backgrounds</a><a href="#green">Green screen clips</a><a href="#overlays">Overlays (Screen blend)</a><a href="#vertical">Vertical videos</a><a href="#tips">Tips</a></nav>
+<p class="lead">Our clips come in four kinds. Here's how to use each one in the editors most people use: CapCut, Canva, Premiere Pro and DaVinci Resolve.</p>
+<nav class="toc"><a href="#backgrounds">Loop backgrounds</a><a href="#green">Green screen clips</a><a href="#overlays">Overlays (Screen blend)</a><a href="#scenes">Illustrated scenes</a><a href="#vertical">Vertical videos</a><a href="#tips">Tips</a></nav>
 <h2 id="backgrounds">1. Loop backgrounds</h2>
 <p>Bokeh lights, gradients, lanterns and starry skies are full backgrounds. Put them on the bottom layer and add your text, photo or logo on top.</p>
 <ol><li>Start a new project and import the clip.</li><li>Put it on the first (lowest) track.</li><li>Add text on top. Light text with a soft shadow reads best on dark backgrounds.</li>
@@ -381,7 +410,11 @@ def static_pages():
 <h2 id="overlays">3. Overlays (Screen blend)</h2>
 <p>Overlays like light leaks, dust, embers, sparkles and snow on black are made to sit on top of your video. The <b>Screen</b> blend mode hides the black and keeps only the light.</p>
 <ol><li>Put the overlay on the track above your video.</li><li>CapCut: select it → <b>Blend → Screen</b>. Premiere: <b>Effect Controls → Opacity → Blend Mode → Screen</b>. Resolve: <b>Inspector → Composite Mode → Screen</b>.</li><li>Lower the opacity for a softer effect.</li></ol>
-<h2 id="vertical">4. Making vertical videos (TikTok, Reels, Shorts)</h2>
+<h2 id="scenes">4. Illustrated scenes</h2>
+<p>Illustrated scenes are animated storybook pictures in square (1:1) or portrait (4:5) size, made for posts, stories and greetings.</p>
+<ol><li>For a Facebook or Instagram post, use the clip as it is and add your text on top or below.</li><li>For a 16:9 video, place the scene on one side of the frame and put your title on the other side.</li>
+<li>Scenes on white look like a page from a picture book. Use a white or soft pastel project background so the edges blend in.</li></ol>
+<h2 id="vertical">5. Making vertical videos (TikTok, Reels, Shorts)</h2>
 <p>Most clips are horizontal 16:9. For a vertical video, set your project to <b>9:16</b> and zoom the clip until it fills the screen. Bokeh, gradients, snow and confetti still look great cropped. Some clips, like the Christmas lights frame, also come in a ready-made vertical version.</p>
 <h2 id="tips">Tips</h2>
 <ul><li>Keep important text away from the bottom and right edges on TikTok and Reels, where the buttons and captions sit.</li>
