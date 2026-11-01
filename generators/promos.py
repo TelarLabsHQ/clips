@@ -141,11 +141,11 @@ class Reel:
         self.name, self.dir, self.segs, self.speed = name, ROOT + name + '/', [], speed
         os.makedirs(self.dir, exist_ok=True); assets(self.dir)
 
-    def seg(self, src, dur, items, mode='full', start=0, cx=None, key_bg=None, bg_cx=None, card_y=640, shade=0, bottom_shade=0):
+    def seg(self, src, dur, items, mode='full', start=0, cx=None, key_bg=None, bg_cx=None, card_y=640, shade=0, bottom_shade=0, tail=0.5):
         n = len(self.segs) + 1
         line = LINES[self.name][n - 1] if self.name in LINES else None
         wav = say(line, f'{self.dir}v{n}.wav', self.speed) if line else None
-        if wav: dur = round(max(min(dur, 2.2), wav_len(wav) + 0.5), 2)
+        if wav: dur = round(max(min(dur, 2.2), wav_len(wav) + tail), 2)
         png = text_png(f'{self.dir}t{n}.png', items, shade, bottom_shade)
         tmp, out = f'{self.dir}s{n}.tmp.mp4', f'{self.dir}s{n}.mp4'
         ins = ['-stream_loop', '-1', '-ss', str(start), '-t', str(dur), '-i', src]
@@ -179,13 +179,13 @@ class Reel:
     def cta(self, line, sub='No sign-up  ·  OK for commercial use'):
         self.seg(C + 'gold-glitter-sparkles-loop.mp4', 3.4, [
             T(line, 470, 104), T(sub, 800, 42, 'M', CREAM),
-            T(SITE, 900, 56, kind='site'), T('Link in bio  ·  by Telar Labs', 1060, 40, 'M')])
+            T(SITE, 900, 56, kind='site'), T('Link in bio  ·  by Telar Labs', 1060, 40, 'M')], tail=1.4)
 
     def save(self):
         lst = self.dir + 'list.txt'
         open(lst, 'w').writelines(f"file '{s}'\n" for s in self.segs)
         final = f'/home/claude/clips/promo-{self.name}-voice.mp4'
-        run(['-f', 'concat', '-safe', '0', '-i', lst, '-c:v', 'copy', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-movflags', '+faststart', final + '.tmp.mp4'])
+        run(['-f', 'concat', '-safe', '0', '-i', lst, '-c:v', 'copy', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-shortest', '-movflags', '+faststart', final + '.tmp.mp4'])
         os.replace(final + '.tmp.mp4', final); print('done', final, flush=True)
 
 def hook(r, src, title, sub, **kw):

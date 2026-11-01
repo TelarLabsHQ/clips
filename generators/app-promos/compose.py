@@ -99,7 +99,7 @@ def cta_png(a, s, path):
 
 def segment(a, s, n, tag):
     wav = f'{WORK}{tag}-v{n}.wav'; L = say(s['say'], wav, s.get('speed', 1.05)) if s.get('say') else 0
-    dur = round(max(s.get('min', 2.2), L + 0.55), 2)
+    dur = round(max(s.get('min', 2.2), L + (1.4 if s.get('cta') else 0.55)), 2)
     png, out = f'{WORK}{tag}-f{n}.png', f'{WORK}{tag}-s{n}.mp4'
     aud = ['-i', wav] if L else ['-f', 'lavfi', '-t', str(dur), '-i', 'anullsrc=r=24000:cl=mono']
     afl = f'[A]adelay=200,apad,atrim=0:{dur},aformat=sample_rates=48000:channel_layouts=stereo[a]'
@@ -107,7 +107,7 @@ def segment(a, s, n, tag):
         cta_png(a, s, png)
         fc = (f"[0:v]scale=1188:2112,zoompan=z='min(1.0+0.0006*on,1.08)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s={W}x{H}:fps={FPS},trim=duration={dur},format=yuv420p[v];"
               + afl.replace('[A]', '[1:a]'))
-        run(['-loop', '1', '-t', str(dur), '-i', png, *aud, '-filter_complex', fc, '-map', '[v]', '-map', '[a]',
+        run(['-loop', '1', '-framerate', str(FPS), '-t', str(dur), '-i', png, *aud, '-filter_complex', fc, '-map', '[v]', '-map', '[a]',
              '-c:v', 'libx264', '-crf', '19', '-preset', 'medium', '-c:a', 'aac', '-b:a', '160k', '-t', str(dur), out])
         return out
     src = RAW + s['clip'] + '.mp4'; sw, sh = dims(src); kind = s.get('kind') or ('phone' if sw < 500 else 'tall' if sh > sw else 'land')
@@ -125,7 +125,7 @@ def build(key, app, segs):
     lst = f'{WORK}{key}.txt'; open(lst, 'w').writelines(f"file '{p}'\n" for p in parts)
     final = f'{OUT}promo-{key}.mp4'
     run(['-f', 'concat', '-safe', '0', '-i', lst, '-c:v', 'copy', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-c:a', 'aac', '-b:a', '160k', '-ar', '48000',
-         '-movflags', '+faststart', final])
+         '-shortest', '-movflags', '+faststart', final])
     print('done', final, round(dur_of(final), 1), 's', flush=True)
 
 PP_SITE = 'pizarra pad dot Telar Labs dot net'
@@ -152,7 +152,7 @@ VIDEOS = {
    dict(clip='qp_d', start=1.6, head='Students get a warning every time', say='Students see a warning every time they leave the quiz.'),
    dict(clip='qp_e', head='3 exits? The quiz locks until you unlock it', say='After three exits, the quiz locks until you unlock it.'),
    dict(cta=True, head='Free quiz monitoring', sub='Google Forms  ·  Microsoft Forms  ·  Wayground',
-        say='Free, for Google Forms, Microsoft Forms and Wayground. Quiz Police dot Telar Labs dot net.'),
+        say='Free for Google and Microsoft Forms. Quiz Police dot Telar Labs dot net.'),
  ]),
  'quizpolice-2-how-it-works': ('qp', [
    dict(clip='qp_a', pill='Step 1', head='Paste your quiz link', say='Monitor a quiz in one minute. Step one: paste your Google Forms link.'),
