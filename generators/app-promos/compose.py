@@ -16,7 +16,7 @@ APPS = {
 }
 SAY_FIX = [('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
 _K = None
-def say(text, path, speed=1.05):
+def say(text, path, speed=1.1):
     global _K
     if _K is None: _K = Kokoro('/tmp/kok/kokoro-v1.0.onnx', '/tmp/kok/voices-v1.0.bin')
     ph = _K.tokenizer.phonemize(text, 'en-us')
@@ -99,10 +99,10 @@ def cta_png(a, s, path):
 
 def segment(a, s, n, tag):
     wav = f'{WORK}{tag}-v{n}.wav'; L = say(s['say'], wav, s.get('speed', 1.05)) if s.get('say') else 0
-    dur = round(max(s.get('min', 2.5), L + 0.8), 2)
+    dur = round(max(s.get('min', 2.2), L + 0.55), 2)
     png, out = f'{WORK}{tag}-f{n}.png', f'{WORK}{tag}-s{n}.mp4'
     aud = ['-i', wav] if L else ['-f', 'lavfi', '-t', str(dur), '-i', 'anullsrc=r=24000:cl=mono']
-    afl = f'[A]adelay=300,apad,atrim=0:{dur},aformat=sample_rates=48000:channel_layouts=stereo[a]'
+    afl = f'[A]adelay=200,apad,atrim=0:{dur},aformat=sample_rates=48000:channel_layouts=stereo[a]'
     if s.get('cta'):
         cta_png(a, s, png)
         fc = (f"[0:v]scale=1188:2112,zoompan=z='min(1.0+0.0006*on,1.08)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s={W}x{H}:fps={FPS},trim=duration={dur},format=yuv420p[v];"
@@ -133,10 +133,10 @@ VIDEOS = {
  'pizarrapad-1-no-smartboard': ('pp', [
    dict(clip='pp_b', head='No smartboard?\nNo problem.', say='No smartboard in your classroom? No problem.'),
    dict(clip='pp_a', head='Turn any TV or projector into a whiteboard', say='PizarraPad turns any TV or projector into a free whiteboard.'),
-   dict(clip='pp_c', head='Whiteboard, blackboard or greenboard', say='Write with your finger, a stylus or a mouse, on a whiteboard, a blackboard, or a greenboard.'),
+   dict(clip='pp_c', head='Whiteboard, blackboard or greenboard', say='Write with a finger, stylus or mouse, on a white, black or green board.'),
    dict(clip='pp_f', head='Pens, shapes, text, pictures & a laser pointer', say='Add shapes, text and pictures, and point with the laser.'),
    dict(cta=True, head='Free online whiteboard for teachers', sub='No sign-up  ·  Works offline  ·  Link in bio',
-        say=f"It's free, there's no sign-up, and it even works offline. Try it at {PP_SITE}."),
+        say=f"Free, no sign-up, and it works offline. {PP_SITE}."),
  ]),
  'pizarrapad-2-online-class': ('pp', [
    dict(clip='pp_d', head='Teaching online?', say='Teaching online, or tutoring from home?'),
@@ -147,31 +147,31 @@ VIDEOS = {
         say=f"Free, no sign-up, at {PP_SITE}."),
  ]),
  'quizpolice-1-who-left-the-quiz': ('qp', [
-   dict(clip='qp_b', head='Online quiz… or open-book quiz?', say="Giving quizzes on Google Forms? You never know who's searching for the answers."),
-   dict(clip='qp_c', head='See who leaves the quiz tab, live', say='QuizPolice shows you, live, when a student leaves the quiz tab, and for how long.'),
+   dict(clip='qp_b', head='Online quiz… or open-book quiz?', say='Giving quizzes on Google Forms? Who is searching for the answers?'),
+   dict(clip='qp_c', head='See who leaves the quiz tab, live', say='QuizPolice shows you, live, who leaves the quiz tab, and for how long.'),
    dict(clip='qp_d', start=1.6, head='Students get a warning every time', say='Students see a warning every time they leave the quiz.'),
    dict(clip='qp_e', head='3 exits? The quiz locks until you unlock it', say='After three exits, the quiz locks until you unlock it.'),
    dict(cta=True, head='Free quiz monitoring', sub='Google Forms  ·  Microsoft Forms  ·  Wayground',
-        say='Free, and it works with Google Forms, Microsoft Forms and Wayground. Quiz Police dot Telar Labs dot net.'),
+        say='Free, for Google Forms, Microsoft Forms and Wayground. Quiz Police dot Telar Labs dot net.'),
  ]),
  'quizpolice-2-how-it-works': ('qp', [
-   dict(clip='qp_a', pill='Step 1', head='Paste your quiz link', say="Here's how to monitor a quiz in one minute. Step one: paste your Google Forms link."),
+   dict(clip='qp_a', pill='Step 1', head='Paste your quiz link', say='Monitor a quiz in one minute. Step one: paste your Google Forms link.'),
    dict(clip='qp_a', start=5.5, pill='Step 2', head='Share the code or QR code', say='Step two: share the code, or the QR code, with your class.'),
-   dict(clip='qp_b', pill='Step 3', head='Students join on any phone', say='Step three: students join on any phone or laptop, and answer the quiz inside QuizPolice. No accounts needed.'),
-   dict(clip='qp_c', head='Watch your class live', say="Then watch your class live, and download the results when you're done."),
+   dict(clip='qp_b', pill='Step 3', head='Students join on any phone', say='Step three: students join on any phone or laptop. No accounts needed.'),
+   dict(clip='qp_c', head='Watch your class live', say='Then watch your class live, and download the results.'),
    dict(cta=True, head='Free quiz monitoring', sub='No student accounts  ·  Link in bio', say='Try it free at Quiz Police dot Telar Labs dot net.'),
  ]),
  'drafttrail-1-did-ai-write-this': ('dt', [
    dict(clip='dt_b', head='Did AI write this essay?', say='Wondering if an essay was copied, or written by AI?'),
-   dict(clip='dt_a', speed_v=3.0, head='Students write in DraftTrail', say='With DraftTrail, students write in a page that records how the essay was written.'),
-   dict(clip='dt_b', head='Big pastes get flagged', say='Big pastes, and essays with almost no editing, get flagged for you to check.'),
+   dict(clip='dt_a', speed_v=3.0, head='Students write in DraftTrail', say='With DraftTrail, students write on a page that records how they write.'),
+   dict(clip='dt_b', head='Big pastes get flagged', say='Big pastes and essays with no editing get flagged for you to check.'),
    dict(clip='dt_c', start=4.5, head='Replay how it was written', say='You can even replay the whole essay, with the pasted parts highlighted.'),
    dict(cta=True, head='Free writing-process recorder', sub='Nothing is uploaded  ·  Link in bio', say="It's free, and nothing is uploaded. Draft Trail dot Telar Labs dot net."),
  ]),
  'drafttrail-2-prove-its-yours': ('dt', [
    dict(clip='dt_a', head='Students: show your work is really yours', say='Students, worried your essay will be mistaken for AI?'),
-   dict(clip='dt_a', start=6, speed_v=3.0, head='Write in DraftTrail', say='Write it in DraftTrail. It records your typing, pauses and corrections, right on your device.'),
-   dict(clip='dt_a', start=41, head='Hand in your DraftTrail file', say='When you finish, download your DraftTrail file, and hand it in with your essay.'),
+   dict(clip='dt_a', start=6, speed_v=3.0, head='Write in DraftTrail', say='Write it in DraftTrail. It records your typing and corrections, on your device.'),
+   dict(clip='dt_a', start=41, head='Hand in your DraftTrail file', say='Then hand in your DraftTrail file with your essay.'),
    dict(clip='dt_d', head='Your teacher sees your real process', say='Your teacher sees your real writing process. No flags. Just your work.'),
    dict(cta=True, head='Free writing-process recorder', sub='Nothing is uploaded  ·  Link in bio', say='Free at Draft Trail dot Telar Labs dot net.'),
  ]),

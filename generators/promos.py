@@ -38,20 +38,20 @@ def wav_len(p):
 SITE_SAY = 'clips dot Telar Labs dot net'
 LINES = {
  '1-quotes-verses': [
-   'Making quote or Bible verse videos? Keep them moving with free backgrounds.',
+   'Making quote or Bible verse videos? Keep them moving.',
    'Use a soft gradient for your daily quotes.',
    'A golden sky for Bible verses.',
    'Space and stars for fun facts.',
    'And a starry night for poems and song lyrics.',
-   f'Free loops, no sign-up, and okay for commercial use. Get them at {SITE_SAY}. Link in bio!'],
+   f'Free, no sign-up, okay for commercial use. {SITE_SAY}.'],
  '2-greetings': [
-   'Make a greeting video in one minute. Just add a name and a message.',
+   'Make a greeting video in one minute. Just add a name.',
    'Birthdays with balloons and confetti.',
    'Graduation congratulations.',
    'Fiesta greetings with colorful flags.',
    'Sweet anniversary messages.',
    'And Christmas greetings for the whole family.',
-   f'Free greeting backgrounds, no sign-up. Get them at {SITE_SAY}. Link in bio!'],
+   f'Free greeting backgrounds at {SITE_SAY}.'],
  '3-intros-outros': [
    'Need an intro, an outro, or a title card for your channel?',
    'Welcome your viewers back.',
@@ -65,7 +65,7 @@ LINES = {
    None, 'Falling snow for Christmas.',
    None, 'Floating hearts for love notes.',
    None, 'And glowing light frames.',
-   f'Works in CapCut, Canva and Premiere. Get them free at {SITE_SAY}.'],
+   f'For CapCut, Canva and Premiere. Free at {SITE_SAY}.'],
  '5-livestream': [
    'Streaming on Twitch, YouTube or Facebook Live?',
    'Show a starting soon screen while people join.',
@@ -137,7 +137,7 @@ def run(args):
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', *args], check=True)
 
 class Reel:
-    def __init__(self, name, speed=1.05):
+    def __init__(self, name, speed=1.1):
         self.name, self.dir, self.segs, self.speed = name, ROOT + name + '/', [], speed
         os.makedirs(self.dir, exist_ok=True); assets(self.dir)
 
@@ -145,7 +145,7 @@ class Reel:
         n = len(self.segs) + 1
         line = LINES[self.name][n - 1] if self.name in LINES else None
         wav = say(line, f'{self.dir}v{n}.wav', self.speed) if line else None
-        if wav: dur = round(max(dur, wav_len(wav) + 0.75), 2)
+        if wav: dur = round(max(min(dur, 2.2), wav_len(wav) + 0.5), 2)
         png = text_png(f'{self.dir}t{n}.png', items, shade, bottom_shade)
         tmp, out = f'{self.dir}s{n}.tmp.mp4', f'{self.dir}s{n}.mp4'
         ins = ['-stream_loop', '-1', '-ss', str(start), '-t', str(dur), '-i', src]
@@ -171,7 +171,7 @@ class Reel:
         run([*ins, '-filter_complex', fc, '-map', '[v]', '-r', str(FPS), '-t', str(dur),
              '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p', tmp])
         os.replace(tmp, out)
-        aud = (['-i', wav, '-filter_complex', f'[1:a]adelay=250|250,apad,atrim=0:{dur},aformat=sample_rates=48000:channel_layouts=stereo[a]', '-map', '0:v', '-map', '[a]']
+        aud = (['-i', wav, '-filter_complex', f'[1:a]adelay=200|200,apad,atrim=0:{dur},aformat=sample_rates=48000:channel_layouts=stereo[a]', '-map', '0:v', '-map', '[a]']
                if wav else ['-f', 'lavfi', '-t', str(dur), '-i', 'anullsrc=r=48000:cl=stereo', '-map', '0:v', '-map', '1:a'])
         run(['-i', out, *aud, '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-t', str(dur), tmp])
         os.replace(tmp, out); self.segs.append(out)
