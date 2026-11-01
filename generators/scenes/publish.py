@@ -5,7 +5,7 @@ FULL = '/home/claude/scenes/upload'
 os.makedirs(FULL, exist_ok=True)
 clips = [c for c in json.load(open(f'{REPO}/data/clips.json')) if c.get('illustrated')]
 for c in clips:
-    src = f'/home/claude/scenes{"2" if c.get("batch") == 2 else ""}/out/{c["src"]}.mp4'
+    src = f'/home/claude/scenes{c.get("batch") or ""}/out/{c["src"]}.mp4'
     dst = f'{FULL}/{c["file"]}'
     shutil.copy(src, dst)
     w, h = c['width'], c['height']
