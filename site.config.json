@@ -2,7 +2,7 @@
   "site_name": "Telar Clips",
   "studio": "Telar Labs",
   "tagline": "Free motion backgrounds, illustrated scenes and green screens for your videos",
-  "site_url": "https://telarclips.pages.dev",
+  "site_url": "https://clips.telarlabs.net",
   "media_base": "https://pub-7f7c1a0f07c44bf1af92ae3517f05cf4.r2.dev/",
   "contact_email": "telarlabs@gmail.com",
   "adsense_client": "",
@@ -17,12 +17,12 @@
   "family": [
     {
       "name": "Telar Clips",
-      "url": "https://telarclips.pages.dev",
+      "url": "https://clips.telarlabs.net",
       "blurb": "Free motion backgrounds and illustrated scenes for class videos, greetings and school programs."
     },
     {
       "name": "PizarraPad",
-      "url": "https://pizarrapad.pages.dev",
+      "url": "https://pizarrapad.telarlabs.net",
       "blurb": "Free online whiteboard, blackboard and greenboard for the classroom projector."
     },
     {
