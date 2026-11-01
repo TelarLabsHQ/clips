@@ -140,3 +140,8 @@ section .chips:not([role]){flex-wrap:wrap}
 .app-pizarrapad b,.family>a.app-pizarrapad{color:#5ED39A}.family-links a.app-pizarrapad{border-left:4px solid #5ED39A}
 .app-quizpolice b,.family>a.app-quizpolice{color:#7FA6FF}.family-links a.app-quizpolice{border-left:4px solid #7FA6FF}
 .app-drafttrail b,.family>a.app-drafttrail{color:#C49BFF}.family-links a.app-drafttrail{border-left:4px solid #C49BFF}
+.soon-card{display:grid;grid-template-columns:1.1fr 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg2)}
+.soon-card img{width:100%;height:100%;object-fit:cover;display:block}
+.soon-text{padding:26px 28px}.soon-text h2{margin:10px 0 8px}
+.soon-badge{display:inline-block;background:#f0d9ff;color:#3a1752;font-weight:700;font-size:13px;padding:4px 10px;border-radius:999px}
+@media(max-width:760px){.soon-card{grid-template-columns:1fr}.soon-text{padding:20px}}

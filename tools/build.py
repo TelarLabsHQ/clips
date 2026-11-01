@@ -318,6 +318,17 @@ def home():
   <p class="muted section-sub">{E(CAT_BLURB['Illustrated Scenes'])}</p>
   {grid([c for c in CLIPS if c.get('illustrated')][:8])}
 </section>
+<section class="wrap section">
+  <div class="soon-card">
+    <img src="/media/stories/lost-sheep.webp" alt="A shepherd boy hugging a lost lamb, from a Telar Stories sample" loading="lazy" width="800" height="437">
+    <div class="soon-text">
+      <span class="soon-badge">Coming soon</span>
+      <h2>Telar Stories</h2>
+      <p>Turn our illustrated scenes and characters into 2–3 minute narrated story videos for classrooms, Sunday school and organization promos. Pick a scene, add characters, type or record the story, and download your video.</p>
+      <p class="muted small">Free to start. Follow us for the launch.</p>
+    </div>
+  </div>
+</section>
 {ad("home_grid", "wrap ad")}
 <section class="wrap section" id="browse">
   <div class="section-head"><h2>Browse all clips</h2><span class="muted" id="count">{n} clips</span></div>
