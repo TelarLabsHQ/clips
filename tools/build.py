@@ -324,7 +324,7 @@ def home():
     <div class="soon-text">
       <span class="soon-badge">Coming soon</span>
       <h2>Telar Stories</h2>
-      <p>Turn our illustrated scenes and characters into 2–3 minute narrated story videos for classrooms, Sunday school and organization promos. Pick a scene, add characters, type or record the story, and download your video.</p>
+      <p>Turn our illustrated scenes and characters into 2–3 minute narrated story videos for classrooms, Sunday school and organization promos. Parents can also make simple custom stories for their children, like a bedtime story or a gentle lesson about sharing. Pick a scene, add characters, type the story and add a free AI voice or your own, then download your video.</p>
       <p class="muted small">Free to start. Follow us for the launch.</p>
     </div>
   </div>
