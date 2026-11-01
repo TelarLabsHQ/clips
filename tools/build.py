@@ -62,6 +62,14 @@ def kind(c):
     if c['category'] == 'Overlays' or 'overlay' in c['id']: return 'overlay'
     return 'background'
 
+import hashlib as _hl
+def mv(kind, cid):
+    """Cache-busting version for a preview/poster file (changes when the file changes)."""
+    ext = 'mp4' if kind == 'preview' else 'webp'
+    f = os.path.join(PUB, 'media', kind, f'{cid}.{ext}')
+    try: return _hl.md5(open(f, 'rb').read()).hexdigest()[:8]
+    except OSError: return '0'
+
 def vertical(c): return c['height'] >= c['width'] * 1.7
 
 def aspect(c):
@@ -169,8 +177,8 @@ def card(c):
     text = ' '.join([c['title'], c['category'], ' '.join(c['tags'])]).lower()
     cats = '|'.join(x for x in CATS if in_cat(c, x))
     return (f'<a class="card" href="/clip/{c["id"]}/" data-cats="{E(cats)}" data-text="{E(text)}">'
-            f'<div class="thumb{" thumb-v" if (vertical(c) or c.get("pad") == "#ffffff") else ""}"{thumb_bg(c)}><img src="/media/poster/{c["id"]}.webp" alt="{E(c["title"])} preview" loading="lazy" width="{c["width"] // 3}" height="{c["height"] // 3}">'
-            f'<video muted loop playsinline preload="none" data-src="/media/preview/{c["id"]}.mp4"></video>'
+            f'<div class="thumb{" thumb-v" if (vertical(c) or c.get("pad") == "#ffffff") else ""}"{thumb_bg(c)}><img src="/media/poster/{c["id"]}.webp?v={mv('poster', c['id'])}" alt="{E(c["title"])} preview" loading="lazy" width="{c["width"] // 3}" height="{c["height"] // 3}">'
+            f'<video muted loop playsinline preload="none" data-src="/media/preview/{c["id"]}.mp4?v={mv('preview', c['id'])}"></video>'
             f'<div class="badges">{badges(c)}</div></div>'
             f'<div class="card-meta"><h3>{E(c["title"])}</h3><span>{E(c["category"])}</span></div></a>')
 
@@ -227,7 +235,7 @@ def clip_page(c):
 <section class="wrap clip">
   <div class="clip-main">
     <div class="player{" player-v" if vertical(c) else (" player-s" if aspect(c) != "16:9" else "")}"{f' style="aspect-ratio:{c["width"]}/{c["height"]}"' if aspect(c) not in ("16:9", "9:16") else ""}>
-      <video src="/media/preview/{c["id"]}.mp4" poster="/media/poster/{c["id"]}.webp" autoplay muted loop playsinline controls></video>
+      <video src="/media/preview/{c["id"]}.mp4?v={mv('preview', c['id'])}" poster="/media/poster/{c["id"]}.webp?v={mv('poster', c['id'])}" autoplay muted loop playsinline controls></video>
     </div>
     <p class="preview-note muted">Preview is lower quality. The download is the full {res} file.</p>
     <h1>{E(c["title"])}</h1>
