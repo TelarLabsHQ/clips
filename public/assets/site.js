@@ -51,25 +51,12 @@
     }
   }
 
-  // Download: fetch as a file when the media host allows it (CORS); otherwise open the file
+  // Download: the media server sends the file as an attachment, so a normal link starts the download.
   document.querySelectorAll('[data-download]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      if (!window.fetch || !window.URL) return;
-      e.preventDefault();
+    a.addEventListener('click', function () {
       var label = a.lastChild, old = label.textContent;
-      label.textContent = ' Preparing download…';
-      fetch(a.href, { mode: 'cors' }).then(function (r) {
-        if (!r.ok) throw new Error(r.status);
-        return r.blob();
-      }).then(function (b) {
-        var u = URL.createObjectURL(b), t = document.createElement('a');
-        t.href = u; t.download = a.dataset.download; document.body.appendChild(t); t.click(); t.remove();
-        setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
-        label.textContent = ' Downloaded ✓';
-        setTimeout(function () { label.textContent = old; }, 3000);
-      }).catch(function () {
-        label.textContent = old; window.location.href = a.href;
-      });
+      label.textContent = ' Download starting…';
+      setTimeout(function () { label.textContent = old; }, 4000);
     });
   });
 })();
