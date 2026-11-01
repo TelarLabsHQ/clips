@@ -3,7 +3,7 @@
   "studio": "Telar Labs",
   "tagline": "Free motion backgrounds, illustrated scenes and green screens for your videos",
   "site_url": "https://clips.telarlabs.net",
-  "media_base": "https://pub-7f7c1a0f07c44bf1af92ae3517f05cf4.r2.dev/",
+  "media_base": "https://media.telarlabs.net/",
   "contact_email": "telarlabs@gmail.com",
   "adsense_client": "",
   "ad_slots": {
@@ -27,7 +27,7 @@
     },
     {
       "name": "QuizPolice",
-      "url": "https://quizpolice.pages.dev",
+      "url": "https://quizpolice.telarlabs.net",
       "blurb": "Free quiz monitor that shows you when students leave an online quiz."
     },
     {
