@@ -338,7 +338,7 @@ def home():
 </section>
 <section class="wrap section why">
   <div><h3>Really free</h3><p>No account, no watermark, no credit required. Use them for personal and commercial videos.</p></div>
-  <div><h3>Made to loop</h3><p>Every background and illustrated scene is a seamless 8-second loop, so you can stretch it under a long greeting or stream.</p></div>
+  <div><h3>Made to loop</h3><p>Nearly every clip is a seamless loop of 5 to 10 seconds, so you can repeat it under a long greeting, lesson or stream without a visible jump.</p></div>
   <div><h3>For every culture</h3><p>Lunar New Year, Chuseok, sakura season, Halloween, Christmas, the Fourth of July and more, with new clips before every major holiday.</p></div>
 </section>'''
     body += family_promo('For teachers: free classroom tools')
@@ -437,7 +437,7 @@ def static_pages():
 <h2 id="backgrounds">1. Loop backgrounds</h2>
 <p>Bokeh lights, gradients, lanterns and starry skies are full backgrounds. Put them on the bottom layer and add your text, photo or logo on top.</p>
 <ol><li>Start a new project and import the clip.</li><li>Put it on the first (lowest) track.</li><li>Add text on top. Light text with a soft shadow reads best on dark backgrounds.</li>
-<li>Need it longer than 8 seconds? Copy and paste the clip end to end. Each one is a seamless loop, so you won't see the cut.</li></ol>
+<li>Need it longer? Copy and paste the clip end to end. Clips marked <b>Loop</b> repeat seamlessly, so you won't see the cut.</li></ol>
 <h2 id="green">2. Green screen clips</h2>
 <p>Green screen clips have a solid chroma green background (#00B140). You remove the green so only the snow, confetti, balloons or frame stays on top of your own video.</p>
 <h3>CapCut (free)</h3>
