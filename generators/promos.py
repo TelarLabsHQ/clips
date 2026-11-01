@@ -1,9 +1,9 @@
-"""Seven 9:16 promo reels for Telar Clips, one per creator use case.
+"""Seven 9:16 promo reels for Telar Clips, one per creator use case, with AI narration (Kokoro).
 Usage: python3 promos.py [site-text] [video-number ...]"""
 import subprocess, os, sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-SITE = sys.argv[1] if len(sys.argv) > 1 else 'telarclips.pages.dev'
+SITE = sys.argv[1] if len(sys.argv) > 1 else 'clips.telarlabs.net'
 ONLY = [int(a) for a in sys.argv[2:]]
 C = '/home/claude/clips/out/'
 S = '/home/claude/scenes2/out/'
@@ -19,6 +19,73 @@ FONTS = {
     'bebas': '/home/claude/fonts/Bebas.woff',
 }
 WHITE, CREAM, GOLD, INK = (255, 255, 255), (255, 238, 205), (255, 196, 92), (40, 22, 8)
+
+_K = None
+def say(text, path, speed=1.05, voice='af_heart'):
+    """Narrate with Kokoro (Apache-2.0). 'Telar' is read teh-LAR."""
+    global _K
+    import soundfile as sf
+    from kokoro_onnx import Kokoro
+    if _K is None: _K = Kokoro('/tmp/kok/kokoro-v1.0.onnx', '/tmp/kok/voices-v1.0.bin')
+    ph = _K.tokenizer.phonemize(text, 'en-us').replace('tˈɛlɚ', 'tɛlˈɑːɹ')
+    a, sr = _K.create(ph, voice=voice, speed=speed, is_phonemes=True)
+    sf.write(path, a, sr); return path
+
+def wav_len(p):
+    import soundfile as sf
+    i = sf.info(p); return i.frames / i.samplerate
+
+SITE_SAY = 'clips dot Telar Labs dot net'
+LINES = {
+ '1-quotes-verses': [
+   'Making quote or Bible verse videos? Keep them moving with free backgrounds.',
+   'Use a soft gradient for your daily quotes.',
+   'A golden sky for Bible verses.',
+   'Space and stars for fun facts.',
+   'And a starry night for poems and song lyrics.',
+   f'Free loops, no sign-up, and okay for commercial use. Get them at {SITE_SAY}. Link in bio!'],
+ '2-greetings': [
+   'Make a greeting video in one minute. Just add a name and a message.',
+   'Birthdays with balloons and confetti.',
+   'Graduation congratulations.',
+   'Fiesta greetings with colorful flags.',
+   'Sweet anniversary messages.',
+   'And Christmas greetings for the whole family.',
+   f'Free greeting backgrounds, no sign-up. Get them at {SITE_SAY}. Link in bio!'],
+ '3-intros-outros': [
+   'Need an intro, an outro, or a title card for your channel?',
+   'Welcome your viewers back.',
+   'Break your video into parts.',
+   'Show your episode titles.',
+   'And end with a thank you and a subscribe button.',
+   f'Free intro and outro backgrounds at {SITE_SAY}. Link in bio!'],
+ '4-green-screen': [
+   'Add green screen effects over any video, for free.',
+   None, 'Confetti for celebrations.',
+   None, 'Falling snow for Christmas.',
+   None, 'Floating hearts for love notes.',
+   None, 'And glowing light frames.',
+   f'Works in CapCut, Canva and Premiere. Get them free at {SITE_SAY}.'],
+ '5-livestream': [
+   'Streaming on Twitch, YouTube or Facebook Live?',
+   'Show a starting soon screen while people join.',
+   'A be right back screen for your breaks.',
+   'And a thank you screen at the end.',
+   f'Free stream screens and loops at {SITE_SAY}. Link in bio!'],
+ '6-lofi-ambient': [
+   'Making lofi, study or sleep videos? These calm scenes loop forever.',
+   'A rainy afternoon.',
+   'A quiet night.',
+   'A calm spring morning.',
+   f'Seamless loops you can repeat for hours. Free at {SITE_SAY}.'],
+ '7-church-school-events': [
+   'Free backgrounds for church, school and events.',
+   'Worship song lyrics on soft, heavenly light.',
+   'Graduation programs.',
+   'Christmas programs on the LED wall.',
+   'Tributes and slideshows.',
+   f'Free backgrounds for your next program at {SITE_SAY}. Link in bio!'],
+}
 
 def T(t, y, size, font='B', color=WHITE, kind='text', **kw):
     return dict(t=t, y=y, size=size, font=font, color=color, kind=kind, **kw)
@@ -70,17 +137,20 @@ def run(args):
     subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', *args], check=True)
 
 class Reel:
-    def __init__(self, name):
-        self.name, self.dir, self.segs = name, ROOT + name + '/', []
+    def __init__(self, name, speed=1.05):
+        self.name, self.dir, self.segs, self.speed = name, ROOT + name + '/', [], speed
         os.makedirs(self.dir, exist_ok=True); assets(self.dir)
 
     def seg(self, src, dur, items, mode='full', start=0, cx=None, key_bg=None, bg_cx=None, card_y=640, shade=0, bottom_shade=0):
         n = len(self.segs) + 1
+        line = LINES[self.name][n - 1] if self.name in LINES else None
+        wav = say(line, f'{self.dir}v{n}.wav', self.speed) if line else None
+        if wav: dur = round(max(dur, wav_len(wav) + 0.75), 2)
         png = text_png(f'{self.dir}t{n}.png', items, shade, bottom_shade)
         tmp, out = f'{self.dir}s{n}.tmp.mp4', f'{self.dir}s{n}.mp4'
-        ins = ['-ss', str(start), '-t', str(dur), '-i', src]
+        ins = ['-stream_loop', '-1', '-ss', str(start), '-t', str(dur), '-i', src]
         if key_bg:
-            ins += ['-t', str(dur), '-i', key_bg]
+            ins += ['-stream_loop', '-1', '-t', str(dur), '-i', key_bg]
             fg = 'null' if src.endswith('9x16.mp4') else vcrop(cx)
             fc = (f'[1:v]fps={FPS},{vcrop(bg_cx)}[bg];[0:v]fps={FPS},{fg},chromakey=0x00B140:0.13:0.06,despill=type=green[fg];'
                   f'[bg][fg]overlay=shortest=1[v0];')
@@ -100,6 +170,10 @@ class Reel:
                f"[v0][t]overlay=x=0:y='max(0,40-120*t)',trim=duration={dur},format=yuv420p[v]")
         run([*ins, '-filter_complex', fc, '-map', '[v]', '-r', str(FPS), '-t', str(dur),
              '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-pix_fmt', 'yuv420p', tmp])
+        os.replace(tmp, out)
+        aud = (['-i', wav, '-filter_complex', f'[1:a]adelay=250|250,apad,atrim=0:{dur},aformat=sample_rates=48000:channel_layouts=stereo[a]', '-map', '0:v', '-map', '[a]']
+               if wav else ['-f', 'lavfi', '-t', str(dur), '-i', 'anullsrc=r=48000:cl=stereo', '-map', '0:v', '-map', '1:a'])
+        run(['-i', out, *aud, '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-t', str(dur), tmp])
         os.replace(tmp, out); self.segs.append(out)
 
     def cta(self, line, sub='No sign-up  ·  OK for commercial use'):
@@ -110,8 +184,8 @@ class Reel:
     def save(self):
         lst = self.dir + 'list.txt'
         open(lst, 'w').writelines(f"file '{s}'\n" for s in self.segs)
-        final = f'/home/claude/clips/promo-{self.name}.mp4'
-        run(['-f', 'concat', '-safe', '0', '-i', lst, '-c', 'copy', '-movflags', '+faststart', final + '.tmp.mp4'])
+        final = f'/home/claude/clips/promo-{self.name}-voice.mp4'
+        run(['-f', 'concat', '-safe', '0', '-i', lst, '-c:v', 'copy', '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11', '-c:a', 'aac', '-b:a', '160k', '-ar', '48000', '-movflags', '+faststart', final + '.tmp.mp4'])
         os.replace(final + '.tmp.mp4', final); print('done', final, flush=True)
 
 def hook(r, src, title, sub, **kw):
@@ -194,7 +268,7 @@ def v5():
 
 # ------------------------------------------------------------------ 6. lofi & ambient
 def v6():
-    r = Reel('6-lofi-ambient')
+    r = Reel('6-lofi-ambient', speed=0.95)
     hook(r, S + 'alpine-christmas.mp4', 'for lofi, study\n& sleep videos', 'Calm scenes that loop forever', cx=1100)
     for src, label, title, cx in [(S + 'umbrella-kids.mp4', 'Rainy day', 'rainy afternoon\nstudy session', 1300),
                                   (S + 'ramadan-town.mp4', 'Night', 'quiet night\nsleep & focus', 1200),
