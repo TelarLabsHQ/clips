@@ -2,7 +2,7 @@
 (no green fringe on glows), despill, largest-subject cleanup."""
 import sys, numpy as np, cv2
 from PIL import Image
-def cut(src, dst, keep_frac=0.02):
+def cut(src, dst, keep_frac=0.02, edge_despill=False):
     im = cv2.imread(src).astype(np.float32); h, w = im.shape[:2]
     b, g, r = im[..., 0], im[..., 1], im[..., 2]
     border = np.concatenate([im[:6].reshape(-1, 3), im[-6:].reshape(-1, 3), im[:, :6].reshape(-1, 3), im[:, -6:].reshape(-1, 3)])
@@ -22,6 +22,12 @@ def cut(src, dst, keep_frac=0.02):
     F = np.clip(F, 0, 255)
     fb, fg, fr = F[..., 0], F[..., 1], F[..., 2]
     fg = np.minimum(fg, np.maximum(fr, fb) * 1.03 + 4)   # despill
+    if edge_despill:  # strong despill only on the outline (hair strands), so green things inside the subject stay green
+        edge = cv2.dilate((a < 0.9).astype(np.uint8), np.ones((7, 7), np.uint8)).astype(bool) & (a > 0.01)
+        fg = np.where(edge, np.minimum(fg, (fr + fb) / 2 + 12), fg)
+        # yellow-green tint inside hair (screen showing between strands): pull to yellow-brown; dark true greens are untouched
+        spill = (fg > fr) & (fr > 0.68 * fg) & (fg > fb)
+        fg = np.where(spill, fr, fg)
     rgba = np.dstack([fr, fg, fb, a * 255]).clip(0, 255).astype(np.uint8)
     ys, xs = np.where(a > 0.05); pad = 8
     rgba = rgba[max(0, ys.min() - pad):ys.max() + pad, max(0, xs.min() - pad):xs.max() + pad]
