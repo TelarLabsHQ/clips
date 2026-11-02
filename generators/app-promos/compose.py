@@ -12,6 +12,7 @@ FB = '/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf'; FM = '/usr/share
 APPS = {
   'pp': dict(name='PizarraPad', url='pizarrapad.telarlabs.net', icon='icon-pizarrapad.png', c=(94, 211, 154), bg1=(10, 34, 24), bg2=(22, 70, 48), tag='Free online whiteboard'),
   'qp': dict(name='QuizPolice', url='quizpolice.telarlabs.net', icon='icon-quizpolice.png', c=(127, 166, 255), bg1=(12, 18, 40), bg2=(30, 46, 98), tag='Free quiz monitoring'),
+  'ts': dict(name='Telar Stories', url='telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 143, 163), bg1=(30, 14, 28), bg2=(78, 32, 64), tag='Narrated story videos for kids'),
   'dt': dict(name='DraftTrail', url='drafttrail.telarlabs.net', icon='icon-drafttrail.png', c=(196, 155, 255), bg1=(22, 14, 40), bg2=(56, 34, 96), tag='Free writing-process recorder'),
 }
 SAY_FIX = [('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
@@ -176,6 +177,16 @@ VIDEOS = {
    dict(cta=True, head='Free writing-process recorder', sub='Nothing is uploaded  ·  Link in bio', say='Free at Draft Trail dot Telar Labs dot net.'),
  ]),
 }
+VIDEOS['telar-stories-trailer'] = ('ts', [
+   dict(clip='st_mira', pill='Coming soon', head='Make your own story videos', say='Coming soon from Telar Labs: Telar Stories.'),
+   dict(clip='ts_all', start=3.7, speed_v=1.7, head='Pick a scene and characters', say='Pick a scene, add characters, and move them anywhere.'),
+   dict(clip='ts_all', start=11.9, speed_v=1.25, head='Type your story. A free AI voice reads it.', say='Type your story, and a friendly AI voice reads it aloud.'),
+   dict(clip='st_sheep', start=0.5, head='Bible stories, lessons & bedtime tales', say='Perfect for Sunday school, classrooms and bedtime.'),
+   dict(clip='ts_all', start=45.9, head='Download your video', say='Then download your video, and share it.'),
+   dict(cta=True, head='Coming soon', sub='Free  ·  Follow for updates',
+        say="Telar Stories. Free, and coming soon. Follow us so you don't miss it!"),
+])
+
 if __name__ == '__main__':
     for k, (app, segs) in VIDEOS.items():
         if len(sys.argv) < 2 or any(x in k for x in sys.argv[1:]): build(k, app, segs)
