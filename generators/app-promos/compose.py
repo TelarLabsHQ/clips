@@ -56,6 +56,7 @@ def shadow_text(im, xy, text, font, fill, anchor='ma'):
 
 def layout(kind, sw, sh):
     if kind == 'land': cw = 1000; ch = round(cw * sh / sw); return (W - cw) // 2, 700, cw, ch, 30
+    if kind == 'big': cw = 1000; ch = round(cw * sh / sw); return (W - cw) // 2, 560, cw, ch, 30
     if kind == 'tall': cw = 880; ch = round(cw * sh / sw); return (W - cw) // 2, 470, cw, ch, 26
     ch = 1150; cw = round(ch * sw / sh); return (W - cw) // 2, 500, cw, ch, 44   # phone
 
@@ -79,10 +80,10 @@ def frame_png(a, s, kind, box, path):
     if kind == 'phone':
         d = ImageDraw.Draw(im); d.rounded_rectangle([x - pad, y - pad, x + cw + pad, y + ch + pad], radius=r + pad, fill=(18, 18, 22))
     # caption under landscape cards
-    if kind == 'land' and s.get('say'):
-        fc = ImageFont.truetype(FM, 44)
-        for i, l in enumerate(wrap_lines(d, s['say'], fc, 900)[:4]):
-            shadow_text(im, (W / 2, y + ch + 80 + i * 60), l, fc, (235, 235, 245))
+    if kind in ('land', 'big') and s.get('say'):
+        fc = ImageFont.truetype(FM, 50 if kind == 'big' else 44)
+        for i, l in enumerate(wrap_lines(d, s['say'], fc, 940)[:4]):
+            shadow_text(im, (W / 2, y + ch + 70 + i * 66), l, fc, (235, 235, 245))
     im.save(path)
     m = Image.new('L', (cw, ch), 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, cw - 1, ch - 1], radius=r, fill=255); m.save(path + '.mask.png')
 
@@ -112,9 +113,12 @@ def segment(a, s, n, tag):
              '-c:v', 'libx264', '-crf', '19', '-preset', 'medium', '-c:a', 'aac', '-b:a', '160k', '-t', str(dur), out])
         return out
     src = RAW + s['clip'] + '.mp4'; sw, sh = dims(src); kind = s.get('kind') or ('phone' if sw < 500 else 'tall' if sh > sw else 'land')
+    crop = ''
+    if s.get('crop'):  # e.g. 1.2 = crop the landscape clip to a 6:5 frame, centred (or at cx)
+        cw0 = round(sh * s['crop']); cx0 = s.get('cx', (sw - cw0) // 2); crop = f'crop={cw0}:{sh}:{cx0}:0,'; sw = cw0; kind = 'big'
     box = layout(kind, sw, sh); x, y, cw, ch, r = box; frame_png(a, s, kind, box, png)
     sp = s.get('speed_v', 1.0); st = s.get('start', 0)
-    fc = (f"[1:v]setpts=(PTS-STARTPTS)/{sp},fps={FPS},scale={cw}:{ch}:flags=lanczos,tpad=stop_mode=clone:stop_duration=60,trim=duration={dur},format=rgba[c];"
+    fc = (f"[1:v]setpts=(PTS-STARTPTS)/{sp},fps={FPS},{crop}scale={cw}:{ch}:flags=lanczos,tpad=stop_mode=clone:stop_duration=60,trim=duration={dur},format=rgba[c];"
           f"[2:v]format=gray[m];[c][m]alphamerge[cr];[0:v][cr]overlay={x}:{y}:shortest=1,format=yuv420p[v];" + afl.replace('[A]', '[3:a]'))
     run(['-loop', '1', '-t', str(dur), '-i', png, '-ss', str(st), '-i', src, '-loop', '1', '-t', str(dur), '-i', png + '.mask.png', *aud,
          '-filter_complex', fc, '-map', '[v]', '-map', '[a]', '-r', str(FPS), '-c:v', 'libx264', '-crf', '19', '-preset', 'medium',
@@ -185,6 +189,15 @@ VIDEOS['telar-stories-trailer'] = ('ts', [
    dict(clip='ts_all', start=45.9, head='Download your video', say='Then download your video, and share it.'),
    dict(cta=True, head='Coming soon', sub='Free  ·  Follow for updates',
         say="Telar Stories. Free, and coming soon. Follow us so you don't miss it!"),
+])
+
+VIDEOS['telar-stories-teaser-2'] = ('ts', [
+   dict(clip='st2_star', crop=1.2, pill='Coming soon', head='Story videos for kids, ready to play', say='Story time is coming to Telar Labs!'),
+   dict(clip='st2_angel', crop=1.2, head='Bible stories', say='Bible stories, like The First Christmas.'),
+   dict(clip='st2_gift', crop=1.2, cx=170, head='Stories about kindness', say='Kindness stories, like The Christmas Gift.'),
+   dict(clip='st2_sheep', crop=1.2, head='Lessons kids remember', say='And lessons kids remember, like The Lost Sheep.'),
+   dict(clip='st2_mira', crop=1.2, cx=360, head='Every story has a voice', say='Every story comes with a friendly voice. Just press play!'),
+   dict(cta=True, head='Coming soon', sub='Free  ·  Follow for updates', say="Telar Stories. Free, and coming soon. Follow us so you don't miss it!"),
 ])
 
 if __name__ == '__main__':
