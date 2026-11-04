@@ -2,7 +2,9 @@
 """Builds the static site into public/ from data/clips.json and site.config.json.
 Run:  python3 tools/build.py
 No packages needed (standard library only)."""
-import json, os, re, html, shutil
+import json, os, re, html, shutil, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from guides import GUIDES
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -132,7 +134,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
 <header class="top">
   <div class="wrap top-in">
     <a class="logo" href="/">{LOGO}<span>{E(NAME)}</span></a>
-    <nav class="nav">{nav}<a href="/how-to-use/">How to use</a></nav>
+    <nav class="nav">{nav}<a href="/guides/">Guides</a><a href="/how-to-use/">How to use</a></nav>
     <a class="btn btn-sm" href="/#browse">Browse all</a>
   </div>
 </header>
@@ -147,7 +149,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
     </div>
     <div class="foot-cols">
       <div><h4>Browse</h4>{''.join(f'<a href="/category/{slug(c)}/">{E(c)}</a>' for c in CATS[:5])}</div>
-      <div><h4>More</h4>{''.join(f'<a href="/category/{slug(c)}/">{E(c)}</a>' for c in CATS[5:])}<a href="/how-to-use/">How to use</a></div>
+      <div><h4>More</h4>{''.join(f'<a href="/category/{slug(c)}/">{E(c)}</a>' for c in CATS[5:])}<a href="/how-to-use/">How to use</a><a href="/guides/">Guides</a></div>
       <div><h4>{E(CFG["studio"])}</h4><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
     </div>
   </div>
@@ -341,6 +343,7 @@ def home():
   <div><h3>Made to loop</h3><p>Nearly every clip is a seamless loop of 5 to 10 seconds, so you can repeat it under a long greeting, lesson or stream without a visible jump.</p></div>
   <div><h3>For every culture</h3><p>Lunar New Year, Chuseok, sakura season, Halloween, Christmas, the Fourth of July and more, with new clips before every major holiday.</p></div>
 </section>'''
+    body += guides_row()
     body += family_promo('For teachers: free classroom tools')
     page('/', f'{NAME} – Free Motion Backgrounds, Illustrated Scenes & Green Screens',
          f'Download {n} free HD motion backgrounds, animated illustrated scenes, overlays and green screen clips: Christmas, Lunar New Year, Halloween, sakura, bokeh, confetti, snow and more. No sign-up, OK for commercial use.', body)
@@ -362,6 +365,35 @@ def category(cat):
 
 def prose(path, title, desc, inner):
     page(path, title, desc, f'<div class="wrap crumbs"><a href="/">Home</a> <span>/</span> {E(title)}</div><article class="wrap prose">{inner}</article>')
+
+# ---------------------------------------------------------------- guides
+def guide_card(g):
+    return (f'<a class="gcard" href="/guides/{g["slug"]}/"><span class="gmeta">Guide · {g["minutes"]} min read</span>'
+            f'<h3>{E(g["title"])}</h3><p>{E(g["desc"])}</p><span class="gmore">Read the guide →</span></a>')
+def guides_row():
+    return f'<section class="wrap section"><div class="sec-h"><h2>Guides</h2><a href="/guides/">All guides →</a></div><div class="gcards">{"".join(guide_card(g) for g in GUIDES[:3])}</div></section>'
+def guides_pages():
+    byid = {c['id']: c for c in CLIPS}
+    page('/guides/', 'Guides: How to Use Free Video Backgrounds',
+         'Step-by-step guides for green screens in CapCut, birthday greetings, Bible verse videos, church LED walls, livestream screens and free video licences.',
+         f'<div class="wrap crumbs"><a href="/">Home</a> <span>/</span> Guides</div><section class="wrap section"><h1>Guides</h1>'
+         f'<p class="lead">Practical, step-by-step guides for making greetings, verse videos, church screens and livestreams with free motion backgrounds.</p>'
+         f'<div class="gcards">{"".join(guide_card(g) for g in GUIDES)}</div></section>')
+    for i, g in enumerate(GUIDES):
+        clips = [byid[c] for c in g['clips'] if c in byid]
+        missing = [c for c in g['clips'] if c not in byid]
+        if missing: raise SystemExit(f'guide {g["slug"]}: unknown clips {missing}')
+        others = [x for x in GUIDES if x is not g][:3]
+        ld = json.dumps({'@context': 'https://schema.org', '@type': 'Article', 'headline': g['title'], 'description': g['desc'],
+                         'author': {'@type': 'Organization', 'name': CFG['studio']}, 'publisher': {'@type': 'Organization', 'name': CFG['studio']},
+                         'datePublished': CFG.get('guides_date', '2026-11-03'), 'mainEntityOfPage': f'{URL}/guides/{g["slug"]}/'})
+        body = (f'<div class="wrap crumbs"><a href="/">Home</a> <span>/</span> <a href="/guides/">Guides</a> <span>/</span> {E(g["title"])}</div>'
+                f'<article class="wrap prose"><p class="gmeta">Guide · {g["minutes"]} min read · by {E(CFG["studio"])}</p><h1>{E(g["title"])}</h1>{g["html"]}</article>'
+                f'{ad("guide")}'
+                f'<section class="wrap section"><h2>Free clips for this guide</h2>{grid(clips)}</section>'
+                f'<section class="wrap section"><h2>More guides</h2><div class="gcards">{"".join(guide_card(x) for x in others)}</div></section>')
+        page(f'/guides/{g["slug"]}/', g['title'], g['desc'], body, extra_head=f'<script type="application/ld+json">{ld}</script>',
+             og_image=f'{URL}/media/poster/{clips[0]["id"]}.webp' if clips else None)
 
 def static_pages():
     st = CFG['studio']; mail = CFG['contact_email']
@@ -461,12 +493,12 @@ def static_pages():
 <ul><li>Keep important text away from the bottom and right edges on TikTok and Reels, where the buttons and captions sit.</li>
 <li>Match the mood: gold bokeh for formal greetings, confetti for winners and birthdays, soft gradients for quotes.</li>
 <li>Exports look best at 1080p and 30 fps, the same as our clips.</li></ul>
-<p>Still stuck? <a href="/contact/">Send us a message</a>.</p>''')
+<p>Want step-by-step projects? See our <a href="/guides/">guides</a>, like <a href="/guides/green-screen-capcut/">green screens in CapCut</a> and <a href="/guides/birthday-greeting-video/">a birthday greeting in 1 minute</a>. Still stuck? <a href="/contact/">Send us a message</a>.</p>''')
 
 def extras():
     os.makedirs(os.path.join(PUB, 'assets'), exist_ok=True)
     open(os.path.join(PUB, 'favicon.svg'), 'w').write(LOGO.replace('class="logo-mark" ', 'xmlns="http://www.w3.org/2000/svg" ').replace('var(--accent)', '#ffb547'))
-    urls = ['/', '/how-to-use/', '/about/', '/license/', '/privacy/', '/contact/'] + [f'/category/{slug(c)}/' for c in CATS] + [f'/clip/{c["id"]}/' for c in CLIPS]
+    urls = ['/', '/how-to-use/', '/guides/'] + [f'/guides/{g["slug"]}/' for g in GUIDES] + ['/about/', '/license/', '/privacy/', '/contact/'] + [f'/category/{slug(c)}/' for c in CATS] + [f'/clip/{c["id"]}/' for c in CLIPS]
     open(os.path.join(PUB, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
         ''.join(f'<url><loc>{URL}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     open(os.path.join(PUB, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {URL}/sitemap.xml\n')
@@ -480,5 +512,5 @@ def extras():
 if __name__ == '__main__':
     for d in ('clip', 'category', 'about', 'contact', 'license', 'privacy', 'how-to-use'):
         shutil.rmtree(os.path.join(PUB, d), ignore_errors=True)
-    home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); extras()
+    home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); extras()
     print(f'Built {len(CLIPS)} clip pages, {len(CATS)} categories into public/')
