@@ -209,6 +209,15 @@ VIDEOS['telar-stories-teaser-3'] = ('ts', [
    dict(cta=True, head='Coming soon', sub='Free  ·  Follow for updates', say="Telar Stories. Free, and coming soon. Follow us so you don't miss it!"),
 ])
 
+VIDEOS['drafttrail-3-live-in-class'] = ('dt', [
+   dict(clip='dt3_setup', pill='New', head='Live in-class writing', say='Essays written in class? Now you can watch the writing live.'),
+   dict(clip='dt3_student', head='Students join with a code', say='Students join with a code and write in DraftTrail.'),
+   dict(clip='dt3_dashc', start=2.8, head='See exits and pastes as they happen', say='You see who leaves the page, and who pastes text, as it happens.'),
+   dict(clip='dt3_timeup', start=3.0, head="Time's up? Essays are handed in", say="When time's up, every essay is handed in automatically."),
+   dict(clip='dt3_review', start=1.2, head='Replay how each was written', say='Then replay how each one was written.'),
+   dict(cta=True, head='Free writing-process recorder', sub='Homework or live in class  ·  Link in bio', say='Free at Draft Trail dot Telar Labs dot net.'),
+])
+
 if __name__ == '__main__':
     for k, (app, segs) in VIDEOS.items():
         if len(sys.argv) < 2 or any(x in k for x in sys.argv[1:]): build(k, app, segs)
