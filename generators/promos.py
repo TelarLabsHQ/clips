@@ -27,7 +27,7 @@ def say(text, path, speed=1.05, voice='af_heart'):
     import soundfile as sf
     from kokoro_onnx import Kokoro
     if _K is None: _K = Kokoro('/tmp/kok/kokoro-v1.0.onnx', '/tmp/kok/voices-v1.0.bin')
-    ph = _K.tokenizer.phonemize(text, 'en-us').replace('tˈɛlɚ', 'tɛlˈɑːɹ')
+    ph = _K.tokenizer.phonemize(text, 'en-us').replace('tˈɛlɚ', 'tɛlˈɑːɹ').replace('ʔn', 'tən')
     a, sr = _K.create(ph, voice=voice, speed=speed, is_phonemes=True)
     sf.write(path, a, sr); return path
 

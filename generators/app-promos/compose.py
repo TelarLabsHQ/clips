@@ -15,7 +15,7 @@ APPS = {
   'ts': dict(name='Telar Stories', url='telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 143, 163), bg1=(30, 14, 28), bg2=(78, 32, 64), tag='Narrated story videos for kids'),
   'dt': dict(name='DraftTrail', url='drafttrail.telarlabs.net', icon='icon-drafttrail.png', c=(196, 155, 255), bg1=(22, 14, 40), bg2=(56, 34, 96), tag='Free writing-process recorder'),
 }
-SAY_FIX = [('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
+SAY_FIX = [('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə'), ('ɹˈɪʔn', 'ɹˈɪtən'), ('ʔn', 'tən')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
 _K = None
 def say(text, path, speed=1.1):
     global _K
