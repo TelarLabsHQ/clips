@@ -200,6 +200,15 @@ VIDEOS['telar-stories-teaser-2'] = ('ts', [
    dict(cta=True, head='Coming soon', sub='Free  ·  Follow for updates', say="Telar Stories. Free, and coming soon. Follow us so you don't miss it!"),
 ])
 
+VIDEOS['telar-stories-teaser-3'] = ('ts', [
+   dict(clip='st3_animals', crop=1.5, pill='New stories', head='Two by two, into the ark!', say='New stories are coming to Telar Stories!'),
+   dict(clip='st3_dove', crop=1.2, cx=0, head="Noah's Ark", say="Like Noah's Ark, with animals, a dove, and a rainbow promise."),
+   dict(clip='st3_pierogi', crop=1.2, cx=0, head='Friends Around the World', say='And Friends Around the World, where kids say hello in their own language.'),
+   dict(clip='st3_lunch', crop=1.2, head='Kindness, sharing & cultures', say='Stories about kindness, sharing, and new friends.'),
+   dict(clip='st3_hands', crop=1.2, head='Ready to play, with a friendly voice', say='Each one is ready to play, with a friendly voice.'),
+   dict(cta=True, head='Coming soon', sub='Free  ·  Follow for updates', say="Telar Stories. Free, and coming soon. Follow us so you don't miss it!"),
+])
+
 if __name__ == '__main__':
     for k, (app, segs) in VIDEOS.items():
         if len(sys.argv) < 2 or any(x in k for x in sys.argv[1:]): build(k, app, segs)
