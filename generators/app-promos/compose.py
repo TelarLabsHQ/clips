@@ -13,6 +13,7 @@ APPS = {
   'pp': dict(name='PizarraPad', url='pizarrapad.telarlabs.net', icon='icon-pizarrapad.png', c=(94, 211, 154), bg1=(10, 34, 24), bg2=(22, 70, 48), tag='Free online whiteboard'),
   'qp': dict(name='QuizPolice', url='quizpolice.telarlabs.net', icon='icon-quizpolice.png', c=(127, 166, 255), bg1=(12, 18, 40), bg2=(30, 46, 98), tag='Free quiz monitoring'),
   'ts': dict(name='Telar Stories', url='telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 143, 163), bg1=(30, 14, 28), bg2=(78, 32, 64), tag='Narrated story videos for kids'),
+  'tc': dict(name='Telar Clips', url='clips.telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 181, 71), bg1=(24, 16, 30), bg2=(70, 40, 60), tag='Free motion backgrounds'),
   'dt': dict(name='DraftTrail', url='drafttrail.telarlabs.net', icon='icon-drafttrail.png', c=(196, 155, 255), bg1=(22, 14, 40), bg2=(56, 34, 96), tag='Free writing-process recorder'),
 }
 SAY_FIX = [('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə'), ('ɹˈɪʔn', 'ɹˈɪtən'), ('ʔn', 'tən')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
@@ -216,6 +217,15 @@ VIDEOS['drafttrail-3-live-in-class'] = ('dt', [
    dict(clip='dt3_timeup', start=3.0, head="Time's up? Essays are handed in", say="When time's up, every essay is handed in automatically."),
    dict(clip='dt3_review', start=1.2, head='Replay how each was written', say='Then replay how each one was written.'),
    dict(cta=True, head='Free writing-process recorder', sub='Homework or live in class  ·  Link in bio', say='Free at Draft Trail dot Telar Labs dot net.'),
+])
+
+VIDEOS['telar-clips-how-to'] = ('tc', [
+   dict(clip='tc_home', pill='Free', head='Moving backgrounds in 3 easy steps', say="Need a moving background for your video? Here's how, for free."),
+   dict(clip='tc_pick', pill='Step 1', head='Pick a clip', say='Step one: pick a clip on Telar Clips.'),
+   dict(clip='tc_dl', pill='Step 2', head='Download it free', say='Step two: download it. No sign-up needed.'),
+   dict(clip='ex_bday', kind='phone', pill='Step 3', head='Add your text', say='Step three: add your text in CapCut or Canva.'),
+   dict(clip='ex_xmas', kind='phone', head='Or use a green screen effect', say='Or add a green screen effect over your own video.'),
+   dict(cta=True, head='Free backgrounds & green screens', sub='No sign-up  ·  Link in bio', say='Free at clips dot Telar Labs dot net.'),
 ])
 
 if __name__ == '__main__':
