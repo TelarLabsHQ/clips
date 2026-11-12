@@ -11,12 +11,12 @@ const at=(d,h,m=0)=>Date.parse(`${d}T${String(h).padStart(2,'0')}:${String(m).pa
     venues:[{name:'Bayview Convention Center',address:'1 Harbor Drive, Bayview'}],cover:rd('conf'),pay_hours:48,
     description:'Two days of talks and hands-on sessions on teaching, technology and wellbeing. Includes lunch, snacks and a certificate of attendance.',
     types:[{name:'Early bird',price:25,qty:60,max_per:5},{name:'Regular',price:40,qty:300,max_per:5},{name:'Student',price:15,qty:80,max_per:2}],
-    questions:[{label:'School or organization',type:'choice',required:true,options:['Riverside High School','Bayview Academy','Lakeside College','Oak Park School']}]});
+    questions:[{label:'Teacher / adviser',type:'choice',required:true,options:['Ms. Johnson','Mr. Chen','Mrs. Miller','Ms. Wang']},{label:'Section',type:'text'}]});
   if(!cf.code) console.log('create failed:',cf);
   const K={'x-org-key':cf.org_key};await post(`org/${cf.code}/methods`,{kind:'wallet',label:'E-wallet',account_name:'Bayview Educators Network',qr:rd('qr'),mine:true},K);
-  const CE=await get('events/'+cf.code);const [eb,rg,stu]=CE.types;const m=CE.methods[0];const QQ=CE.questions[0];
+  const CE=await get('events/'+cf.code);const [eb,rg,stu]=CE.types;const m=CE.methods[0];const QQ=CE.questions[0],QS2=CE.questions[1];
   const names=['Olivia Bennett','Noah Patel','Ava Thompson','Liam Garcia','Sophia Nguyen','Ethan Brooks','Mia Rodriguez','Lucas Kim','Isabella Chen','Mason Rivera','Amelia Walker','Logan Foster','Harper Reyes','Elijah Scott','Chloe Tan','James Carter','Grace Lim','Daniel Cruz'];
-  for(const [i,n] of names.entries()){const t=[eb,rg,rg,stu][i%4];const o=await post(`events/${cf.code}/order`,{name:n,contact:n.split(' ')[0].toLowerCase()+'@example.com',items:[{t:t.id,q:1}],method:m.id,answers:{[QQ.id]:QQ.options[i%4]}});if(o.error)console.log(o.error)}
+  for(const [i,n] of names.entries()){const t=[eb,rg,rg,stu][i%4];const o=await post(`events/${cf.code}/order`,{name:n,contact:n.split(' ')[0].toLowerCase()+'@example.com',items:[{t:t.id,q:1}],method:m.id,answers:{[QQ.id]:QQ.options[i%4],[QS2.id]:'Homeroom 10'+'ABCD'[i%4]}});if(o.error)console.log(o.error)}
   const org=await get('org/'+cf.code,K);for(const o of org.orders) await post(`org/${cf.code}/orders/${o.id}/approve`,{},K);
   const tks=(await get('org/'+cf.code,K)).tickets;
   for(const t of tks.slice(0,7)) await post(`door/${cf.code}/check`,{code:`TXW:${cf.code}:${t.code}`},{'x-door-key':org.event.door_key});
@@ -37,7 +37,8 @@ const at=(d,h,m=0)=>Date.parse(`${d}T${String(h).padStart(2,'0')}:${String(m).pa
       await p.evaluate(()=>document.querySelector('#bName').scrollIntoView({block:'start'}));await p.evaluate(()=>scrollBy(0,-90))},act:async p=>{
     await p.waitForTimeout(600);await tap(p,p.locator('#bName'));await p.keyboard.type('Grace Lim',{delay:55});await tap(p,p.locator('#bContact'));await p.keyboard.type('grace@example.com',{delay:40});
     await p.evaluate(()=>document.querySelector('select.bAns').scrollIntoView({block:'center',behavior:'smooth'}));await p.waitForTimeout(500);
-    await tap(p,p.locator('select.bAns'));await p.waitForTimeout(400);await p.selectOption('select.bAns','Bayview Academy');await p.waitForTimeout(1300)},tail:500});
+    await tap(p,p.locator('select.bAns'));await p.waitForTimeout(400);await p.selectOption('select.bAns','Mr. Chen');await p.waitForTimeout(500);
+    await tap(p,p.locator('input.bAns'));await p.keyboard.type('Homeroom 10B',{delay:55});await p.waitForTimeout(1100)},tail:500});
   await clip(b,'cf_sessions',{...phone,url:B+'/e/'+ws.code,setup:async p=>{await p.waitForTimeout(1000);const y=await p.$eval('#tickets',e=>e.getBoundingClientRect().top+scrollY-60);await p.evaluate(y=>scrollTo(0,y),y)},act:async p=>{
     await p.waitForTimeout(900);await tap(p,p.locator('.chip.pf',{hasText:'Room B'}));await p.waitForTimeout(900);await tap(p,p.locator('.chip:not(.pf)').filter({visible:true}).first());await p.waitForTimeout(600);
     await tap(p,p.locator('button[aria-label="More Workshop seat"]'));await p.waitForTimeout(1300)},tail:500});
