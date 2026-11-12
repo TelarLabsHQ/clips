@@ -302,6 +302,15 @@ VIDEOS['tixward-bookings'] = ('tx', [
    dict(cta=True, head='Free bookings for courts, rooms & more', sub='Always free  ·  No limits  ·  Link in bio', say='Tixward bookings. Always free, with no limits.'),
 ])
 
+VIDEOS['tixward-conferences'] = ('tx', [
+   dict(clip='cf_event', start=0.0, pill='Conferences · Workshops · Trainings', head='Tickets for your next conference', say='Running a conference, workshop, or training? Try Tixward.'),
+   dict(clip='cf_event', start=2.2, head='Early bird, regular & student', say='Offer early bird, regular, and student tickets.'),
+   dict(clip='cf_sessions', start=0.3, head='Sessions with limited seats', say='Run sessions in different rooms, each with limited seats.'),
+   dict(clip='cf_list', crop=1.0, cx=170, start=0.3, head='Attendee list for name tags & certificates', say='Download your attendee list for name tags and certificates.'),
+   dict(clip='cf_desk', start=1.2, speed_v=1.4, head='Quick check-in at registration', say='Check everyone in at registration.'),
+   dict(cta=True, head='Tickets for conferences & trainings', sub='Promo rates until May 31, 2027  ·  Link in bio', say='Tixward. Free for most events.'),
+])
+
 if __name__ == '__main__':
     for k, (app, segs) in VIDEOS.items():
         if len(sys.argv) < 2 or any(x in k for x in sys.argv[1:]): build(k, app, segs)
