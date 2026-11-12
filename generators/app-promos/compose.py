@@ -305,10 +305,12 @@ VIDEOS['tixward-bookings'] = ('tx', [
 VIDEOS['tixward-conferences'] = ('tx', [
    dict(clip='cf_event', start=0.0, pill='Conferences · Workshops · Trainings', head='Tickets for your next conference', say='Running a conference, workshop, or training? Try Tixward.'),
    dict(clip='cf_event', start=2.2, head='Early bird, regular & student', say='Offer early bird, regular, and student tickets.'),
+   dict(clip='cf_q', start=0.4, pill='Your own questions', head='Ask their school or company', say="Ask attendees their school or company, so you know who's coming."),
    dict(clip='cf_sessions', start=0.3, head='Sessions with limited seats', say='Run sessions in different rooms, each with limited seats.'),
    dict(clip='cf_list', crop=1.0, cx=170, start=0.3, head='Attendee list for name tags & certificates', say='Download your attendee list for name tags and certificates.'),
-   dict(clip='cf_desk', start=1.2, speed_v=1.4, head='Quick check-in at registration', say='Check everyone in at registration.'),
-   dict(cta=True, head='Tickets for conferences & trainings', sub='Promo rates until May 31, 2027  ·  Link in bio', say='Tixward. Free for most events.'),
+   dict(clip='cf_sheet', crop=1.0, cx=240, start=1.4, pill='Print-ready', head='Sign-in sheets, one page per school', say='Print sign-in sheets for the registration desk, with one page per school.'),
+   dict(clip='cf_desk', start=1.2, speed_v=1.4, head='Quick check-in at registration', say='Then check everyone in, on any phone.'),
+   dict(cta=True, head='Tickets for conferences & trainings', sub='Promo rates until May 31, 2027  ·  Link in bio', say='Tixward. Free for most events, with promo rates until May thirty-first.'),
 ])
 
 if __name__ == '__main__':
