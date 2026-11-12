@@ -13,19 +13,19 @@ const tap=async(p,loc)=>{const bb=await loc.boundingBox();await p.mouse.move(bb.
     description:'An evening of acoustic music by the water, with local bands and a choir. Gates open at 6:30 PM.',
     types:[{name:'General',price:15,qty:300,max_per:10},{name:'Student',price:10,qty:100,max_per:10}]});
   const K={'x-org-key':ev.org_key};const C=ev.code;
-  await post(`org/${C}/methods`,{kind:'wallet',label:'E-wallet',account_name:'Harbor Arts Society',account_no:'09171234567',qr:rd('qr'),mine:true},K);
+  await post(`org/${C}/methods`,{kind:'wallet',label:'E-wallet',account_name:'Harbor Arts Society',account_no:'07751234567',qr:rd('qr'),mine:true},K);
   await post(`org/${C}/methods`,{kind:'cash',note:'Pay at the gate from 6:30 PM.'},K);
   const E=await get('events/'+C);const [g,st]=E.types;const gc=E.methods.find(m=>m.kind==='wallet'),cash=E.methods.find(m=>m.kind==='cash');
   // pending payments to approve
   const mk=async(name,contact,items,m)=>post(`events/${C}/order`,{name,contact,items,method:m.id});
   const e1=await mk('Emma Johnson','emma@example.com',[{t:g.id,q:2}],gc);await post(`orders/${e1.token}/proof`,{ref:'1012 345 678901',shot:rd('receipt')});
-  const e2=await mk('Liam Chen','0917 555 0182',[{t:st.id,q:1}],gc);await post(`orders/${e2.token}/proof`,{ref:'2045 118 330972',shot:rd('receipt')});
+  const e2=await mk('Liam Chen','0775 555 0182',[{t:st.id,q:1}],gc);await post(`orders/${e2.token}/proof`,{ref:'2045 118 330972',shot:rd('receipt')});
   // a reserved order for the "pay" clip, and an approved ticket for the door clip
-  const r1=await mk('Mia Torres','0917 555 0123',[{t:g.id,q:2}],gc);
+  const r1=await mk('Mia Torres','0775 555 0123',[{t:g.id,q:2}],gc);
   const d1=await mk('Noah Davis','noah@example.com',[{t:g.id,q:1}],cash);const org=await get('org/'+C,K);const od=org.orders.find(o=>o.name==='Noah Davis');
   await post(`org/${C}/orders/${od.id}/approve`,{},K);const tk=(await get('orders/'+d1.token)).tickets[0].code;
   // ---------- seed: badminton courts ----------
-  const bk=await post('events',{mode:'book',title:'Riverside Badminton Courts',organizer:'Riverside Sports Club',contact:'0917 555 0100',currency:'USD',
+  const bk=await post('events',{mode:'book',title:'Riverside Badminton Courts',organizer:'Riverside Sports Club',contact:'0775 555 0100',currency:'USD',
     venues:[{id:'v1',name:'Riverside Sports Center',address:'45 Park Avenue, Riverside'}],pay_hours:2,description:'Three air-conditioned courts. Rackets for rent at the front desk.',
     book:{tz:'Asia/Manila',style:'equal',slot:60,max_slots:3,max_per:3,ahead:30,notice:60,hours:[[480,1320],[480,1320],[480,1320],[480,1320],[480,1320],[480,1320],[480,1320]],extra:[],off:[],
       res:[{name:'Court 1',price:12},{name:'Court 2',price:12},{name:'Court 3 (indoor)',price:15}],pay_now:true,pay_site:true}});
@@ -42,7 +42,7 @@ const tap=async(p,loc)=>{const bb=await loc.boundingBox();await p.mouse.move(bb.
     const box=await p.$('#tickets');const y=await box.evaluate(e=>e.getBoundingClientRect().top+scrollY-70);await smooth(p,y);await p.waitForTimeout(700);
     await tap(p,p.locator('button[aria-label="More General"]'));await p.waitForTimeout(350);await tap(p,p.locator('button[aria-label="More General"]'));await p.waitForTimeout(500);
     await p.evaluate(()=>document.querySelector('#bName').scrollIntoView({block:'center',behavior:'smooth'}));await p.waitForTimeout(600);
-    await tap(p,p.locator('#bName'));await p.keyboard.type('Sofia Martin',{delay:55});await tap(p,p.locator('#bContact'));await p.keyboard.type('0917 555 0147',{delay:45});
+    await tap(p,p.locator('#bName'));await p.keyboard.type('Sofia Martin',{delay:55});await tap(p,p.locator('#bContact'));await p.keyboard.type('0775 555 0147',{delay:45});
     await p.evaluate(()=>document.querySelector('#go').scrollIntoView({block:'center',behavior:'smooth'}));await p.waitForTimeout(600);await tap(p,p.locator('#go'));await p.waitForURL(/\/t\//);await p.waitForTimeout(1200)},tail:900});
   // 2. buyer pays and sends the screenshot
   await clip(b,'tx_pay',{...phone,url:B+'/t/?k='+r1.token,setup:async p=>{await p.waitForTimeout(800);const y=await p.$eval('.payqr',e=>e.getBoundingClientRect().top+scrollY-260);await p.evaluate(y=>scrollTo(0,y),y)},act:async p=>{
@@ -68,7 +68,7 @@ const tap=async(p,loc)=>{const bb=await loc.boundingBox();await p.mouse.move(bb.
     await p.waitForTimeout(700);await tap(p,p.locator('.slot',{hasText:/^3:00 PM$/}));await p.waitForTimeout(600);await tap(p,p.locator('.len',{hasText:'2 hours'}));await p.waitForTimeout(500);
     await p.evaluate(()=>document.querySelector('.sum').scrollIntoView({block:'center',behavior:'smooth'}));await p.waitForTimeout(1300)},tail:500});
   await clip(b,'bk_book',{...phone,url:B+'/b/'+bk.code,setup:async p=>{await p.waitForTimeout(900);await p.locator('.day').nth(1).click();await p.locator('.slot',{hasText:/^3:00 PM$/}).click();await p.locator('.len',{hasText:'2 hours'}).click();await p.waitForTimeout(300);await p.evaluate(()=>document.querySelector('.sum').scrollIntoView({block:'start'}))},act:async p=>{
-    await p.waitForTimeout(600);await tap(p,p.locator('#bName'));await p.keyboard.type('Daniel Cruz',{delay:55});await tap(p,p.locator('#bContact'));await p.keyboard.type('0917 555 0166',{delay:45});
+    await p.waitForTimeout(600);await tap(p,p.locator('#bName'));await p.keyboard.type('Daniel Cruz',{delay:55});await tap(p,p.locator('#bContact'));await p.keyboard.type('0775 555 0166',{delay:45});
     await p.evaluate(()=>document.querySelector('input[name=pay][value=site]').scrollIntoView({block:'center',behavior:'smooth'}));await p.waitForTimeout(500);
     await tap(p,p.locator('label.meth',{hasText:'Pay on-site'}));await p.waitForTimeout(500);await tap(p,p.locator('#bGo'));await p.waitForURL(/\/t\//);await p.waitForTimeout(1800)},tail:600});
   await clip(b,'bk_sched',{w:1280,h:760,url:`${B}/o/#${bk.code}.${bk.org_key}`,setup:async p=>{await p.evaluate(c=>localStorage.setItem('tixward.saved.'+c,'true'),bk.code);await p.reload();await p.waitForTimeout(1200);await p.fill('#bDate',tom);await p.dispatchEvent('#bDate','change');await p.waitForTimeout(400);await p.evaluate(()=>document.querySelector('.sched').scrollIntoView({block:'start'}));await p.evaluate(()=>scrollBy(0,-120))},act:async p=>{
