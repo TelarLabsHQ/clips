@@ -14,9 +14,11 @@ APPS = {
   'qp': dict(name='QuizPolice', url='quizpolice.telarlabs.net', icon='icon-quizpolice.png', c=(127, 166, 255), bg1=(12, 18, 40), bg2=(30, 46, 98), tag='Free quiz monitoring'),
   'ts': dict(name='Telar Stories', url='telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 143, 163), bg1=(30, 14, 28), bg2=(78, 32, 64), tag='Narrated story videos for kids'),
   'tc': dict(name='Telar Clips', url='clips.telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 181, 71), bg1=(24, 16, 30), bg2=(70, 40, 60), tag='Free motion backgrounds'),
+  'tl': dict(name='Telar Labs', url='telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 170, 120), bg1=(28, 14, 30), bg2=(80, 36, 62), tag='Free tools for creators'),
+  'tx': dict(name='Tixward', url='tixward.telarlabs.net', icon='icon-tixward.png', c=(255, 138, 76), bg1=(32, 14, 6), bg2=(96, 38, 12), tag='Event tickets & bookings'),
   'dt': dict(name='DraftTrail', url='drafttrail.telarlabs.net', icon='icon-drafttrail.png', c=(196, 155, 255), bg1=(22, 14, 40), bg2=(56, 34, 96), tag='Free writing-process recorder'),
 }
-SAY_FIX = [('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə'), ('ɹˈɪʔn', 'ɹˈɪtən'), ('ʔn', 'tən')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
+SAY_FIX = [('ɹˈuːpˈaɪə', 'ɹuːpˈiːə'), ('jˈuːən', 'juːˈɑːn'), ('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə'), ('ɹˈɪʔn', 'ɹˈɪtən'), ('ʔn', 'tən')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
 _K = None
 def say(text, path, speed=1.1):
     global _K
@@ -219,6 +221,56 @@ VIDEOS['drafttrail-3-live-in-class'] = ('dt', [
    dict(cta=True, head='Free writing-process recorder', sub='Homework or live in class  ·  Link in bio', say='Free at Draft Trail dot Telar Labs dot net.'),
 ])
 
+VIDEOS['drafttrail-4-term-papers'] = ('dt', [
+   dict(clip='dt4_setup', pill='New', head='Term papers & case studies', say='Term papers and case studies? DraftTrail does those now.'),
+   dict(clip='dt4_cite', start=0.3, head='Cite in one click', say='Cite in one click, in Chicago, A-P-A, or MLA.'),
+   dict(clip='dt4_quote', start=0.6, head='Pasted quotes get cited', say='Pasted quotes get quotation marks and a citation.'),
+   dict(clip='dt4_preview', start=0.8, head='Real footnotes & bibliography', say='Download it in Word, with real footnotes.'),
+   dict(clip='dt4_review', head='See every writing session', say='And teachers see every writing session.'),
+   dict(cta=True, head='Free writing-process recorder', sub='Essays · Term papers · Case studies', say='Free at Draft Trail dot Telar Labs dot net.'),
+])
+
+VIDEOS['telar-stories-simple'] = ('ts', [
+   dict(clip='st_mira', pill='Coming soon', head='Simple story videos. No editing skills.', say='Want to share a story, without learning video editing?'),
+   dict(clip='ts_all', start=3.7, speed_v=1.7, head='Pick a picture. Add characters.', say='Pick a picture, and add your characters.'),
+   dict(clip='ts_all', start=11.9, speed_v=1.25, head='Type a line. A voice reads it.', say='Type a line, and a friendly voice reads it.'),
+   dict(clip='st_sheep', start=0.5, head='Like a picture book that talks', say='Like a picture book that talks. Gentle movement, not big animation.'),
+   dict(clip='ts_all', start=45.9, head='Make your video in one click', say='Then make your video in one click.'),
+   dict(cta=True, head='Simple storytelling, made easy', sub='Free  ·  Coming soon  ·  Follow for updates', say='Telar Stories. Simple, free, and coming soon.'),
+])
+
+VIDEOS['telar-labs-for-creators'] = ('tl', [
+   dict(clip='rb_ex', kind='phone', pill='For creators', head='Free tools for your TikToks & Reels', say='Making TikToks or Reels? Here are two free tools.'),
+   dict(clip='tc_pick', head='Telar Clips: backgrounds & green screens', say='Telar Clips has free moving backgrounds and green screens.'),
+   dict(clip='year_ex', kind='phone', head='Mix them into your own videos', say='Mix them into your own creations.'),
+   dict(clip='ts_all', start=11.9, speed_v=1.25, pill='Coming soon', head='Telar Stories: type it, hear it', say='And Telar Stories turns your words into a narrated story video.'),
+   dict(clip='st_mira', head='No pro editing needed', say='No pro editing needed.'),
+   dict(cta=True, head='Free tools for creators', sub='Telar Clips  ·  Telar Stories (coming soon)', say='Find them free at Telar Labs dot net.'),
+])
+
+VIDEOS['drafttrail-5-full'] = ('dt', [
+   dict(clip='dt_b', pill='Free for teachers', head='Did AI write this essay?', say='Wondering if an essay was copied, or written by AI?'),
+   dict(clip='dt_a', speed_v=3.0, head='Students write in DraftTrail', say='DraftTrail records every pause and edit as students write.'),
+   dict(clip='dt_b', head='Big pastes get flagged', say='Big pastes and no-edit essays get flagged.'),
+   dict(clip='dt3_dashc', start=2.8, head='See who leaves the page', say='In class, see who leaves the page, and who pastes, as it happens.'),
+   dict(clip='dt_c', start=4.5, head='Replay how it was written', say='Replay any essay, with pasted parts highlighted.'),
+   dict(clip='dt4_cite', start=0.3, pill='New', head='Term papers, with citations', say='New: term papers, with citations in Chicago, A-P-A, or MLA.'),
+   dict(clip='dt4_quote', start=0.6, head='Cited quotes vs. real copying', say='Cited quotes are marked, so real copying stands out.'),
+   dict(clip='dt4_review', head='Every writing session, over days', say='You see every writing session, even over weeks.'),
+   dict(cta=True, head='Free writing-process recorder', sub='No sign-up  ·  Nothing uploaded  ·  Link in bio', say='Try it free, at Draft Trail dot Telar Labs dot net.'),
+])
+
+VIDEOS['drafttrail-4-term-papers-long'] = ('dt', [
+   dict(clip='dt4_setup', pill='New', head='Term papers & case studies', say='Assigning a term paper or a case study? DraftTrail can handle it now.'),
+   dict(clip='dt4_setup', start=1.5, head='Set the style, word goal & sections', say='Choose the citation style, a word goal, and the sections.'),
+   dict(clip='dt4_cite', start=0.3, head='Cite in one click', say='Students cite in one click, in Chicago, A-P-A, or MLA.'),
+   dict(clip='dt4_quote', start=0.6, head='Pasted quotes get cited', say='Pasted quotes get quotation marks and a citation.'),
+   dict(clip='dt_b', head='Uncited pastes are still flagged', say='But pasted text with no source is still flagged for you.'),
+   dict(clip='dt4_preview', start=0.8, head='Real footnotes & bibliography', say='Papers download in Word, with real footnotes.'),
+   dict(clip='dt4_review', head='Every writing session, over days', say='And you see every writing session, even over weeks.'),
+   dict(cta=True, head='Free writing-process recorder', sub='Essays · Term papers · Case studies', say='Free at Draft Trail dot Telar Labs dot net.'),
+])
+
 VIDEOS['telar-clips-how-to'] = ('tc', [
    dict(clip='tc_home', pill='Free', head='Moving backgrounds in 3 easy steps', say="Need a moving background for your video? Here's how, for free."),
    dict(clip='tc_pick', pill='Step 1', head='Pick a clip', say='Step one: pick a clip on Telar Clips.'),
@@ -226,6 +278,28 @@ VIDEOS['telar-clips-how-to'] = ('tc', [
    dict(clip='ex_bday', kind='phone', pill='Step 3', head='Add your text', say='Step three: add your text in CapCut or Canva.'),
    dict(clip='ex_xmas', kind='phone', head='Or use a green screen effect', say='Or add a green screen effect over your own video.'),
    dict(cta=True, head='Free backgrounds & green screens', sub='No sign-up  ·  Link in bio', say='Free at clips dot Telar Labs dot net.'),
+])
+
+VIDEOS['tixward-tickets'] = ('tx', [
+   dict(clip='tx_event', start=1.0, speed_v=1.35, pill='Free for most events', head='Sell tickets. Get paid directly.', say='Selling tickets to your event? With Tixward, buyers pay you directly.'),
+   dict(clip='tx_cur', start=0.2, head='Price it in your own currency', say='Price tickets in your own currency: dollars, euros, rupiah, yuan, pesos, and more.'),
+   dict(clip='tx_pay', start=1.2, speed_v=1.5, head='They pay your e-wallet or bank QR', say='Buyers pay your e-wallet or bank QR, and send the receipt.'),
+   dict(clip='tx_approve', crop=1.25, cx=150, start=0.8, head='You check it. Tap Approve.', say='You check it, and tap Approve.'),
+   dict(clip='tx_ticket', head='They get a QR ticket', say='They get a QR ticket on their phone.'),
+   dict(clip='tx_door', start=1.3, speed_v=1.5, head='Scan it at the door', say='Scan it at the door, with any phone.'),
+   dict(clip='tx_shows', start=0.5, pill='Film showings', head='Several screenings & places', say='Showing a film? Add several screenings and places, each with its own seats.'),
+   dict(cta=True, head='Event tickets, paid directly to you', sub='Promo rates until May 31, 2027  ·  Link in bio', say='Tixward. Free for most events. Promo rates end May thirty-first, so start early.'),
+])
+
+VIDEOS['tixward-bookings'] = ('tx', [
+   dict(clip='bk_page', start=0.6, speed_v=1.2, pill='Always free', head='Bookings for courts & rooms', say='Renting out courts, rooms, or a studio? Take bookings with Tixward, for free.'),
+   dict(clip='bk_pick', start=0.3, head='Pick a time, and how long', say='Customers pick a court, a time, and how long.'),
+   dict(clip='bk_custom', start=0.3, pill='Your own time slots', head='Equal slots, or your own', say='Use equal slots, or set your own, like eight to nine, or ten to twelve.'),
+   dict(clip='bk_book', start=0.5, speed_v=1.3, head='Pay now, or pay on-site', say='They pay when they book, or on-site.'),
+   dict(clip='bk_sched', crop=1.25, cx=170, start=0.6, head='Your schedule. No double bookings.', say='You see every booking, add walk-ins, and never double-book.'),
+   dict(clip='bk_block', crop=1.25, cx=170, start=0.5, speed_v=1.3, head='Block times for maintenance', say='Block times for maintenance, and set days off.'),
+   dict(clip='bk_desk', start=0.6, head='Front desk check-in', say="At the front desk, staff see today's bookings and collect on-site payments."),
+   dict(cta=True, head='Free bookings for courts, rooms & more', sub='Always free  ·  No limits  ·  Link in bio', say='Tixward bookings. Always free, with no limits.'),
 ])
 
 if __name__ == '__main__':

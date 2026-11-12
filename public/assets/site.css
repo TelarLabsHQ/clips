@@ -154,3 +154,4 @@ section .chips:not([role]){flex-wrap:wrap}
 .gmeta{font-size:13px;font-weight:600;color:var(--accent,#ffb547);text-transform:uppercase;letter-spacing:.04em}
 .gmore{margin-top:auto;font-weight:600;color:var(--accent,#ffb547)}
 .sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.app-tixward b,.family>a.app-tixward{color:#FF8A4C}.family-links a.app-tixward{border-left:4px solid #FF8A4C}
