@@ -292,14 +292,14 @@ VIDEOS['tixward-tickets'] = ('tx', [
 ])
 
 VIDEOS['tixward-bookings'] = ('tx', [
-   dict(clip='bk_page', start=0.6, speed_v=1.2, pill='Always free', head='Bookings for courts & rooms', say='Renting out courts, rooms, or a studio? Take bookings with Tixward, for free.'),
+   dict(clip='bk_page', start=0.6, speed_v=1.2, pill='Free to use', head='Bookings for courts & rooms', say='Renting out courts, rooms, or a studio? Take bookings with Tixward, for free.'),
    dict(clip='bk_pick', start=0.3, head='Pick a time, and how long', say='Customers pick a court, a time, and how long.'),
    dict(clip='bk_custom', start=0.3, pill='Your own time slots', head='Equal slots, or your own', say='Use equal slots, or set your own, like eight to nine, or ten to twelve.'),
    dict(clip='bk_book', start=0.5, speed_v=1.3, head='Pay now, or pay on-site', say='They pay when they book, or on-site.'),
    dict(clip='bk_sched', crop=1.25, cx=170, start=0.6, head='Your schedule. No double bookings.', say='You see every booking, add walk-ins, and never double-book.'),
    dict(clip='bk_block', crop=1.25, cx=170, start=0.5, speed_v=1.3, head='Block times for maintenance', say='Block times for maintenance, and set days off.'),
    dict(clip='bk_desk', start=0.6, head='Front desk check-in', say="At the front desk, staff see today's bookings and collect on-site payments."),
-   dict(cta=True, head='Free bookings for courts, rooms & more', sub='Always free  ·  No limits  ·  Link in bio', say='Tixward bookings. Always free, with no limits.'),
+   dict(cta=True, head='Free bookings for courts, rooms & more', sub='No booking fees  ·  Link in bio', say='Tixward bookings. Free to use, with no booking fees.'),
 ])
 
 VIDEOS['tixward-conferences'] = ('tx', [
