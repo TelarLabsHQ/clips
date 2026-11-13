@@ -150,7 +150,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
     <div class="foot-cols">
       <div><h4>Browse</h4>{''.join(f'<a href="/category/{slug(c)}/">{E(c)}</a>' for c in CATS[:5])}</div>
       <div><h4>More</h4>{''.join(f'<a href="/category/{slug(c)}/">{E(c)}</a>' for c in CATS[5:])}<a href="/how-to-use/">How to use</a><a href="/guides/">Guides</a></div>
-      <div><h4>{E(CFG["studio"])}</h4><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
+      <div><h4><a href="https://telarlabs.net" style="color:inherit;margin:0">{E(CFG["studio"])}</a></h4><a href="https://telarlabs.net">Telar Labs home</a><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
     </div>
   </div>
   {family_row()}<div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. Motion graphics and illustrated scenes by {E(CFG["studio"])}.</div>
