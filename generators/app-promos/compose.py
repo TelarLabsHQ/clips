@@ -313,6 +313,17 @@ VIDEOS['tixward-conferences'] = ('tx', [
    dict(cta=True, head='Tickets for conferences & trainings', sub='Promo rates until May 31, 2027  ·  Link in bio', say='Tixward. Free for most events, with promo rates until May thirty-first.'),
 ])
 
+VIDEOS['tixward-funrun'] = ('tx', [
+   dict(clip='fr_event', start=0.0, pill='Fun runs · Charity runs · Races', head='Race slots for your fun run', say='Organizing a fun run? Sell race slots with Tixward, and runners pay you directly.'),
+   dict(clip='fr_event', start=2.4, head='Kids 1K, 3K, 5K & 10K', say='Offer kids, 3K, 5K, and 10K categories.'),
+   dict(clip='fr_q', start=0.3, pill='Your own questions', head='Ask shirt size & emergency contact', say='Ask each runner their shirt size and emergency contact.'),
+   dict(clip='fr_list', crop=1.0, cx=10, start=0.3, head='Count shirts by size', say='See how many shirts to order in each size, at a glance.'),
+   dict(clip='fr_sheet', crop=1.0, cx=270, start=1.4, pill='Print-ready', head='Race kit claim sheets by size', say='Print race kit claim sheets, one page per shirt size.'),
+   dict(clip='fr_desk', start=1.2, speed_v=1.4, head='Race-day check-in on any phone', say='On race day, check runners in at the start line, on any phone.'),
+   dict(cta=True, head='Tickets for fun runs & races', sub='Promo rates until May 31, 2027  ·  Link in bio', say='Tixward. Free for most events, with promo rates until May thirty-first.'),
+])
+
+
 if __name__ == '__main__':
     for k, (app, segs) in VIDEOS.items():
         if len(sys.argv) < 2 or any(x in k for x in sys.argv[1:]): build(k, app, segs)
