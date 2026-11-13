@@ -323,6 +323,16 @@ VIDEOS['tixward-funrun'] = ('tx', [
    dict(cta=True, head='Tickets for fun runs & races', sub='Promo rates until May 31, 2027  ·  Link in bio', say='Tixward. Free for most events, with promo rates until May thirty-first.'),
 ])
 
+VIDEOS['tixward-small'] = ('tx', [
+   dict(clip='sm_chat', start=0.3, pill='Small events · 20 to 60 people', head='Still using a form and a group chat?', say="Still running a small event with a form and a group chat? Who has paid, which screenshot is whose, and is it full yet?"),
+   dict(clip='sm_left', start=0.3, pill='Paid · 40 seats', head='Sales stop at your limit', say="With Tixward, set forty seats. When they're gone, sales stop on their own."),
+   dict(clip='sm_approve', start=0.5, head='Approve payments in one tap', say='Approve each payment in one tap, and buyers get their QR tickets.'),
+   dict(clip='sm_free', start=0.3, pill='Free · 60 seats', head='Free events, never overbooked', say='A free seminar for parents? Sign-ups stop at sixty, and everyone gets a ticket on their phone.'),
+   dict(clip='sm_door', start=0.6, head='Easy check-in on any phone', say="At the door, scan tickets on any phone and see exactly who's in."),
+   dict(cta=True, head='Tickets for small events', sub='Free for small events  ·  Link in bio', say='Tixward. Free for small events, and free events are always free.'),
+])
+
+
 
 if __name__ == '__main__':
     for k, (app, segs) in VIDEOS.items():

@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+@font-face{font-family:F;src:url(figtree-400.woff2)}@font-face{font-family:F6;src:url(figtree-600.woff2)}@font-face{font-family:F7;src:url(figtree-700.woff2)}
+html,body{margin:0;height:100%}body{font-family:F;background:#e9e4dd;color:#1e1a17;overflow:hidden}
+.top{background:#fff;padding:14px 16px;display:flex;gap:12px;align-items:center;border-bottom:1px solid #ddd}
+.av{width:40px;height:40px;border-radius:50%;background:#6a8caf;color:#fff;display:grid;place-items:center;font-family:F7}
+.top b{font-family:F7;font-size:17px;display:block}.top span{font-size:13px;color:#777}
+.msgs{padding:12px;display:flex;flex-direction:column;gap:8px}
+.m{max-width:78%;background:#fff;border-radius:16px;padding:8px 12px;font-size:15px;box-shadow:0 1px 1px rgba(0,0,0,.08);opacity:0;transform:translateY(10px);transition:.35s}
+.m.on{opacity:1;transform:none}.m .n{font-family:F7;font-size:12px;margin-bottom:2px}
+.shot{width:150px;height:96px;border-radius:10px;background:#f1f4f8;border:1px solid #dde3ea;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:#555;margin:4px 0}
+.shot i{width:22px;height:22px;border-radius:50%;background:#1f8a4c;display:block;margin-bottom:4px}
+.sheet{position:absolute;left:12px;right:12px;bottom:-420px;background:#fff;border-radius:16px;box-shadow:0 -6px 30px rgba(0,0,0,.25);padding:14px;transition:.6s}
+.sheet.on{bottom:14px}.sheet h4{margin:0 0 8px;font-family:F7}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{border:1px solid #ddd;padding:6px 7px;text-align:left}th{background:#f4f4f4;font-family:F6}
+.q{color:#b8860b;font-family:F7}
+</style></head><body>
+<div class="top"><div class="av">W</div><div><b>Workshop sign-ups</b><span>47 members</span></div></div>
+<div class="msgs" id="ms">
+<div class="m"><div class="n" style="color:#8a4fbf">Grace</div>Hi! Is there still a slot for Saturday?</div>
+<div class="m"><div class="n" style="color:#1f7a8c">Daniel</div><div class="shot"><i></i>Payment sent · $15</div>Sent! 🙏</div>
+<div class="m"><div class="n" style="color:#c0582b">Mia</div>I paid yesterday. Did you get it?</div>
+<div class="m"><div class="n" style="color:#2f7d32">Ethan</div>Can I add my sister? 😅</div>
+<div class="m"><div class="n" style="color:#a3366e">Lily</div><div class="shot"><i></i>Payment sent · $30</div>Paid for 2</div>
+<div class="m"><div class="n" style="color:#3559a8">Noah</div>Are we full already??</div>
+</div>
+<div class="sheet" id="sh"><h4>Form responses</h4><table><tr><th>Name</th><th>Seats</th><th>Paid?</th></tr>
+<tr><td>Grace Lim</td><td>1</td><td class="q">?</td></tr><tr><td>Daniel Reed</td><td>1</td><td>✓</td></tr><tr><td>Mia Turner</td><td>1</td><td class="q">?</td></tr><tr><td>Ethan Brooks</td><td>2</td><td class="q">?</td></tr><tr><td>Lily Patel</td><td>2</td><td class="q">?</td></tr></table></div>
+<script>window.play=async()=>{const ms=[...document.querySelectorAll('.m')];for(const m of ms){m.classList.add('on');await new Promise(r=>setTimeout(r,420));}await new Promise(r=>setTimeout(r,250));document.getElementById('sh').classList.add('on')}</script>
+</body></html>
