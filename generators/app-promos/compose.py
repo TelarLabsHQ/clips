@@ -299,7 +299,7 @@ VIDEOS['tixward-bookings'] = ('tx', [
    dict(clip='bk_sched', crop=1.25, cx=170, start=0.6, head='Your schedule. No double bookings.', say='You see every booking, add walk-ins, and never double-book.'),
    dict(clip='bk_block', crop=1.25, cx=170, start=0.5, speed_v=1.3, head='Block times for maintenance', say='Block times for maintenance, and set days off.'),
    dict(clip='bk_desk', start=0.6, head='Front desk check-in', say="At the front desk, staff see today's bookings and collect on-site payments."),
-   dict(cta=True, head='Free bookings for courts, rooms & more', sub='No booking fees  ·  Link in bio', say='Tixward bookings. Free to use, with no booking fees.'),
+   dict(cta=True, head='Free bookings for courts, rooms & more', sub='No Tixward fees  ·  Link in bio', say='Tixward bookings. Free to use, with no Tixward fees.'),
 ])
 
 VIDEOS['tixward-conferences'] = ('tx', [
