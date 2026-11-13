@@ -332,6 +332,16 @@ VIDEOS['tixward-small'] = ('tx', [
    dict(cta=True, head='Tickets for small events', sub='Free for small events  ·  Link in bio', say='Tixward. Free for small events, and free events are always free.'),
 ])
 
+VIDEOS['tixward-courses'] = ('tx', [
+   dict(clip='lc_event', start=0.2, pill='Courses · Classes · Seminars', head='Enrollment for small courses', say='Opening a new course with just twenty slots? Run your enrollment on Tixward.'),
+   dict(clip='lc_event', start=2.6, head='20 slots, closes when full', say='Students see the schedule and the fee, and enrollment closes when the class is full.'),
+   dict(clip='lc_enroll', start=0.3, pill='Your own questions', head='Ask each student’s level', say='Ask each student their level, and they pay you directly by e-wallet, then send their proof.'),
+   dict(clip='lc_list', crop=1.0, cx=10, start=0.3, head='Your class list, by level', say='Your class list is ready in one place, with everyone sorted by level.'),
+   dict(clip='lc_sheet', crop=1.1, cx=222, start=1.2, pill='Print-ready', head='Attendance sheet for day one', say='Print an attendance sheet for the first class, then do it all again next term.'),
+   dict(cta=True, head='Your go-to for small courses', sub='Free up to 300 paid tickets  ·  Link in bio', say='Tixward. Your go-to for small courses and seminars, free for up to three hundred paid enrollments.'),
+])
+
+
 
 
 if __name__ == '__main__':
