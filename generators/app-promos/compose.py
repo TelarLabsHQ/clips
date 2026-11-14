@@ -341,6 +341,16 @@ VIDEOS['tixward-courses'] = ('tx', [
    dict(cta=True, head='Your go-to for small courses', sub='Free up to 300 paid tickets  ·  Link in bio', say='Tixward. Your go-to for small courses and seminars, free for up to three hundred paid enrollments.'),
 ])
 
+VIDEOS['tixward-alternative'] = ('tx', [
+   dict(clip='cmp_fee', start=0.2, pill='A ticketing alternative', head='Keep your ticket money', say="Selling two hundred tickets at ten dollars? Big ticketing sites can take a hundred to five hundred dollars in fees. Tixward takes nothing."),
+   dict(clip='tx_pay', start=0.3, head='Buyers pay you directly', say='Buyers pay you directly by e-wallet, bank QR or cash. Tixward never holds your money.'),
+   dict(clip='cmp_wallets', start=0.3, head='The e-wallets your buyers use', say='It works with the e-wallets your buyers already use.'),
+   dict(clip='tx_door', start=0.5, head='QR tickets & a door scanner', say='Everyone gets a QR ticket, and you scan them on any phone.'),
+   dict(clip='cmp_price', start=0.3, pill='No cut, ever', head='Free up to 300 paid tickets', say='Free for events with up to three hundred paid tickets. Bigger events pay once, with no cut.'),
+   dict(cta=True, head='Ticketing with no cut', sub='Free up to 300 paid tickets  ·  Link in bio', say='Tixward. Try it for your next event.'),
+])
+
+
 
 
 
