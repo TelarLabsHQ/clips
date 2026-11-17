@@ -350,6 +350,16 @@ VIDEOS['tixward-alternative'] = ('tx', [
    dict(cta=True, head='Ticketing with no cut', sub='Free up to 300 paid tickets  ·  Link in bio', say='Tixward. Try it for your next event.'),
 ])
 
+VIDEOS['tixward-proper'] = ('tx', [
+   dict(clip='sp_chat', start=0.3, pill='Small events', head='Still a long message in the chat?', say='Planning a small get-together? Instead of one long message in the group chat, and the same questions again and again…'),
+   dict(clip='sp_page', start=0.3, head='Give it a proper event page', say='…give it a proper event page, with the date, the place, and the seats left.'),
+   dict(clip='sp_share', start=0.5, pill='Private link', head='Only your guests can see it', say="Share your private link or QR code. It isn't listed anywhere, so only the people you invite can see it."),
+   dict(clip='sp_rsvp', start=0.6, head='Guests sign up the right way', say='Guests reserve, answer your questions for everyone in their group, and pay you directly.'),
+   dict(clip='sp_list', crop=1.0, cx=10, start=0.3, head='A neat guest list', say='And you get a neat guest list, with every meal choice counted.'),
+   dict(cta=True, head='Small event, proper page', sub='Free for small events  ·  Link in bio', say='Tixward. Even small events deserve a proper page.'),
+])
+
+
 
 
 
