@@ -359,6 +359,34 @@ VIDEOS['tixward-proper'] = ('tx', [
    dict(cta=True, head='Small event, proper page', sub='Free for small events  ·  Link in bio', say='Tixward. Even small events deserve a proper page.'),
 ])
 
+VIDEOS['tixward-reunion'] = ('tx', [
+   dict(clip='rn_page', start=0.2, pill='Batch reunions · Homecomings', head='Your reunion, organized', say='Planning your batch reunion or homecoming? Give it a proper page, with alumni and plus-one tickets.'),
+   dict(clip='rn_signup', start=0.5, head='Section & shirt size for everyone', say='Everyone picks their section and homecoming shirt size, even plus-ones, and pays you directly.'),
+   dict(clip='rn_list', crop=1.0, cx=10, start=0.3, head='Who’s coming, by section', say="See who's coming from each section, and who still has to pay."),
+   dict(clip='rn_sheet', crop=1.1, cx=222, start=1.2, pill='Print-ready', head='Sign-in sheets per section', say='Print sign-in sheets, one page per section, for the registration table.'),
+   dict(clip='rn_door', start=0.6, head='Quick check-in at the door', say='Then on the night, check everyone in on any phone, in seconds.'),
+   dict(cta=True, head='Reunions made easy', sub='Free up to 300 paid tickets  ·  Link in bio', say='Tixward. Reunions made easy, and free for up to three hundred paid tickets.'),
+])
+
+VIDEOS['tixward-family'] = ('tx', [
+   dict(clip='fm_page', start=0.2, pill='Family reunions', head='Bring the whole family together', say='Planning a family reunion? Make a free page for it, and share the private link in the family chat.'),
+   dict(clip='fm_signup', start=0.5, head='Every family member counted', say='Each household signs up everyone coming, adults and kids, with their family branch and shirt size.'),
+   dict(clip='fm_list', crop=1.0, cx=10, start=0.3, head='Headcount per family branch', say='You get the headcount for each family branch, so you know how much food to prepare.'),
+   dict(clip='fm_sheet', crop=1.1, cx=222, start=1.2, pill='Print-ready', head='Attendance per family branch', say='Print an attendance sheet for each branch, with everyone’s shirt size.'),
+   dict(clip='fm_door', start=0.6, head='Easy check-in on the day', say='And on the day, check everyone in on any phone, from the oldest to the youngest.'),
+   dict(cta=True, head='Family reunions made easy', sub='Free events are always free  ·  Link in bio', say='Tixward. Family reunions made easy, and free events are always free.'),
+])
+
+VIDEOS['tixward-christmas'] = ('tx', [
+   dict(clip='xm_page', start=0.2, pill='Christmas parties', head='Your Christmas party, sorted', say='Organizing the office Christmas party this year? Make it free for the whole team, while plus-ones pay for their own dinner.'),
+   dict(clip='xm_signup', start=0.5, head='Meal choice & gift exchange', say='Everyone picks their meal and says if they’re joining the gift exchange, even plus-ones, so nothing is missed.'),
+   dict(clip='xm_list', crop=1.0, cx=10, start=0.3, head='Count every meal', say='See exactly how many of each meal to order, and who’s in the gift exchange.'),
+   dict(clip='xm_sheet', crop=1.1, cx=222, start=1.2, pill='Print-ready', head='A guest list for the venue', say='Print a neat guest list for the venue, grouped by meal.'),
+   dict(clip='xm_door', start=0.6, head='Check-in at the party', say='On the night, check guests in at the door on any phone.'),
+   dict(cta=True, head='Merry & organized', sub='Free events are always free  ·  Link in bio', say='Tixward. Your Christmas party, merry and organized.'),
+])
+
+
 
 
 
