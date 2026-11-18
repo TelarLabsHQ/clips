@@ -386,6 +386,14 @@ VIDEOS['tixward-christmas'] = ('tx', [
    dict(cta=True, head='Merry & organized', sub='Free events are always free  ·  Link in bio', say='Tixward. Your Christmas party, merry and organized.'),
 ])
 
+VIDEOS['tixward-zumba'] = ('tx', [
+   dict(clip='zb_page', start=0.2, pill='Zumba · Dance fitness', head='Sessions with limited spots', say='Running Zumba sessions in the park? Put every session on one page, with a set number of spots for each.'),
+   dict(clip='zb_pick', start=0.4, head='Bring a friend along', say='People pick a session, bring a friend, and say if it’s their first time. Then they pay you directly.'),
+   dict(clip='zb_list', crop=1.0, cx=10, start=0.3, pill='First-timers', head='Know who’s new', say='See who’s new before class, so you can welcome them.'),
+   dict(clip='zb_door', start=0.3, head='Check-in at the park', say='At the park, check everyone in on any phone.'),
+   dict(cta=True, head='Fill every Zumba session', sub='Free up to 300 paid tickets  ·  Link in bio', say='Tixward. Fill every Zumba session.'),
+])
+
 
 
 
