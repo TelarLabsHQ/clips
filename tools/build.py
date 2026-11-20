@@ -514,3 +514,13 @@ if __name__ == '__main__':
         shutil.rmtree(os.path.join(PUB, d), ignore_errors=True)
     home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); extras()
     print(f'Built {len(CLIPS)} clip pages, {len(CATS)} categories into public/')
+
+    # AdSense: no ad code on error or contact pages (screens without publisher content)
+    import re as _re
+    for _p in ('404.html', 'contact/index.html'):
+        _f = os.path.join(PUB, _p)
+        if os.path.exists(_f):
+            _s = open(_f).read()
+            _s = _re.sub(r'<script async src="https://pagead2\.googlesyndication\.com[^>]*></script>', '', _s)
+            _s = _re.sub(r'<div class="ad">.*?</ins>(<script>.*?</script>)?</div>', '', _s, flags=_re.S)
+            open(_f, 'w').write(_s)
