@@ -127,7 +127,7 @@ def mandala():
     rng = np.random.default_rng(351); pts = [(rng.uniform(0, W), rng.uniform(0, H), rng.uniform(1.5, 4), int(rng.integers(1, 4)), rng.uniform(0, TAU)) for _ in range(90)]
     for f in range(N):
         t = f / N
-        r = m.rotate(-720 / sym * t, resample=Image.BICUBIC).resize((R, R), Image.LANCZOS)
+        r = m.rotate(.37 - 720 / sym * t, resample=Image.BICUBIC).resize((R, R), Image.LANCZOS)
         a = np.zeros((H, W), np.float32); ox, oy = (W - R) // 2, (H - R) // 2
         a[oy:oy + R, ox:ox + R] = np.asarray(r, np.float32) / 255
         shine = .75 + .5 * np.exp(-(((xx - W / 2) * math.cos(TAU * t) + (yy - H / 2) * math.sin(TAU * t)) / (W * .25) - 0) ** 2)

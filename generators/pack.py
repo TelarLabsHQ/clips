@@ -78,7 +78,7 @@ def sparkles():
     for f in range(N):
         t = f / N; img = bg.copy()
         for x0, y0, r, tw, tp, col, b in pts:
-            x = (x0 + W * t) % (W + 40) - 20; y = y0 + 12 * math.sin(TAU * t + tp)
+            x = (x0 + (W + 40) * t) % (W + 40) - 20; y = y0 + 12 * math.sin(TAU * t + tp)   # one full wrap per loop = seamless
             s = max(0.0, math.sin(TAU * tw * t + tp)) ** 2 * b * 1.6
             if s < 0.02: continue
             blob(img, x, y, r, col, s, edge=.6, glow=.9, rim=0)
