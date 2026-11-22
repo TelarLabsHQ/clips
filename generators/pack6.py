@@ -113,15 +113,17 @@ def gifts():
 def hny_fireworks(year='2027'):
     FONT = '/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf'
     big = ImageFont.truetype(FONT, 300); small = ImageFont.truetype(POP, 66)
-    m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).text((W / 2, H * .62), year, font=big, anchor='mm', fill=255)
-    m2 = Image.new('L', (W, H), 0); ImageDraw.Draw(m2).text((W / 2, H * .36), 'HAPPY NEW YEAR', font=small, anchor='mm', fill=255)
+    m = Image.new('L', (W, H), 0); ImageDraw.Draw(m).text((W / 2, H * .74), year, font=big, anchor='mm', fill=255)
+    m2 = Image.new('L', (W, H), 0); ImageDraw.Draw(m2).text((W / 2, H * .5), 'HAPPY NEW YEAR', font=small, anchor='mm', fill=255)
     m = np.asarray(m, np.float32) / 255; ms = np.asarray(m2, np.float32) / 255
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-    grad = np.stack([np.ones_like(yy), .9 - .3 * (yy - H * .5) / (H * .25), .6 - .4 * (yy - H * .5) / (H * .25)], -1)
+    grad = np.stack([np.ones_like(yy), .9 - .3 * (yy - H * .62) / (H * .25), .6 - .4 * (yy - H * .62) / (H * .25)], -1)
     sky = gradient([.01, .0, .04], [.06, .02, .10], .4)
+    calm = np.clip(gaussian_filter(m + ms, 40) * 3, 0, .75)[..., None]
     for f, fw in zip(range(N), fireworks([[1, .8, .35], [1, .3, .3], [.4, .7, 1], [1, .9, .6], [.8, .4, 1]], 451, sky=sky)):
         t = f / N; shine = np.exp(-(((xx - yy * .5) / W - (t % 1) * 1.8 + .4) / .05) ** 2)
         a = m[..., None]
+        fw = fw * (1 - calm)   # keep the fireworks soft behind the lettering
         img = fw * (1 - a * .9) + a * grad * (.8 + .9 * shine[..., None]) + ms[..., None] * np.array([1, .95, .85])
         img = img + gaussian_filter(m * (.3 + shine), 10)[..., None] * np.array([1, .8, .45]) * .5
         yield np.clip(img, 0, 1.3)
