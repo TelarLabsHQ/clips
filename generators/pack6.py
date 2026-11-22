@@ -85,7 +85,8 @@ def light_tree():
         t = f / N; buf = np.zeros((H, W, 3), np.float32)
         tw = (.35 + .65 * np.maximum(0, np.sin(TAU * k * t + ph)) ** 2) * (.55 + .45 * (depth + 1) / 2)
         # a soft wave of light climbing the tree
-        tw = tw * (1 + 1.2 * np.exp(-((s - (t % 1)) / .05) ** 2))
+        dd = (s - t + .5) % 1 - .5   # distance on a circle, so the wave wraps from the top back to the bottom smoothly
+        tw = tw * (1 + 1.2 * np.exp(-(dd / .05) ** 2))
         splat(buf, x, y, col, tw * 5.0)
         img = bg + tone(glowify(buf, 1.3, 4.5, 18), 1.6)
         g = .9 + .25 * math.sin(TAU * 2 * t); y0, x0 = int(top - 110), int(cx - 110)
