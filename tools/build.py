@@ -31,6 +31,39 @@ CAT_BLURB = {
     'Tech & Abstract': 'Network lines, hexagons and retro neon grids for tech, gaming and corporate videos.',
 }
 
+
+# Practical notes shown under each category's clips (useful detail for visitors, not filler)
+CAT_TIPS = {
+ 'Christmas & New Year': '''<h2>Ideas for these clips</h2><ul><li><b>Christmas greetings:</b> put your family photo or a short message over falling snow or string lights, and send it in your group chat.</li><li><b>Church and school programs:</b> play a slow loop on the screen while people arrive, then switch to the program title.</li><li><b>New Year countdowns:</b> use a fireworks or countdown clip for the last minute of a party livestream or a New Year post.</li><li><b>Business promos:</b> holiday hours, gift ideas and year-end sales look more festive with a gentle moving background.</li></ul>
+<h2>Tips for a clean result</h2><ul><li>Keep text short and in the middle of the screen. Snowflakes and lights move behind it, so a thin dark box under the words helps them stay readable.</li><li>Gold, white and deep red text work well on most of these backgrounds.</li><li>Most clips are 8-second seamless loops. For a 30-second greeting, place the clip four times in a row in your editor; the joins won’t show.</li><li>Add your own music. The clips have no sound, so they work with any song or narration.</li></ul>''',
+ 'Gradients': '''<h2>Where gradients work best</h2><ul><li><b>Title cards and intros</b>, where you want color and motion but nothing that competes with your words.</li><li><b>Presentations:</b> a slow gradient behind a quote or a section title makes a slide feel alive.</li><li><b>Livestream screens</b> for “Starting soon”, “Be right back” and “Thank you for watching”.</li><li><b>Social posts</b> with a single message, like an announcement or a Bible verse.</li></ul>
+<h2>Choosing a gradient</h2><ul><li>Match the mood: warm sunsets for friendly and hopeful messages, blues and teals for calm and professional ones, deep reds and gold for formal events.</li><li>White text reads well on darker gradients; dark text on pastel ones.</li><li>Some gradients use a country’s colors, like saffron, white and green for India or green, white and orange for Ireland, for national days and cultural events.</li></ul>
+<h2>Tips</h2><ul><li>Gradients have no edges or objects, so they crop perfectly to any shape. Crop to 9:16 for reels and stories, or 1:1 for posts.</li><li>Speed up a clip to 1.5× for an energetic intro, or slow it down for a calm one. The colors stay smooth.</li></ul>''',
+ 'Bokeh Lights': '''<h2>What bokeh is good for</h2><p>Bokeh is the soft, round glow of lights out of focus. It looks warm and festive without showing anything specific, so it suits almost any celebration and keeps attention on your words.</p><ul><li><b>Greetings</b> for birthdays, anniversaries, Christmas, Valentine’s Day and graduations.</li><li><b>Quote and verse videos</b>, where a calm, glowing background sets the mood.</li><li><b>Event screens</b> for weddings, debuts, awards nights and church services.</li></ul>
+<h2>Picking a color</h2><ul><li>Gold and warm white for formal and holiday events.</li><li>Pink and red for Valentine’s Day, weddings and debuts.</li><li>Blue, teal and purple for calm, modern or evening themes.</li><li>Navy and gold for graduations and school events.</li></ul>
+<h2>Tips</h2><ul><li>Place a photo over bokeh with a soft shadow or white border so it stands out from the background.</li><li>Lower the clip’s brightness a little in your editor if your text is light-colored.</li><li>Bokeh loops are seamless, so one clip can run as long as you need behind a slideshow.</li></ul>''',
+ 'Overlays': '''<h2>How overlays work</h2><p>Overlays are effects on a black background, like light rays, sparkles, snow, dust or embers. You put them on top of your own video or photo, then change the blend mode so the black disappears and only the light stays.</p>
+<h2>In CapCut</h2><ol><li>Add your main video or photo first.</li><li>Tap <b>Overlay → Add overlay</b> and choose the overlay clip.</li><li>Stretch it to fill the screen, then tap <b>Blend → Screen</b>.</li><li>Lower the opacity if the effect is too strong.</li></ol>
+<h2>In Canva</h2><p>Add the overlay above your photo or video, stretch it to fill the page, and set its <b>transparency</b> lower so the picture shows through. Screen blending gives the cleanest result in editors that offer it, like CapCut, Premiere Pro and DaVinci Resolve.</p>
+<h2>Ideas</h2><ul><li>Light leaks and rays to make phone footage of a wedding or debut look warm and cinematic.</li><li>Snow over an outdoor video for a Christmas greeting.</li><li>Sparkles for a reveal: a new product, a baby announcement or a winner.</li><li>Rain or dust for a calm, moody storytelling scene.</li></ul>''',
+ 'Green Screen': '''<h2>How to use a green screen clip</h2><p>These clips are animations on pure chroma green (#00B140). Put the clip above your own video or photo, then remove the green so only the animation is left. It’s called keying.</p>
+<h2>In CapCut</h2><ol><li>Add your own video or photo to the timeline.</li><li>Add the green screen clip with <b>Overlay → Add overlay</b>.</li><li>Select it, tap <b>Remove BG → Chroma key</b>, pick the green with the color picker, and raise <b>Intensity</b> until the green is gone.</li><li>Raise <b>Shadow</b> a little if you see a green edge.</li></ol>
+<h2>In other editors</h2><ul><li><b>Canva:</b> background removal for videos is available on some plans; otherwise use CapCut, which is free.</li><li><b>Premiere Pro:</b> apply <b>Ultra Key</b> and pick the green.</li><li><b>DaVinci Resolve:</b> use the <b>3D Keyer</b> or <b>Delta Keyer</b> in the Color or Fusion page.</li></ul>
+<h2>Tips</h2><ul><li>Key first, then move and resize the clip. Keying a resized clip can leave soft green edges.</li><li>Our step-by-step guide to <a href="/guides/green-screen-capcut/">green screens in CapCut</a> has pictures for each step.</li></ul>''',
+ 'Celebrations & Events': '''<h2>Ideas</h2><ul><li><b>Birthdays and debuts:</b> confetti or balloons behind the name and age, or as the opening of a slideshow.</li><li><b>Weddings and anniversaries:</b> floating hearts behind the couple’s names and the date.</li><li><b>Graduations and awards:</b> navy and gold for school colors, confetti for the moment each name is called.</li><li><b>Office and church events:</b> a loop on the screen as people arrive, with the event title on top.</li></ul>
+<h2>Making a one-minute greeting</h2><ol><li>Start with a celebration clip and the person’s name, 3 to 5 seconds.</li><li>Add 6 to 10 photos, about 4 seconds each, with the clip playing behind them.</li><li>End with a short message from the group and the date.</li></ol><p>Our guide to <a href="/guides/birthday-greeting-video/">a birthday greeting video in 1 minute</a> walks through it in CapCut.</p>
+<h2>Tips</h2><ul><li>Use bold, rounded fonts for birthdays and kids’ events, and simple serif fonts for weddings and formal awards.</li><li>Keep the person’s photos large and the text short; the moving background should frame the moment, not compete with it.</li></ul>''',
+ 'Nature & Seasons': '''<h2>Ideas</h2><ul><li><b>Seasonal greetings:</b> autumn leaves for Thanksgiving or a fall sale, a starry sky for a goodnight message.</li><li><b>Kids’ and storytelling videos:</b> fireflies and bubbles as a calm background behind a story or a lesson.</li><li><b>Relaxing and sleep videos:</b> loop a calm clip for several minutes with soft music.</li><li><b>Prayer and reflection:</b> a quiet background for a verse, a prayer or a moment of silence.</li></ul>
+<h2>Making a long, calm video</h2><p>These clips loop seamlessly, so you can repeat one for 10 minutes or an hour without a visible jump. In CapCut, add the clip, then duplicate it until the timeline is long enough. Add music last, and fade it in and out.</p>
+<h2>Tips</h2><ul><li>For bedtime and relaxing videos, slow the clip down to 0.75× and lower the brightness a little.</li><li>Keep text minimal. A single line for 5 seconds at the start is usually enough.</li></ul>''',
+ 'Tech & Abstract': '''<h2>Ideas</h2><ul><li><b>Tech and gaming intros:</b> neon grids and network lines behind a channel name or game title.</li><li><b>Corporate videos:</b> a blue hexagon or particle background for product updates, training videos and conference screens.</li><li><b>School presentations:</b> science, robotics and ICT topics look modern with a moving network background.</li><li><b>Livestream screens:</b> “Starting soon” and “Be right back” screens for streams and webinars.</li></ul>
+<h2>Tips</h2><ul><li>These backgrounds are busy, so give text a solid or semi-transparent box behind it.</li><li>Cool blues pair well with white and light-cyan text; the retro neon grid works best with bold pink, purple or yellow titles.</li><li>Our guide to <a href="/guides/starting-soon-screen/">a “Starting soon” screen for your livestream</a> shows how to build one in a few minutes.</li></ul>''',
+ 'World Celebrations': '''<h2>Using these clips respectfully</h2><ul><li>Match the clip to the right holiday and date. Use the holiday chips above to find clips for a specific celebration.</li><li>Use the holiday’s own greeting when you can, like “Eid Mubarak”, “Happy Diwali” or “Gong Xi Fa Cai”, and check the spelling.</li><li>Keep religious holidays respectful: calm text, no jokes about the faith, and no mixing of symbols from different traditions.</li></ul>
+<h2>Ideas</h2><ul><li>Greetings for friends, classmates and colleagues from other cultures.</li><li>School and office posts for international days and cultural weeks.</li><li>Business posts for holiday opening hours and seasonal sales.</li></ul>''',
+ 'Illustrated Scenes': '''<h2>Ideas</h2><ul><li><b>Story backgrounds:</b> a gently moving scene behind a read-aloud story or a lesson for kids.</li><li><b>Greetings:</b> festival and travel scenes as the opening of a holiday or birthday greeting.</li><li><b>Reel openers:</b> a 3-second scene with a title before your main video.</li></ul>
+<h2>Tips</h2><ul><li>The motion is gentle, so a title placed over the sky or open ground stays easy to read.</li><li>Add soft music and a short narration for a simple, picture-book style video.</li></ul>''',
+}
+
 import hashlib as _h
 CSSV = _h.md5(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'public', 'assets', 'site.css'), 'rb').read()).hexdigest()[:8]
 
@@ -360,6 +393,7 @@ def category(cat):
 </section>
 {('<section class="wrap section"><h2>Browse by holiday</h2>' + holiday_chips() + '</section>') if cat == 'World Celebrations' else ''}
 <section class="wrap section">{grid(cl, "list_grid")}</section>
+{f'<section class="wrap section"><article class="prose">{CAT_TIPS[cat]}<p class="muted">Most clips are Full HD (1920 × 1080) MP4 files with no sound, and many are seamless loops. They are free for personal and commercial use; see the <a href="/license/">license</a>.</p></article></section>' if cat in CAT_TIPS else ''}
 <section class="wrap section"><h2>Other categories</h2><div class="chips">{others}</div></section>'''
     page(f'/category/{slug(cat)}/', f'Free {cat} Stock Video Clips', f'{CAT_BLURB[cat]} {len(cl)} free HD clips, no sign-up.', body)
 
@@ -436,6 +470,13 @@ def static_pages():
 </ul>
 <h2>Credit</h2>
 <p>Credit is not required, but it helps us a lot. If you'd like to, write: <em>Background by {E(NAME)}</em>.</p>
+<h2>Common questions</h2>
+<h3>Can I use a clip in a monetized YouTube or Facebook video?</h3><p>Yes. Using a clip as part of your own video, with your own words, photos, music or footage, is allowed, including on monetized channels.</p>
+<h3>Why can’t I register the clips with Content ID?</h3><p>Because other people use the same clips. If one person registers a clip, everyone else’s videos can get false copyright claims. If you receive a claim on a video that uses a {E(NAME)} clip, <a href="/contact/">contact us</a> with the link and we’ll help.</p>
+<h3>Can I use the clips in a template I sell?</h3><p>Not on their own. Selling a template, pack or wallpaper collection where the clip is the main part would be reselling the clip. Using a clip inside a finished video you make for a client is fine.</p>
+<h3>Can I edit the clips?</h3><p>Yes. Recolor, crop, slow down, combine and add text as much as you like.</p>
+<h3>Do I have to give credit?</h3><p>No. If you’d like to, a line in the description like <em>Background by {E(NAME)}</em> is enough.</p>
+<p>For a longer explanation of free video licenses, see our guide to <a href="/guides/free-video-backgrounds-license/">what “free to use” really means for video backgrounds</a>.</p>
 <h2>No warranty</h2>
 <p>The clips are provided as they are. {E(st)} is not responsible for how the clips are used.</p>
 <p class="muted">Last updated {E(CFG["launch_date"])}.</p>''')
@@ -515,9 +556,9 @@ if __name__ == '__main__':
     home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); extras()
     print(f'Built {len(CLIPS)} clip pages, {len(CATS)} categories into public/')
 
-    # AdSense: no ad code on error or contact pages (screens without publisher content)
+    # AdSense: no ad code on error, contact and legal pages (no publisher content)
     import re as _re
-    for _p in ('404.html', 'contact/index.html'):
+    for _p in ('404.html', 'contact/index.html', 'privacy/index.html', 'terms/index.html'):
         _f = os.path.join(PUB, _p)
         if os.path.exists(_f):
             _s = open(_f).read()
