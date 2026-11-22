@@ -82,3 +82,9 @@ cd public && python3 -m http.server 8000
 ```
 
 Then open http://localhost:8000.
+
+## Before making new clips: avoid duplicates
+
+Check `data/clips.json` for the same effect first (for example, there is already gold and silver confetti in
+`gold-silver-new-year-confetti-loop`). A new clip should differ in subject or purpose, not only in colour or
+background. If it is only a new size (such as 9:16), name it `<existing-id>-9x16`.
