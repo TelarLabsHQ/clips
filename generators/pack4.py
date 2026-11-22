@@ -521,9 +521,9 @@ def marquee():
             blob(img, x, y, 13, np.array([1, .82, .45]), b, edge=.5, glow=1.0 if on else .3, rim=0)
         yield tone(img, 1.6)
 
-def fireworks(palette, seed=9):
+def fireworks(palette, seed=9, sky=None):
     rng = np.random.default_rng(seed); T = 8.0; g = 110.0
-    sky = gradient([.02, .0, .02], [.10, .02, .03], .4)
+    sky = gradient([.02, .0, .02], [.10, .02, .03], .4) if sky is None else sky
     shows = []
     for i in range(11):
         t0 = i * T / 11 + rng.uniform(-.15, .15); bx = rng.uniform(.15, .85) * W; by = rng.uniform(.18, .5) * H

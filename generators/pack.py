@@ -1,8 +1,8 @@
 """Starter pack of seamless 8-second 1080p motion-graphic loops. Usage: python3 pack.py <name> [<name> ...]"""
-import numpy as np, subprocess, sys, math
+import numpy as np, subprocess, sys, math, os
 from PIL import Image, ImageDraw, ImageFilter
 
-W, H, FPS, SECS = 1920, 1080, 30, 8
+W, H, FPS, SECS = (1080, 1920, 30, 8) if os.environ.get('CLIP_VERT') else (1920, 1080, 30, 8)   # CLIP_VERT=1 renders 9:16
 N = FPS * SECS
 TAU = 2 * math.pi
 yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
