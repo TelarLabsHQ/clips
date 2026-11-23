@@ -12,7 +12,7 @@ FB = '/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf'; FM = '/usr/share
 APPS = {
   'pp': dict(name='PizarraPad', url='pizarrapad.telarlabs.net', icon='icon-pizarrapad.png', c=(94, 211, 154), bg1=(10, 34, 24), bg2=(22, 70, 48), tag='Free online whiteboard'),
   'qp': dict(name='QuizPolice', url='quizpolice.telarlabs.net', icon='icon-quizpolice.png', c=(127, 166, 255), bg1=(12, 18, 40), bg2=(30, 46, 98), tag='Free quiz monitoring'),
-  'ts': dict(name='Telar Stories', url='telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 143, 163), bg1=(30, 14, 28), bg2=(78, 32, 64), tag='Narrated story videos for kids'),
+  'ts': dict(name='Telar Stories', url='stories.telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 143, 163), bg1=(30, 14, 28), bg2=(78, 32, 64), tag='Narrated story videos for kids'),
   'tc': dict(name='Telar Clips', url='clips.telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 181, 71), bg1=(24, 16, 30), bg2=(70, 40, 60), tag='Free motion backgrounds'),
   'tl': dict(name='Telar Labs', url='telarlabs.net', icon='icon-telarlabs-home.png', c=(255, 170, 120), bg1=(28, 14, 30), bg2=(80, 36, 62), tag='Free tools for creators'),
   'tx': dict(name='Tixward', url='tixward.telarlabs.net', icon='icon-tixward.png', c=(255, 138, 76), bg1=(32, 14, 6), bg2=(96, 38, 12), tag='Event tickets & bookings'),
@@ -237,6 +237,17 @@ VIDEOS['telar-stories-simple'] = ('ts', [
    dict(clip='st_sheep', start=0.5, head='Like a picture book that talks', say='Like a picture book that talks. Gentle movement, not big animation.'),
    dict(clip='ts_all', start=45.9, head='Make your video in one click', say='Then make your video in one click.'),
    dict(cta=True, head='Simple storytelling, made easy', sub='Free  ·  Coming soon  ·  Follow for updates', say='Telar Stories. Simple, free, and coming soon.'),
+])
+
+VIDEOS['telar-stories-launch'] = ('ts', [
+   dict(clip='st2_mira', pill='Now live  ·  Free', head='Picture books that talk', say='Telar Stories is here! Make picture books that talk, for your class, church, or family.'),
+   dict(clip='ts4_all', start=3.6, speed_v=1.3, head='Start with a ready-made story', say="Start with a ready-made story, like Noah's Ark or The Lost Sheep."),
+   dict(clip='st3_dove', head='Bible, everyday & Christmas stories', say='Bible stories, everyday stories, and Christmas stories, all narrated.'),
+   dict(clip='ts4_all', start=17.4, speed_v=1.4, head='Or make your own', say='Or make your own. Pick a place, and add characters like Mira and Mochi.'),
+   dict(clip='ts4_all', start=26.0, speed_v=3.0, head='Type a line. A free AI voice reads it.', say='Type a line, and a free AI voice reads it.'),
+   dict(clip='ts4_all', start=57.4, head='Captions, gentle movement & music', say='It plays like a picture book, with captions and gentle music.'),
+   dict(clip='ts4_all', start=63.5, head='Download your video in one tap', say='Then download your video, ready to share.'),
+   dict(cta=True, head='Simple storytelling, made easy', sub='Free  ·  No sign-up  ·  Link in bio', say='Try it free, at stories dot Telar Labs dot net.'),
 ])
 
 VIDEOS['telar-labs-for-creators'] = ('tl', [
