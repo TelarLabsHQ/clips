@@ -18,7 +18,7 @@ APPS = {
   'tx': dict(name='Tixward', url='tixward.telarlabs.net', icon='icon-tixward.png', c=(255, 138, 76), bg1=(32, 14, 6), bg2=(96, 38, 12), tag='Event tickets & bookings'),
   'dt': dict(name='DraftTrail', url='drafttrail.telarlabs.net', icon='icon-drafttrail.png', c=(196, 155, 255), bg1=(22, 14, 40), bg2=(56, 34, 96), tag='Free writing-process recorder'),
 }
-SAY_FIX = [('ɐlˈʌmni', 'ɐlˈʌmnaɪ'), ('ɹˈuːpˈaɪə', 'ɹuːpˈiːə'), ('jˈuːən', 'juːˈɑːn'), ('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə'), ('ɹˈɪʔn', 'ɹˈɪtən'), ('ʔn', 'tən')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
+SAY_FIX = [('mˈɑːtʃaɪ', 'mˈoʊtʃi'), ('ɐlˈʌmni', 'ɐlˈʌmnaɪ'), ('ɹˈuːpˈaɪə', 'ɹuːpˈiːə'), ('jˈuːən', 'juːˈɑːn'), ('tˈɛlɚ', 'tɛlˈɑːɹ'), ('pˈɪzæɹə', 'pɪsˈɑːɹə'), ('ɹˈɪʔn', 'ɹˈɪtən'), ('ʔn', 'tən')]   # Telar = teh-LAR, Pizarra = pi-SAH-rah
 _K = None
 def say(text, path, speed=1.1):
     global _K
