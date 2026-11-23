@@ -254,6 +254,32 @@ def jsonld(c):
          "license": URL + "/license/"}
     return '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False) + '</script>'
 
+# Telar Stories: "coming soon" until launch day, then a promo built around Mira (in both apps).
+# Switch with "stories_live" in site.config.json.
+STORIES_URL = 'https://stories.telarlabs.net/'
+MIRA_CLIP = 'rainy-day-reading-girl-cat-scene'
+def stories_card():
+    if not CFG.get('stories_live'):
+        return '''  <div class="soon-card">
+    <img src="/media/stories/lost-sheep.webp" alt="A shepherd boy hugging a lost lamb, from a Telar Stories sample" loading="lazy" width="800" height="437">
+    <div class="soon-text">
+      <span class="soon-badge">Coming soon</span>
+      <h2>Telar Stories</h2>
+      <p>Turn our illustrated scenes and characters into 2–3 minute narrated story videos for classrooms, Sunday school and organization promos. Parents can also make simple custom stories for their children, like a bedtime story or a gentle lesson about sharing. Pick a scene, add characters, type the story and add a free AI voice or your own, then download your video.</p>
+      <p class="muted small">Free to start. Follow us for the launch.</p>
+    </div>
+  </div>'''
+    return f'''<div class="soon-card">
+    <a href="/clip/{MIRA_CLIP}/"><img src="/media/poster/{MIRA_CLIP}.webp" alt="Mira reading by a rainy window with her cat Mochi" loading="lazy" width="800" height="450"></a>
+    <div class="soon-text">
+      <span class="soon-badge">New · Free</span>
+      <h2>Give Mira a story</h2>
+      <p>Remember Mira and her cat Mochi from our illustrated scenes? In <b>Telar Stories</b> they're characters you can use in your own story. Pick a ready-made story like <i>Mira and the Rainy Day</i>, or write your own, add a free AI storyteller voice, and download a narrated picture-book video for your class, church or family.</p>
+      <p><a class="btn" href="{STORIES_URL}">Make a story video →</a></p>
+      <p class="muted small">Free, no sign-up. Works on phones and computers.</p>
+    </div>
+  </div>'''
+
 def clip_page(c):
     k = kind(c); h, steps = HOWTO[k]
     related = [x for x in CLIPS if x['id'] != c['id'] and (x['category'] == c['category'] or (c['green_screen'] and x['green_screen']))][:8]
@@ -277,6 +303,7 @@ def clip_page(c):
     <div class="badges badges-inline">{badges(c)}{"" if c["category"] == "Green Screen" else f'<span class="badge">{E(c["category"])}</span>'}</div>
     <a class="btn btn-big mobile-dl" href="{E(MEDIA + c["file"])}" data-download="{E(c["file"])}" download>Download free MP4</a>
     <p class="lead">{E(c["description"])}</p>
+    {f'<p class="callout-stories">📖 Mira and Mochi star in <a href="{STORIES_URL}"><i>Mira and the Rainy Day</i> on Telar Stories</a>. Make a narrated story video with them, free.</p>' if c["id"] == MIRA_CLIP and CFG.get("stories_live") else ""}
     <h2>Good for</h2>
     <p>{E(c["uses"])}.</p>
     <h2>{h}</h2>
@@ -354,15 +381,7 @@ def home():
   {grid([c for c in CLIPS if c.get('illustrated')][:8])}
 </section>
 <section class="wrap section">
-  <div class="soon-card">
-    <img src="/media/stories/lost-sheep.webp" alt="A shepherd boy hugging a lost lamb, from a Telar Stories sample" loading="lazy" width="800" height="437">
-    <div class="soon-text">
-      <span class="soon-badge">Coming soon</span>
-      <h2>Telar Stories</h2>
-      <p>Turn our illustrated scenes and characters into 2–3 minute narrated story videos for classrooms, Sunday school and organization promos. Parents can also make simple custom stories for their children, like a bedtime story or a gentle lesson about sharing. Pick a scene, add characters, type the story and add a free AI voice or your own, then download your video.</p>
-      <p class="muted small">Free to start. Follow us for the launch.</p>
-    </div>
-  </div>
+  {stories_card()}
 </section>
 {ad("home_grid", "wrap ad")}
 <section class="wrap section" id="browse">
