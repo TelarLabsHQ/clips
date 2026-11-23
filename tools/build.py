@@ -264,7 +264,7 @@ def clip_page(c):
             ('Frame rate', f'{c.get("fps", 30)} fps'), ('Format', 'MP4 (H.264)'),
             ('Background', 'Chroma green #00B140' if c['green_screen'] else ('Black (use Screen blend)' if k == 'overlay' else 'Included')),
             ('Price', 'Free, no sign-up')]
-    tags = ''.join(f'<a class="tag" href="/?q={E(t)}#browse">{E(t)}</a>' for t in c['tags'])
+    tags = ''.join(f'<a class="tag" rel="nofollow" href="/?q={E(t)}#browse">{E(t)}</a>' for t in c['tags'])
     body = f'''
 <div class="wrap crumbs"><a href="/">Home</a> <span>/</span> <a href="/category/{slug(c["category"])}/">{E(c["category"])}</a> <span>/</span> {E(c["title"])}</div>
 <section class="wrap clip">
@@ -313,7 +313,7 @@ HOLIDAYS = [('Diwali', 'diwali'), ('Thanksgiving', 'thanksgiving'), ('Hanukkah',
             ('Cherry blossom', 'sakura'), ('Chuseok', 'chuseok'), ('Halloween', 'halloween'), ('Fourth of July', 'fourth of july')]
 
 def holiday_chips():
-    return '<div class="chips chips-wrap">' + ''.join(f'<a class="chip" href="/?q={E(q)}#browse">{E(n)}</a>' for n, q in HOLIDAYS) + '</div>'
+    return '<div class="chips chips-wrap">' + ''.join(f'<a class="chip" rel="nofollow" href="/?q={E(q)}#browse">{E(n)}</a>' for n, q in HOLIDAYS) + '</div>'
 
 def chips():
     return ('<div class="chips" role="group" aria-label="Filter by category"><button class="chip is-on" data-cat="">All</button>' +
@@ -542,7 +542,7 @@ def extras():
     urls = ['/', '/how-to-use/', '/guides/'] + [f'/guides/{g["slug"]}/' for g in GUIDES] + ['/about/', '/license/', '/privacy/', '/contact/'] + [f'/category/{slug(c)}/' for c in CATS] + [f'/clip/{c["id"]}/' for c in CLIPS]
     open(os.path.join(PUB, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
         ''.join(f'<url><loc>{URL}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
-    open(os.path.join(PUB, 'robots.txt'), 'w').write(f'User-agent: *\nAllow: /\nSitemap: {URL}/sitemap.xml\n')
+    open(os.path.join(PUB, 'robots.txt'), 'w').write(f'User-agent: *\nDisallow: /*?q=\nDisallow: /cdn-cgi/\n\nUser-agent: Mediapartners-Google\nAllow: /\n\nSitemap: {URL}/sitemap.xml\n')
     if CFG['adsense_client']:
         pub = CFG['adsense_client'].replace('ca-', '')
         open(os.path.join(PUB, 'ads.txt'), 'w').write(f'google.com, {pub}, DIRECT, f08c47fec0942fa0\n')
