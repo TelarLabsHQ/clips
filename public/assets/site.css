@@ -103,6 +103,10 @@ section .chips:not([role]){flex-wrap:wrap}
 /* ads */
 .ad{margin:24px auto;text-align:center}.ad-label{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6f6878;margin-bottom:6px}
 .ad-grid{grid-column:1/-1;margin:4px 0}.ad-side{margin:0}
+/* reserve the ad's height before it loads, so nothing jumps under a finger; hide the box if no ad comes */
+.ad ins.adsbygoogle{min-height:280px}.ad-grid ins.adsbygoogle{min-height:250px}
+@media(max-width:600px){.ad ins.adsbygoogle{min-height:300px}}
+.ad:has(ins[data-ad-status="unfilled"]){display:none}
 
 /* prose pages */
 .page-head{padding-bottom:0}.page-head .lead{max-width:760px}
