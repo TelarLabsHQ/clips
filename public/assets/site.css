@@ -162,3 +162,16 @@ section .chips:not([role]){flex-wrap:wrap}
 .gvid figcaption{font-size:14px;color:var(--muted,#9aa0aa);margin-top:8px;line-height:1.5}
 .gtable{width:100%;border-collapse:collapse;margin:12px 0 22px;font-size:15px}.gtable th,.gtable td{text-align:left;vertical-align:top;padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.12)}
 .gtable th{font-size:13px;text-transform:uppercase;letter-spacing:.04em;opacity:.75}
+
+/* clip page extras */
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+.sw{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:6px 10px 6px 6px;color:var(--text);font:inherit;font-size:13px;cursor:pointer}
+.sw i{width:26px;height:26px;border-radius:6px;border:1px solid rgba(255,255,255,.18)}.sw b{font-weight:600;font-family:ui-monospace,Menlo,monospace}.sw span{color:var(--muted)}
+.sw.ok b::after{content:" ✓ copied";color:var(--green);font-family:var(--body)}
+.ideas{margin:8px 0;padding-left:20px}.ideas li{margin:4px 0;font-size:17px}
+.pairs{list-style:none;padding:0;margin:8px 0;display:grid;gap:10px}
+.pairs li{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:8px}
+.pairs a{display:flex;align-items:center;gap:12px;font-weight:600}.pairs img{width:96px;height:54px;object-fit:cover;border-radius:8px;background:#000}
+.pairs small{color:var(--muted);flex-basis:100%;padding-left:108px}
+@media(max-width:480px){.pairs small{padding-left:0}}
+.qa dt{font-weight:600;margin-top:12px}.qa dd{margin:4px 0 0;color:#d6cfc6}

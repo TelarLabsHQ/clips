@@ -5,6 +5,7 @@ No packages needed (standard library only)."""
 import json, os, re, html, shutil, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from guides import GUIDES
+import clip_extras as X
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -284,6 +285,12 @@ def stories_card():
 
 def clip_page(c):
     k = kind(c); h, steps = HOWTO[k]
+    other = X.other_version(c, {x['id']: x for x in CLIPS})
+    if aspect(c) == '16:9' and other and steps[-1][0].startswith('Make it vertical'):
+        steps = steps[:-1] + [('Need it vertical?', f'Use the <a href="/clip/{other["id"]}/">vertical 9:16 version</a>. It is the same design laid out for TikTok, Reels and Shorts, so nothing important gets cropped.')]
+    if aspect(c) == '9:16' and steps[-1][0].startswith('Make it vertical'):
+        steps = steps[:-1] + [('Made for vertical video', 'This version is already 9:16, so it fills a TikTok, Reels or Shorts frame with no zooming. '
+                                + (f'For YouTube or slides, use the <a href="/clip/{other["id"]}/">16:9 version</a>.' if other else 'For a 16:9 video, place it on one side of the frame.'))]
     related = [x for x in CLIPS if x['id'] != c['id'] and (x['category'] == c['category'] or (c['green_screen'] and x['green_screen']))][:8]
     if len(related) < 8: related += [x for x in CLIPS if x['id'] != c['id'] and x not in related][:8 - len(related)]
     res = f'{c["width"]}×{c["height"]}'
@@ -308,9 +315,13 @@ def clip_page(c):
     {f'<p class="callout-stories">📖 Mira and Mochi star in <a href="{STORIES_URL}"><i>Mira and the Rainy Day</i> on Telar Stories</a>. Make a narrated story video with them, free.</p>' if c["id"] == MIRA_CLIP and CFG.get("stories_live") else ""}
     <h2>Good for</h2>
     <p>{E(c["uses"])}.</p>
+    {X.ideas_html(c, k)}
+    {X.colors_html(c, os.path.join(PUB, 'media', 'poster', c['id'] + '.webp'), k)}
     <h2>{h}</h2>
     <ol class="steps">{''.join(f'<li><h3>{t}</h3><p>{d}</p></li>' for t, d in steps)}</ol>
     <p class="muted small">More tips in our <a href="/how-to-use/">how-to-use guide</a>.</p>
+    {X.pairs_html(c, CLIPS, kind)}
+    {X.faq_html(c, k, other, aspect)}
     <h2>Tags</h2>
     <div class="tags">{tags}</div>
   </div>
@@ -332,7 +343,7 @@ def clip_page(c):
 <section class="wrap section">
   <div class="section-head"><h2>More like this</h2><a href="/category/{slug(c["category"])}/">See all {E(c["category"])} →</a></div>
   {grid(related)}
-</section>'''
+</section>{X.JS}'''
     page(f'/clip/{c["id"]}/', f'{c["title"]} – Free {"Green Screen" if c["green_screen"] else ("Animated Illustration" if c.get("illustrated") else "Stock Video")} Download',
          c['description'][:155], body, jsonld(c), f"{URL}/media/poster/{c['id']}.webp")
 
