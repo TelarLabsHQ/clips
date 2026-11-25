@@ -95,6 +95,7 @@ def snow_globe():
 def northern_lights():
     rng = np.random.default_rng(23)
     sky = gradient([.005, .01, .03], [.02, .06, .10], .4)
+    sky = sky + np.exp(-(((yy / H) - (.47 if W > H else .50)) / .12) ** 2)[..., None] * np.array([.01, .05, .045])   # faint glow near the horizon
     ns = int(W * H / 2600); sx = rng.uniform(0, W, ns); sy = rng.uniform(0, H * .75, ns); sa = rng.uniform(.05, .6, ns) ** 2; sp = rng.uniform(0, TAU, ns); sk = rng.integers(1, 4, ns)
     # mountains: jagged ridges (random points joined by straight lines, several octaves), snow on the high parts
     def ridge(seed, n0):
@@ -112,9 +113,16 @@ def northern_lights():
         hi = np.clip((rr - .05) / .6, 0, 1)[None, :]                                   # how high this part of the ridge is
         cn = np.asarray(Image.fromarray(tile_noise(W // 4, H // 4, seed + 20).astype(np.float32), 'F').resize((W, H), Image.BICUBIC))
         cap = np.clip((H * .055 * hi * (0.6 + cn) - depth) / (H * .01), 0, 1) * (depth >= 0)
-        lit = np.clip(1 - depth / (H * .25), .55, 1)[..., None]
+        lit = (1.12 - .35 * np.clip(depth / (H * .3), 0, 1))[..., None]
         shade = np.array(col) * lit * (1 - cap[..., None]) + np.array([.62, .70, .84]) * cap[..., None] * lit
         layers.append((m[..., None], shade))
+    # a row of dark pine trees along the shore
+    pines = Image.new('L', (W, H), 0); pd = ImageDraw.Draw(pines); fy0 = int(H * (.74 if not vert else .66)); x = 0
+    while x < W:
+        h = H * rng.uniform(.012, .035) * (1 if not vert else .8); w = h * rng.uniform(.38, .5)
+        pd.polygon([(x - w / 2, fy0 + 1), (x + w / 2, fy0 + 1), (x, fy0 - h)], fill=255); x += w * rng.uniform(.35, .9)
+    pm = gaussian_filter(np.asarray(pines, np.float32) / 255, .6)[..., None]
+    layers.append((pm, np.zeros((H, W, 3), np.float32) + np.array([.02, .03, .05])))
     # a frozen lake in front mirrors the sky, the aurora and the mountains; a thin snowy shore separates them
     fy = int(H * (.74 if not vert else .66))
     src = np.clip(2 * fy - np.arange(fy, H), 0, H - 1)
@@ -122,14 +130,18 @@ def northern_lights():
     shore = np.exp(-((yy - fy) / (H * .004)) ** 2)[..., None] * np.array([.55, .62, .75])
     # aurora, computed small then enlarged
     w4, h4 = W // 4, H // 4; X = np.arange(w4)[None, :] / w4; Y = np.arange(h4)[:, None] / h4
-    base_y = .40 if H < W else .36; hgt = .30 if H < W else .26
+    base_y = .31 if H < W else .27; hgt = .24 if H < W else .20
+    # uneven rays that shimmer in place (each column brightens and dims on its own rhythm)
+    pr = gaussian_filter(rng.random(w4), .9); pr = (pr - pr.min()) / (pr.max() - pr.min())
+    rays = (.35 + .65 * pr ** 1.4)[None, :]; rk = rng.integers(1, 3, w4)[None, :]; rph = gaussian_filter(rng.uniform(0, TAU, w4), 2)[None, :] * 3
     for f in range(N):
         t = f / N
-        yb = base_y + .05 * np.sin(TAU * (1.3 * X + t)) + .035 * np.sin(TAU * (2.7 * X - t) + 1) + .02 * np.sin(TAU * (5.1 * X + 2 * t) + 2)
+        wv = 1 if H < W else .45     # a narrow vertical frame makes the same wave look steeper
+        yb = base_y + wv * (.025 * np.sin(TAU * (1.3 * X + t)) + .018 * np.sin(TAU * (2.7 * X - t) + 1) + .01 * np.sin(TAU * (5.1 * X + 2 * t) + 2))
         env = .55 + .45 * np.sin(TAU * (.8 * X + t) + .5)
-        stri = .55 + .25 * np.sin(TAU * (23 * X + 2 * t) + 1.3) + .2 * np.sin(TAU * (41 * X - 3 * t) + .4)
+        stri = rays * (.72 + .28 * np.sin(TAU * rk * t + rph))
         above = np.clip(yb - Y, 0, None) / hgt
-        I = np.where(Y < yb, np.exp(-above * 2.2), np.exp(-(Y - yb) / .012)) * env * stri
+        I = np.where(Y < yb, np.exp(-above * 2.2), np.exp(-((Y - yb) / .035) ** 2)) * env * stri
         mixc = np.clip(above, 0, 1)[..., None]
         col = np.array([.15, 1, .55]) * (1 - mixc) + np.array([.55, .25, .95]) * mixc
         A = gaussian_filter(I[..., None] * col, (2, .6, 0)).astype(np.float32)
