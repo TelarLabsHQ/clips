@@ -13,6 +13,7 @@ Needs Python 3 with numpy, scipy and Pillow, plus ffmpeg. Run from an output fol
 - `pack4.py` – upcoming holidays (Lantern Festival, St. Patrick's, Ramadan/Eid, Hanukkah, Diwali, Holi, Easter, New Year 2027 …)
 - `xmas.py` – parol, string lights, light frame, fireworks
 - `greenframe.py` – Christmas lights frame on green (16:9 and 9:16)
+- `pack7.py` – winter designs (snow globe, northern lights over mountains, frosty window frame) and 9:16 versions of the most-visited clips
 - `listings.py` – titles, descriptions and tags; writes clip-listings.csv and clips.json
 - `reel.py` – the 9:16 TikTok preview reel
 
