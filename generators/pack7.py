@@ -127,7 +127,7 @@ def northern_lights():
     fy = int(H * (.74 if not vert else .66))
     src = np.clip(2 * fy - np.arange(fy, H), 0, H - 1)
     fade = np.linspace(.55, .30, H - fy)[:, None, None]
-    shore = np.exp(-((yy - fy) / (H * .004)) ** 2)[..., None] * np.array([.55, .62, .75])
+    shore = np.exp(-((yy - fy) / (H * .006)) ** 2)[..., None] * np.array([.13, .16, .21])   # a faint edge of snow, not a drawn line
     # aurora, computed small then enlarged
     w4, h4 = W // 4, H // 4; X = np.arange(w4)[None, :] / w4; Y = np.arange(h4)[:, None] / h4
     base_y = .31 if H < W else .27; hgt = .24 if H < W else .20
