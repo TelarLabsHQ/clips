@@ -156,3 +156,9 @@ section .chips:not([role]){flex-wrap:wrap}
 .sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
 .app-tixward b,.family>a.app-tixward{color:#FF8A4C}.family-links a.app-tixward{border-left:4px solid #FF8A4C}
 .callout-stories{background:var(--bg2);border:1px solid var(--line);border-left:4px solid #ff8fa3;border-radius:12px;padding:12px 14px}
+/* guide example videos and tables */
+.gvid{margin:18px 0 26px}.gvid video{display:block;width:100%;height:auto;border-radius:14px;background:#000}
+.gvid-v{max-width:320px;margin-left:auto;margin-right:auto}
+.gvid figcaption{font-size:14px;color:var(--muted,#9aa0aa);margin-top:8px;line-height:1.5}
+.gtable{width:100%;border-collapse:collapse;margin:12px 0 22px;font-size:15px}.gtable th,.gtable td{text-align:left;vertical-align:top;padding:9px 8px;border-bottom:1px solid rgba(255,255,255,.12)}
+.gtable th{font-size:13px;text-transform:uppercase;letter-spacing:.04em;opacity:.75}

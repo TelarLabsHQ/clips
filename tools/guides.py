@@ -3,6 +3,81 @@ Each guide: slug, title (h1 + page title), desc (meta), minutes (reading time), 
 
 GUIDES = [
 dict(
+ slug='holiday-greeting-video',
+ title='How to Make a Holiday Greeting Video with a Free Moving Background',
+ desc='Make a Christmas or New Year greeting, an event invitation or an end screen with a free moving background, a frost overlay and a few lines of text. Step by step for CapCut, Canva and other editors, with examples.',
+ minutes=6,
+ clips=['northern-lights-snowy-mountains-loop', 'northern-lights-snowy-mountains-loop-9x16', 'frosty-window-frame-overlay-loop', 'aurora-night-gradient-flow-loop', 'snow-globe-swirling-snow-loop', 'snowy-christmas-tree-forest-night-loop'],
+ html='''
+<p class="lead">A moving background turns a few lines of text into a greeting that feels finished. In this guide we build three common videos, a family Christmas greeting, a concert invitation and a YouTube end screen, from the same free clips, plus a vertical version for TikTok and Reels.</p>
+
+<h2>See the finished examples</h2>
+<p>Here is what we’re making. Every layer comes from free clips on this site and plain text.</p>
+<figure class="gvid"><video src="/media/guide/holiday-greeting-examples.mp4" poster="/media/guide/holiday-greeting-examples.webp" controls muted loop playsinline preload="none" width="960" height="540"></video>
+<figcaption>Landscape (16:9): a family greeting and an end screen over <a href="/clip/northern-lights-snowy-mountains-loop/">Northern Lights over Snowy Mountains</a>, and an invitation over <a href="/clip/aurora-night-gradient-flow-loop/">Aurora Night Gradient Flow</a> with the <a href="/clip/frosty-window-frame-overlay-loop/">Frosty Window Frame</a> on top.</figcaption></figure>
+<figure class="gvid gvid-v"><video src="/media/guide/holiday-greeting-vertical.mp4" poster="/media/guide/holiday-greeting-vertical.webp" controls muted loop playsinline preload="none" width="540" height="960"></video>
+<figcaption>Vertical (9:16) for TikTok, Reels and Stories: the vertical northern lights with the vertical frost frame layered on top.</figcaption></figure>
+
+<h2>How the layers work</h2>
+<p>Almost every greeting video is three layers stacked on top of each other:</p>
+<table class="gtable"><thead><tr><th>Layer</th><th>What it is</th><th>Setting</th></tr></thead><tbody>
+<tr><td><b>Bottom</b></td><td>The moving background, such as northern lights, an aurora gradient or a snow globe</td><td>Normal. Make it as long as your video.</td></tr>
+<tr><td><b>Middle</b> (optional)</td><td>An overlay made on black, such as the frost frame, gold dust or light leaks</td><td><b>Blend mode: Screen.</b> The black disappears and only the light shows.</td></tr>
+<tr><td><b>Top</b></td><td>Your text, logo or photo</td><td>A short fade-in and a soft shadow so it’s easy to read</td></tr>
+</tbody></table>
+
+<h2>Step by step in CapCut</h2>
+<ol>
+<li><b>Download your background.</b> For a winter greeting, try <a href="/clip/northern-lights-snowy-mountains-loop/">Northern Lights over Snowy Mountains</a> or the <a href="/clip/snow-globe-swirling-snow-loop/">Snow Globe</a>. For TikTok or Reels, download the <b>Vertical 9:16</b> version so nothing gets cropped.</li>
+<li><b>Start a new project</b> and add the background clip. It becomes the main track.</li>
+<li><b>Add the overlay (optional).</b> Tap <b>Overlay → Add overlay</b> and pick the <a href="/clip/frosty-window-frame-overlay-loop/">Frosty Window Frame</a>. Stretch it to fill the screen, then tap <b>Blend → Screen</b>. The black disappears and the frost sits around the edges.</li>
+<li><b>Add your text.</b> Tap <b>Text → Add text</b>. Put the main line, like <i>Merry Christmas</i>, in a large script or serif font, and the smaller lines underneath in a simple font.</li>
+<li><b>Make it readable.</b> Use white or cream text and turn on a soft <b>shadow</b>. If the background is busy behind small text, lower the background’s brightness a little (<b>Adjust → Brightness</b>).</li>
+<li><b>Animate the text.</b> Choose an in-animation such as <b>Fade in</b>, starting about half a second after the video begins.</li>
+<li><b>Set the length.</b> 8 to 15 seconds is right for most greetings. Our clips loop seamlessly, so copy the background and paste it end to end if you need more time; you won’t see the join.</li>
+<li><b>Export</b> at 1080p.</li>
+</ol>
+
+<h2>The same steps in Canva or other editors</h2>
+<ul>
+<li><b>Canva:</b> upload the clip and use it as the page background. Add an overlay clip on top, then set its <b>Transparency</b> or <b>blend</b> option if your plan has it. If not, choose backgrounds that don’t need an overlay, like the northern lights or snow globe.</li>
+<li><b>Premiere Pro, DaVinci Resolve or iMovie:</b> put the background on the lowest track, the overlay above it with <b>Screen</b> blend mode, and text on top.</li>
+<li><b>PowerPoint or Google Slides:</b> insert the clip as a video on a slide, set it to play automatically and loop, and type your text on top. Handy for church screens and classroom displays.</li>
+</ul>
+
+<h2>Where to put the text</h2>
+<ul>
+<li><b>Use the empty space.</b> The northern lights clip has open sky at the top, a natural spot for titles. The snow globe works best with text above or below the globe.</li>
+<li><b>Keep vertical videos clear of the edges.</b> TikTok and Reels cover the bottom and right side with buttons and captions, so keep important text in the upper two thirds and away from the right edge.</li>
+<li><b>One main line.</b> A greeting reads best with one big line and one or two small ones. Long paragraphs are hard to read in a few seconds.</li>
+</ul>
+
+<h2>Wording ideas</h2>
+<ul>
+<li><i>Merry Christmas & a Happy New Year. With love, the Chen family</i></li>
+<li><i>Season’s Greetings from all of us at Maple Street Bakery</i></li>
+<li><i>You’re invited: Winter Concert, Saturday, December 20, 7:00 PM</i></li>
+<li><i>Thank you for a wonderful year. See you in 2027!</i></li>
+<li><i>Thanks for watching. New videos every Friday</i></li>
+</ul>
+
+<h2>More ideas with the same clips</h2>
+<ul>
+<li><b>Event invitations:</b> concerts, parties and church programs. Add the date, time and place in the small lines.</li>
+<li><b>YouTube intros and end screens:</b> a calm moving background behind your channel name or a Subscribe button.</li>
+<li><b>Livestream screens:</b> see our guide to <a href="/guides/starting-soon-screen/">making a “starting soon” screen</a>.</li>
+<li><b>Church and classroom screens:</b> see <a href="/guides/church-led-wall-backgrounds/">backgrounds for church LED walls</a>.</li>
+<li><b>Countdowns:</b> for New Year’s Eve, use the <a href="/clip/new-year-countdown-10-to-1/">New Year countdown</a>, also available as a <a href="/clip/new-year-countdown-10-to-1-9x16/">vertical version</a>.</li>
+</ul>
+
+<h2>A note about music</h2>
+<p>Music makes a greeting feel complete, but not every song is free to use. If you post publicly, use the music library inside TikTok, Instagram or CapCut, or a track marked free to use. For ads, use your platform’s commercial music library. For a private message to family, any song you like is usually fine.</p>
+
+<h2>Using our clips</h2>
+<p>All clips on Telar Clips are free for personal and commercial use, including business greetings and ads. Credit is appreciated but not required. See <a href="/guides/free-video-backgrounds-license/">what “free to use” means for video backgrounds</a>.</p>
+'''),
+
+dict(
  slug='green-screen-capcut',
  title='How to Use a Green Screen Video in CapCut (Step by Step)',
  desc='A simple guide to removing the green from a green screen clip in CapCut on your phone or computer, with tips for clean edges and free clips to practice with.',
