@@ -14,6 +14,8 @@ CLIPS = json.load(open(os.path.join(ROOT, 'data', 'clips.json')))
 E = lambda s: html.escape(str(s), quote=True)
 URL = CFG['site_url'].rstrip('/')
 MEDIA = CFG['media_base']
+# a clip replaced in R2 gets "v": 2 (3, ...) in clips.json, so the download link changes and Cloudflare's cached copy isn't served
+def media_url(c): return MEDIA + c['file'] + (f"?v={c['v']}" if c.get('v') else '')
 NAME = CFG['site_name']
 
 CAT_ORDER = ['World Celebrations', 'Illustrated Scenes', 'Christmas & New Year', 'Green Screen', 'Bokeh Lights', 'Gradients', 'Overlays',
@@ -248,7 +250,7 @@ HOWTO = {
 def jsonld(c):
     d = {"@context": "https://schema.org", "@type": "VideoObject", "name": c['title'], "description": c['description'],
          "thumbnailUrl": [f"{URL}/media/poster/{c['id']}.webp"], "uploadDate": CFG['launch_date'],
-         "duration": f"PT{int(round(c['duration']))}S", "contentUrl": MEDIA + c['file'],
+         "duration": f"PT{int(round(c['duration']))}S", "contentUrl": media_url(c),
          "isFamilyFriendly": True, "keywords": ', '.join(c['tags']),
          "creator": {"@type": "Organization", "name": CFG['studio']},
          "license": URL + "/license/"}
@@ -301,7 +303,7 @@ def clip_page(c):
     <p class="preview-note muted">Preview is lower quality. The download is the full {res} file.</p>
     <h1>{E(c["title"])}</h1>
     <div class="badges badges-inline">{badges(c)}{"" if c["category"] == "Green Screen" else f'<span class="badge">{E(c["category"])}</span>'}</div>
-    <a class="btn btn-big mobile-dl" href="{E(MEDIA + c["file"])}" data-download="{E(c["file"])}" download>Download free MP4</a>
+    <a class="btn btn-big mobile-dl" href="{E(media_url(c))}" data-download="{E(c["file"])}" download>Download free MP4</a>
     <p class="lead">{E(c["description"])}</p>
     {f'<p class="callout-stories">📖 Mira and Mochi star in <a href="{STORIES_URL}"><i>Mira and the Rainy Day</i> on Telar Stories</a>. Make a narrated story video with them, free.</p>' if c["id"] == MIRA_CLIP and CFG.get("stories_live") else ""}
     <h2>Good for</h2>
@@ -314,7 +316,7 @@ def clip_page(c):
   </div>
   <aside class="clip-side">
     <div class="panel">
-      <a class="btn btn-big" href="{E(MEDIA + c["file"])}" data-download="{E(c["file"])}" download>
+      <a class="btn btn-big" href="{E(media_url(c))}" data-download="{E(c["file"])}" download>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Download free MP4</a>
       <table class="spec">{''.join(f'<tr><th>{a}</th><td>{b}</td></tr>' for a, b in spec)}</table>

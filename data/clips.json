@@ -4262,7 +4262,8 @@
     "loop": true,
     "green_screen": false,
     "fps": 30,
-    "batch": 6
+    "batch": 6,
+    "v": 2
   },
   {
     "id": "northern-lights-snowy-mountains-loop-9x16",
@@ -4292,7 +4293,8 @@
     "loop": true,
     "green_screen": false,
     "fps": 30,
-    "batch": 6
+    "batch": 6,
+    "v": 2
   },
   {
     "id": "frosty-window-frame-overlay-loop",
