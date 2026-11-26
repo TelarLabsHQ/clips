@@ -173,7 +173,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
 <header class="top">
   <div class="wrap top-in">
     <span class="tl-wrap"><a class="logo" href="/">{LOGO}<span>{E(NAME)}</span></a><a class="tl-by" href="https://telarlabs.net" title="Telar Labs home"><span>by </span>Telar Labs</a><style>.tl-wrap{{display:flex;align-items:center;min-width:0}}.tl-by{{margin-left:10px;font-size:13px;font-weight:500;line-height:1;color:inherit;opacity:.65;text-decoration:none;white-space:nowrap;flex:none}}.tl-by:hover{{opacity:1;text-decoration:underline}}@media(max-width:560px){{.tl-wrap{{flex-direction:column;align-items:flex-start}}.tl-by{{margin:3px 0 0;font-size:11.5px}}}}</style></span>
-    <nav class="nav">{nav}<a href="/make/greeting-video/">Make a video</a><a href="/guides/">Guides</a><a href="/how-to-use/">How to use</a></nav>
+    <nav class="nav">{nav}<a href="/guides/">Guides</a><a href="/how-to-use/">How to use</a></nav>
     <a class="btn btn-sm" href="/#browse">Browse all</a>
   </div>
 </header>
@@ -318,7 +318,6 @@ def clip_page(c):
     {f'<p class="callout-stories">📖 Mira and Mochi star in <a href="{STORIES_URL}"><i>Mira and the Rainy Day</i> on Telar Stories</a>. Make a narrated story video with them, free.</p>' if c["id"] == MIRA_CLIP and CFG.get("stories_live") else ""}
     <h2>Good for</h2>
     <p>{E(c["uses"])}.</p>
-    {f'<p class="callout-stories">🎬 Add your message to this background and download a greeting video in seconds: <a href="/make/greeting-video/?bg={c["id"].replace("-9x16","")}">open it in the greeting video maker</a>.</p>' if c["id"].replace("-9x16","") in MAKER_IDS else ""}
     {X.ideas_html(c, k)}
     {X.colors_html(c, os.path.join(PUB, 'media', 'poster', c['id'] + '.webp'), k)}
     <h2>{h}</h2>
@@ -398,8 +397,6 @@ def home():
   {grid([c for c in CLIPS if c.get('illustrated')][:8])}
 </section>
 <section class="wrap section">
-  <div class="mk-promo"><div><h2>New: greeting video maker</h2><p class="muted">Type your Christmas, New Year or birthday message on a moving background and download an MP4. Free, right in your browser.</p></div><a class="btn" href="/make/greeting-video/">Make a greeting video</a></div>
-  <style>.mk-promo{{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(120deg,#2a1d10,#1a1720);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin-bottom:22px}}.mk-promo h2{{margin:0 0 4px}}.mk-promo p{{margin:0}}</style>
   {stories_card()}
 </section>
 {ad("home_grid", "wrap ad")}
@@ -574,17 +571,10 @@ def static_pages():
 <li>Exports look best at 1080p and 30 fps, the same as our clips.</li></ul>
 <p>Want step-by-step projects? See our <a href="/guides/">guides</a>, like <a href="/guides/green-screen-capcut/">green screens in CapCut</a> and <a href="/guides/birthday-greeting-video/">a birthday greeting in 1 minute</a>. Still stuck? <a href="/contact/">Send us a message</a>.</p>''')
 
-import maker as MK
-MAKER_IDS = {b[0] for b in MK.BGS}
-def maker_page():
-    page('/make/greeting-video/', 'Free Greeting Video Maker – Christmas, New Year & Birthday Videos (MP4)',
-         'Make a free greeting video online: pick a moving Christmas, New Year, birthday or thank-you background, type your message and download an MP4 for Facebook, TikTok, Reels or WhatsApp. No sign-up.',
-         MK.body(JSV) + MK.TEXT, MK.HEAD, URL + '/media/poster/snowy-christmas-tree-forest-night-loop.webp')
-
 def extras():
     os.makedirs(os.path.join(PUB, 'assets'), exist_ok=True)
     open(os.path.join(PUB, 'favicon.svg'), 'w').write(LOGO.replace('class="logo-mark" ', 'xmlns="http://www.w3.org/2000/svg" ').replace('var(--accent)', '#ffb547'))
-    urls = ['/', '/make/greeting-video/', '/how-to-use/', '/guides/'] + [f'/guides/{g["slug"]}/' for g in GUIDES] + ['/about/', '/license/', '/privacy/', '/contact/'] + [f'/category/{slug(c)}/' for c in CATS] + [f'/clip/{c["id"]}/' for c in CLIPS]
+    urls = ['/', '/how-to-use/', '/guides/'] + [f'/guides/{g["slug"]}/' for g in GUIDES] + ['/about/', '/license/', '/privacy/', '/contact/'] + [f'/category/{slug(c)}/' for c in CATS] + [f'/clip/{c["id"]}/' for c in CLIPS]
     open(os.path.join(PUB, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
         ''.join(f'<url><loc>{URL}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     open(os.path.join(PUB, 'robots.txt'), 'w').write(f'User-agent: *\nDisallow: /*?q=\nDisallow: /cdn-cgi/\n\nUser-agent: Mediapartners-Google\nAllow: /\n\nSitemap: {URL}/sitemap.xml\n')
@@ -598,7 +588,7 @@ def extras():
 if __name__ == '__main__':
     for d in ('clip', 'category', 'about', 'contact', 'license', 'privacy', 'how-to-use'):
         shutil.rmtree(os.path.join(PUB, d), ignore_errors=True)
-    home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); maker_page(); extras()
+    home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); extras()
     print(f'Built {len(CLIPS)} clip pages, {len(CATS)} categories into public/')
 
     # AdSense: no ad code on error, contact and legal pages (no publisher content)
