@@ -12,15 +12,20 @@ BGS = [  # id, short title, occasions it suits, has a native 9:16 copy
  ('northern-lights-snowy-mountains-loop', 'Northern lights', 'xmas ny', True),
  ('new-year-fireworks-city-loop', 'City fireworks', 'ny congrats', False),
  ('champagne-gold-bubbles-rising-loop', 'Champagne bubbles', 'ny congrats bday', False),
- ('gold-silver-new-year-confetti-loop', 'New Year confetti', 'ny congrats', False),
+ ('gold-silver-new-year-confetti-loop', 'New Year confetti', 'ny congrats grad', False),
  ('birthday-balloons-rising-loop', 'Birthday balloons', 'bday', False),
- ('celebration-confetti-loop', 'Confetti', 'bday congrats', False),
+ ('celebration-confetti-loop', 'Confetti', 'bday congrats grad', False),
  ('floating-hearts-loop', 'Floating hearts', 'love thanks bday', False),
- ('golden-bokeh-lights-loop', 'Golden bokeh', 'thanks congrats ny bday love xmas', False),
- ('golden-sunset-clouds-loop', 'Golden sunset', 'thanks love', False),
+ ('golden-bokeh-lights-loop', 'Golden bokeh', 'thanks congrats ny bday love xmas grad', False),
+ ('golden-sunset-clouds-loop', 'Golden sunset', 'thanks love grad', False),
+ ('navy-gold-graduation-bokeh-loop', 'Navy and gold', 'grad congrats', False),
+ ('chinese-red-lanterns-lunar-new-year-loop', 'Red lanterns', 'lny', False),
+ ('lunar-new-year-red-gold-fireworks-loop', 'Red and gold fireworks', 'lny ny', False),
+ ('lunar-new-year-gold-coins-falling-loop', 'Falling gold coins', 'lny', False),
+ ('red-gold-lunar-new-year-bokeh-loop', 'Red and gold bokeh', 'lny', False),
 ]
 
-LANGS = [('en', 'English'), ('fil', 'Filipino'), ('es', 'Español'), ('fr', 'Français'), ('de', 'Deutsch')]
+LANGS = [('en', 'English'), ('fil', 'Filipino'), ('es', 'Español'), ('fr', 'Français'), ('de', 'Deutsch'), ('zh', '中文')]
 OCC = [  # key, chip, [(language, greeting, message)]; the first is the default
  ('xmas', '🎄 Christmas', [
    ('en', 'Merry Christmas!', 'Wishing you peace, joy and love this season and all year long.'),
@@ -37,6 +42,15 @@ OCC = [  # key, chip, [(language, greeting, message)]; the first is the default
  ('bday', '🎂 Birthday', [('en', 'Happy Birthday!', 'Wishing you a wonderful year ahead, full of laughter and love.')]),
  ('thanks', '🙏 Thank you', [('en', 'Thank You!', 'We’re so grateful for your kindness and support.')]),
  ('congrats', '🎉 Congratulations', [('en', 'Congratulations!', 'So proud of you. Here’s to your next adventure!')]),
+ ('lny', '🏮 Lunar New Year', [
+   ('en', 'Happy Lunar New Year!', 'Wishing you health, luck and happiness in the Year of the {ANIMAL}.'),
+   ('zh', '新年快乐！', '恭喜发财，万事如意！')]),
+ ('grad', '🎓 Graduation', [
+   ('en', 'Congratulations, Graduate!', 'So proud of you, Class of {GRADY}. The best is yet to come!'),
+   ('fil', 'Maligayang Pagtatapos!', 'Ipinagmamalaki ka namin. Simula pa lang ito ng iyong tagumpay!'),
+   ('es', '¡Felicidades, graduado!', 'Estamos muy orgullosos de ti. ¡Lo mejor está por venir!'),
+   ('fr', 'Félicitations, diplômé !', 'Nous sommes si fiers de toi. Le meilleur reste à venir !'),
+   ('de', 'Herzlichen Glückwunsch zum Abschluss!', 'Wir sind so stolz auf dich. Das Beste kommt noch!')]),
  ('love', '💗 Love', [('en', 'With Love', 'You make every day brighter.')]),
 ]
 
@@ -52,7 +66,7 @@ def body(V):
 <section class="wrap mk">
   <p class="crumb"><a href="/">Telar Clips</a> › Greeting video maker</p>
   <h1>Greeting video maker</h1>
-  <p class="lead">Put your message on a moving Christmas, New Year, birthday or thank-you background and download it as an MP4. Free, no sign-up, made right on your device.</p>
+  <p class="lead">Put your message on a moving Christmas, New Year, Lunar New Year, graduation, birthday or thank-you background and download it as an MP4. Free, no sign-up, made right on your device.</p>
   <div class="mk-grid">
     <div class="mk-stage"><div class="mk-frame" id="frame"><canvas id="cv" width="1920" height="1080"></canvas></div>
       <div class="mk-row"><button class="btn btn-sm" id="play" type="button">❚❚ Pause</button><span class="muted" id="info"></span></div></div>
@@ -99,11 +113,15 @@ def body(V):
 (function(){{
 var BGS={bgs},OCC={occ},LANG={langs},V={json.dumps(V)};
 var $=function(s){{return document.querySelector(s)}},$$=function(s){{return [].slice.call(document.querySelectorAll(s))}};
-var FONTS={{serif:['700','Playfair Display',1],script:['400','Great Vibes',1.25],sans:['800','Poppins',.95],fun:['800','Baloo 2',1.05]}};
+var FONTS={{serif:['700','Playfair Display',1,'serif'],script:['400','Great Vibes',1.25,'cursive'],sans:['800','Poppins',.95,'sans-serif'],fun:['800','Baloo 2',1.05,'sans-serif']}};
 var COLS=[['#ffffff','White'],['#ffe3a3','Gold'],['#fff4dc','Cream'],['#ff6b6b','Red'],['#9ee6b5','Mint'],['#1d1b24','Dark']];
 var q=new URLSearchParams(location.search),S={{occ:'xmas',lang:'en',bg:null,font:'serif',pos:'mid',col:'#ffe3a3',shape:'h',len:15,badge:true,edited:false}};
 // first visit: start on the occasion of the season (Nov 1–Dec 26 Christmas, Dec 27–Jan 15 New Year, Feb 1–14 Love, otherwise Birthday)
-function seasonal(d){{d=d||new Date();var m=d.getMonth()+1,x=d.getDate();if(m===11||(m===12&&x<=26))return 'xmas';if((m===12&&x>=27)||(m===1&&x<=15))return 'ny';if(m===2&&x<=14)return 'love';return 'bday'}}
+var LNY={{2027:'02-06',2028:'01-26',2029:'02-13',2030:'02-03',2031:'01-23',2032:'02-11',2033:'01-31',2034:'02-19',2035:'02-08'}};
+function seasonal(d){{d=d||new Date();var m=d.getMonth()+1,x=d.getDate(),l=LNY[d.getFullYear()];
+ if(m===2&&x>=12&&x<=14)return 'love';
+ if(l){{var t=new Date(d.getFullYear()+'-'+l+'T12:00:00'),diff=(d-t)/864e5;if(diff>=-14&&diff<=7)return 'lny'}}
+ if(m===11||(m===12&&x<=26))return 'xmas';if((m===12&&x>=27)||(m===1&&x<=15))return 'ny';if(m===2&&x<=14)return 'love';if(m>=4&&m<=7)return 'grad';return 'bday'}}
 var sv=null;try{{sv=JSON.parse(localStorage.getItem('tcMaker')||'null');if(sv)for(var k in sv)S[k]=sv[k]}}catch(e){{}}
 if(!sv){{var qd=q.get('date');S.occ=seasonal(qd?new Date(qd+'T12:00:00'):null)}}
 if(q.get('bg')&&BGS.some(function(b){{return b.id===q.get('bg')}}))S.bg=q.get('bg');
@@ -112,17 +130,18 @@ if(S.occ==='pasko'){{S.occ='xmas';S.lang='fil'}}if(!S.lang)S.lang='en';
 var cv=$('#cv'),cx=cv.getContext('2d'),vid=$('#vid'),playing=true,t0=performance.now(),busy=false;
 function save(){{try{{localStorage.setItem('tcMaker',JSON.stringify(S))}}catch(e){{}}}}
 function occO(){{return OCC.filter(function(o){{return o.k===S.occ}})[0]||OCC[0]}}
-function occ(){{var o=occO(),v=o.v.filter(function(x){{return x.c===S.lang}})[0]||o.v[0];var d=new Date(),y=String(d.getMonth()>=10?d.getFullYear()+1:d.getFullYear());return {{k:o.k,l:o.l,h:v.h.replace('2027',y),m:v.m.replace('2027',y)}}}}
+function occ(){{var o=occO(),v=o.v.filter(function(x){{return x.c===S.lang}})[0]||o.v[0];var d=new Date(),y=String(d.getMonth()>=10?d.getFullYear()+1:d.getFullYear()),ly=d.getMonth()>=2?d.getFullYear()+1:d.getFullYear(),an=['Rat','Ox','Tiger','Rabbit','Dragon','Snake','Horse','Goat','Monkey','Rooster','Dog','Pig'][((ly-2020)%12+12)%12];
+ function f(t){{return t.replace('2027',y).replace('{{ANIMAL}}',an).replace('{{GRADY}}',String(d.getFullYear()))}}return {{k:o.k,l:o.l,h:f(v.h),m:f(v.m)}}}}
 function setText(){{if(!S.edited||confirmReplace()){{var o=occ();$('#tH').value=o.h;$('#tM').value=o.m;S.edited=false}}}}
 function dims(){{return S.shape==='v'?[1080,1920]:S.shape==='sq'?[1080,1080]:[1920,1080]}}
 function srcOf(id){{var b=BGS.filter(function(x){{return x.id===id}})[0];return '/media/maker/'+id+(S.shape==='v'&&b&&b.v?'-9x16':'')+'.mp4?v='+V}}
 function setBg(){{var u=srcOf(S.bg);if(vid.getAttribute('src')!==u){{vid.src=u;vid.load();if(playing&&!busy)vid.play().catch(function(){{}})}}}}
 function drawChips(){{drawLang();$('#occ').innerHTML=OCC.map(function(o){{return '<button type="button" data-o="'+o.k+'" aria-pressed="'+(o.k===S.occ)+'">'+o.l+'</button>'}}).join('');
- $$('#occ button').forEach(function(b){{b.onclick=function(){{S.occ=b.dataset.o;setText();var l=sorted();if(!l.slice(0,6).some(function(x){{return x.id===S.bg}}))S.bg=l[0].id;drawChips();drawBgs();setBg();save()}}}})}}
+ $$('#occ button').forEach(function(b){{b.onclick=function(){{S.occ=b.dataset.o;setText();var l=sorted();var cb=BGS.filter(function(x){{return x.id===S.bg}})[0];if(!cb||cb.o.indexOf(S.occ)<0)S.bg=l[0].id;drawChips();drawBgs();setBg();save()}}}})}}
 function drawLang(){{var o=occO(),el=$('#lang');el.hidden=o.v.length<2;el.innerHTML=o.v.length<2?'':'<span class="muted small" style="align-self:center">Language:</span>'+o.v.map(function(v){{return '<button type="button" data-l="'+v.c+'" aria-pressed="'+(v.c===(o.v.some(function(x){{return x.c===S.lang}})?S.lang:o.v[0].c))+'">'+LANG[v.c]+'</button>'}}).join('');
  $$('#lang button').forEach(function(b){{b.onclick=function(){{S.lang=b.dataset.l;setText();drawLang();save()}}}})}}
 function confirmReplace(){{return window.confirm('Replace your message with the '+occ().l.replace(/^\\S+ /,'')+' greeting?')}}
-var PREF={{xmas:'snowy-christmas-tree-forest-night-loop',ny:'new-year-fireworks-city-loop',bday:'birthday-balloons-rising-loop',thanks:'golden-sunset-clouds-loop',congrats:'celebration-confetti-loop',love:'floating-hearts-loop'}};
+var PREF={{lny:'chinese-red-lanterns-lunar-new-year-loop',grad:'navy-gold-graduation-bokeh-loop',xmas:'snowy-christmas-tree-forest-night-loop',ny:'new-year-fireworks-city-loop',bday:'birthday-balloons-rising-loop',thanks:'golden-sunset-clouds-loop',congrats:'celebration-confetti-loop',love:'floating-hearts-loop'}};
 function sorted(){{var p=PREF[S.occ];return BGS.slice().sort(function(a,b){{return ((b.o.indexOf(S.occ)>=0)-(a.o.indexOf(S.occ)>=0))||((b.id===p)-(a.id===p))}})}}
 function drawBgs(){{$('#bgs').innerHTML=sorted().map(function(b){{return '<button type="button" data-b="'+b.id+'" aria-pressed="'+(b.id===S.bg)+'" title="'+b.t+'"><img src="/media/poster/'+b.id+'.webp" alt="" loading="lazy"><span>'+b.t+'</span></button>'}}).join('');
  $$('#bgs button').forEach(function(b){{b.onclick=function(){{S.bg=b.dataset.b;drawBgs();setBg();save()}}}})}}
@@ -135,7 +154,7 @@ function frame(ctx,W,H,t,total){{
  if(vid.readyState>=2){{var vw=vid.videoWidth,vh=vid.videoHeight,k=Math.max(W/vw,H/vh),sw=W/k,sh=H/k;ctx.drawImage(vid,(vw-sw)/2,(vh-sh)/2,sw,sh,0,0,W,H)}}
  var m=Math.min(W,H),f=FONTS[S.font],dark=S.col==='#1d1b24',hS=Math.round(m*.115*f[2]),mS=Math.round(m*.047),fS=Math.round(m*.04),maxW=W*.84;
  ctx.textAlign='center';ctx.textBaseline='alphabetic';
- ctx.font=f[0]+' '+hS+'px "'+f[1]+'"';var hl=wrap(ctx,$('#tH').value,maxW);
+ ctx.font=f[0]+' '+hS+'px "'+f[1]+'", '+f[3];var hl=wrap(ctx,$('#tH').value,maxW);
  ctx.font='500 '+mS+'px Inter, sans-serif';var ml=wrap(ctx,$('#tM').value,maxW*.92);
  var fr=$('#tF').value.trim(),gap=m*.035,hLH=hS*1.12,mLH=mS*1.35;
  var blockH=hl.length*hLH+(ml.length?gap+ml.length*mLH:0)+(fr?gap+fS*1.3:0);
@@ -145,7 +164,7 @@ function frame(ctx,W,H,t,total){{
  ctx.globalAlpha=ease(t/1.2);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
  var shadow=dark?'rgba(255,255,255,.65)':'rgba(0,0,0,.6)';
  function line(txt,y,font,size,start,col){{var a=ease((t-start)/.9);if(a<=0)return;ctx.globalAlpha=a;ctx.font=font;ctx.fillStyle=col;ctx.shadowColor=shadow;ctx.shadowBlur=size*.25;ctx.shadowOffsetY=size*.04;ctx.fillText(txt,W/2,y+(1-a)*size*.5);ctx.shadowBlur=0;ctx.shadowOffsetY=0}}
- var y=top;hl.forEach(function(l,i){{y+=hLH;line(l,y-hLH*.18,f[0]+' '+hS+'px "'+f[1]+'"',hS,.3+i*.15,S.col)}});
+ var y=top;hl.forEach(function(l,i){{y+=hLH;line(l,y-hLH*.18,f[0]+' '+hS+'px "'+f[1]+'", '+f[3],hS,.3+i*.15,S.col)}});
  if(ml.length){{y+=gap;ml.forEach(function(l,i){{y+=mLH;line(l,y-mLH*.25,'500 '+mS+'px Inter, sans-serif',mS,1.1+i*.12,dark?'#1d1b24':'#ffffff')}})}}
  if(fr){{y+=gap+fS*1.3;line(fr,y-fS*.3,'italic 600 '+fS+'px Inter, sans-serif',fS,1.8,S.col)}}
  if(S.badge){{ctx.globalAlpha=.78;var bs=Math.round(m*.022);ctx.font='600 '+bs+'px Inter, sans-serif';ctx.textAlign='right';ctx.fillStyle='#fff';ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=bs*.4;
@@ -207,7 +226,7 @@ $('#go').onclick=async function(){{if(busy)return;var d=dims(),total=S.len,b=thi
 TEXT = '''
 <section class="wrap prose" style="margin-top:34px">
 <h2>How to make a greeting video</h2>
-<ol><li><b>Pick the occasion.</b> Christmas, New Year, birthday, thank you, congratulations or love. It fills in a greeting you can change. Christmas and New Year greetings also come in Filipino, Spanish, French and German.</li>
+<ol><li><b>Pick the occasion.</b> Christmas, New Year, Lunar New Year, graduation, birthday, thank you, congratulations or love. It fills in a greeting you can change. Christmas, New Year and graduation greetings also come in Filipino, Spanish, French and German, and Lunar New Year in Chinese.</li>
 <li><b>Choose a background.</b> Moving snow, lights, fireworks, balloons, hearts and more, from the Telar Clips library.</li>
 <li><b>Type your message</b> and who it’s from.</li>
 <li><b>Style it:</b> font, color and where the text sits.</li>

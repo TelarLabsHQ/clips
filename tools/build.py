@@ -577,8 +577,8 @@ def static_pages():
 import maker as MK
 MAKER_IDS = {b[0] for b in MK.BGS}
 def maker_page():
-    page('/make/greeting-video/', 'Free Greeting Video Maker – Christmas, New Year & Birthday Videos (MP4)',
-         'Make a free greeting video online: pick a moving Christmas, New Year, birthday or thank-you background, type your message and download an MP4 for Facebook, TikTok, Reels or WhatsApp. No sign-up.',
+    page('/make/greeting-video/', 'Free Greeting Video Maker – Christmas, New Year, Graduation & Birthday Videos (MP4)',
+         'Make a free greeting video online: pick a moving Christmas, New Year, Lunar New Year, graduation, birthday or thank-you background, type your message and download an MP4 for Facebook, TikTok, Reels or WhatsApp. No sign-up.',
          MK.body(JSV) + MK.TEXT.replace('__AD__', ad('maker_text')), MK.HEAD, URL + '/media/poster/snowy-christmas-tree-forest-night-loop.webp')
 
 def extras():
