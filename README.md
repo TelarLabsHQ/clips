@@ -59,6 +59,7 @@ From now on, every change you push to GitHub rebuilds the site automatically.
 4. After approval, keep **Auto ads OFF**. Create **Display ad units** and paste each unit's `data-ad-slot` number into `ad_slots`:
    - `home_grid`: one ad between the Pasko row and the full list on the homepage.
    - `list_grid`: ads after every 12 clips in long lists.
+   - `maker_text`: one ad in the guide text below the greeting video maker (never inside the tool).
    - `clip_below_download`: under the download box on each clip page.
 
    Ads only appear once both the client ID and a slot number are set.

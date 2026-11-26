@@ -192,6 +192,7 @@ TEXT = '''
 <li><b>Type your message</b> and who it’s from.</li>
 <li><b>Style it:</b> font, color and where the text sits.</li>
 <li><b>Pick a shape and length,</b> then tap <b>Download MP4</b>. The video is made on your phone or computer in a few seconds, and nothing is uploaded.</li></ol>
+__AD__
 <h2>Which shape should I choose?</h2>
 <ul><li><b>Portrait 9:16</b> for Facebook and Instagram Stories, TikTok, Reels, YouTube Shorts and WhatsApp Status.</li>
 <li><b>Square 1:1</b> for Facebook and Instagram posts and group chats.</li>
