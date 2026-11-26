@@ -1,7 +1,10 @@
 """Extra, clip-specific content for each clip page: colors taken from the clip itself, text ideas that fit
 its theme, a link to the other orientation, clips that pair well with it, and quick answers."""
 import os, re, hashlib, colorsys, html
-from PIL import Image
+try:
+    from PIL import Image   # only needed to read new poster colors; the Cloudflare build uses the saved data/clip_colors.json
+except ImportError:
+    Image = None
 
 E = html.escape
 
@@ -77,7 +80,29 @@ def center_lum(im):
     c = im.crop((w // 4, h // 3, 3 * w // 4, 2 * h // 3)).resize((1, 1), Image.Resampling.BOX).getpixel((0, 0))
     return _lum(c)
 
+_CC_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'clip_colors.json')
+try:
+    import json as _json; _CC = _json.load(open(_CC_PATH))
+except Exception:
+    _CC = {}
+_CC_NEW = {}
+
 def colors_html(c, poster, k):
+    if k == 'green' or not os.path.exists(poster): return ''
+    key = c['id'] + ':' + k + ':' + hashlib.md5(open(poster, 'rb').read()).hexdigest()[:10]
+    if Image is None:
+        out = _CC.get(key, '')
+    else:
+        out = _CC[key] if key in _CC else _colors_html(c, poster, k)
+    _CC_NEW[key] = out
+    return out
+
+def save_colors():
+    if Image is None: return   # nothing new could be computed
+    import json as _json
+    if _CC_NEW != _CC: open(_CC_PATH, 'w').write(_json.dumps(_CC_NEW, indent=0, ensure_ascii=False, sort_keys=True) + '\n')
+
+def _colors_html(c, poster, k):
     if k == 'green' or not os.path.exists(poster): return ''
     pal, im = palette(poster, skip_dark=(k == 'overlay'))
     if not pal: return ''

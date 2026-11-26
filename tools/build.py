@@ -588,7 +588,7 @@ def extras():
 if __name__ == '__main__':
     for d in ('clip', 'category', 'about', 'contact', 'license', 'privacy', 'how-to-use'):
         shutil.rmtree(os.path.join(PUB, d), ignore_errors=True)
-    home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); extras()
+    home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); extras(); X.save_colors()
     print(f'Built {len(CLIPS)} clip pages, {len(CATS)} categories into public/')
 
     # AdSense: no ad code on error, contact and legal pages (no publisher content)
