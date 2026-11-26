@@ -68,6 +68,7 @@ CAT_TIPS = {
 }
 
 import hashlib as _h
+JSV = _h.md5(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'public', 'assets', 'site.js'), 'rb').read()).hexdigest()[:8]
 CSSV = _h.md5(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'public', 'assets', 'site.css'), 'rb').read()).hexdigest()[:8]
 
 # ---------------------------------------------------------------- Telar Labs family links
@@ -141,7 +142,9 @@ def page(path, title, desc, body, extra_head='', og_image=None):
     full_title = title if title.endswith(NAME) else f'{title} | {NAME}'
     og = og_image or URL + '/media/poster/golden-bokeh-lights-loop.webp'
     ads = (f'<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={E(CFG["adsense_client"])}" '
-           'crossorigin="anonymous"></script>') if CFG['adsense_client'] else ''
+           'crossorigin="anonymous" onerror="window.tcAdBlocked=1"></script>') if CFG['adsense_client'] else ''
+    # soft note at download time for ad-blocker users ("adblock_note" in site.config.json; turn on only once AdSense ads are live)
+    if CFG['adsense_client'] and CFG.get('adblock_note'): ads += '<script>window.tcAdNote=1</script>'
     cfa = (f'<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon=\'{{"token": "{E(CFG["cloudflare_analytics_token"])}"}}\'></script>'
            if CFG['cloudflare_analytics_token'] else '')
     nav = ''.join(f'<a href="/category/{slug(c)}/">{E(c.replace(" & New Year", "").replace(" & Events", "").replace(" & Abstract", "").replace("World ", ""))}</a>'
@@ -191,7 +194,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
   </div>
   {family_row()}<div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. Motion graphics and illustrated scenes by {E(CFG["studio"])}.</div>
 </footer>
-<script src="/assets/site.js" defer></script>
+<script src="/assets/site.js?v={JSV}" defer></script>
 {cfa}
 </body>
 </html>'''

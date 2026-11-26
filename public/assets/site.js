@@ -57,6 +57,27 @@
       var label = a.lastChild, old = label.textContent;
       label.textContent = ' Download starting…';
       setTimeout(function () { label.textContent = old; }, 4000);
+      adNote();
     });
   });
+
+  // A soft note for visitors who block ads, shown once per visit when they download. It never stops the download.
+  // Off until AdSense ads are live: build.py sets window.tcAdNote from "adblock_note" in site.config.json.
+  function adBlocked() {
+    if (window.tcAdBlocked) return true;
+    var ins = document.querySelector('ins.adsbygoogle');
+    return !!(ins && (ins.offsetHeight === 0 || getComputedStyle(ins).display === 'none') && ins.getAttribute('data-ad-status') !== 'unfilled');
+  }
+  function adNote() {
+    if (!window.tcAdNote) return;
+    try { if (sessionStorage.getItem('tcAdNote')) return; } catch (e) {}
+    setTimeout(function () {
+      if (!adBlocked() || document.querySelector('.adnote')) return;
+      try { sessionStorage.setItem('tcAdNote', '1'); } catch (e) {}
+      var n = document.createElement('div'); n.className = 'adnote'; n.setAttribute('role', 'status');
+      n.innerHTML = '<span class="adnote-i">💛</span><div><b>Your download is starting.</b><span>Telar Clips stays free thanks to ads. If you can, please allow ads on this site.</span></div><button type="button" aria-label="Close">OK</button>';
+      n.querySelector('button').onclick = function () { n.remove(); };
+      document.body.appendChild(n); setTimeout(function () { if (n.parentNode) n.remove(); }, 14000);
+    }, 1200);
+  }
 })();
