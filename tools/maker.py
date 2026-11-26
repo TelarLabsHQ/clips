@@ -20,14 +20,24 @@ BGS = [  # id, short title, occasions it suits, has a native 9:16 copy
  ('golden-sunset-clouds-loop', 'Golden sunset', 'thanks love', False),
 ]
 
-OCC = [
- ('xmas', '🎄 Christmas', 'Merry Christmas!', 'Wishing you peace, joy and love this season and all year long.'),
- ('pasko', '⭐ Pasko', 'Maligayang Pasko!', 'At Manigong Bagong Taon sa inyong lahat!'),
- ('ny', '🎆 New Year', 'Happy New Year 2027!', 'Cheers to new beginnings, good health and many happy moments.'),
- ('bday', '🎂 Birthday', 'Happy Birthday!', 'Wishing you a wonderful year ahead, full of laughter and love.'),
- ('thanks', '🙏 Thank you', 'Thank You!', 'We’re so grateful for your kindness and support.'),
- ('congrats', '🎉 Congratulations', 'Congratulations!', 'So proud of you. Here’s to your next adventure!'),
- ('love', '💗 Love', 'With Love', 'You make every day brighter.'),
+LANGS = [('en', 'English'), ('fil', 'Filipino'), ('es', 'Español'), ('fr', 'Français'), ('de', 'Deutsch')]
+OCC = [  # key, chip, [(language, greeting, message)]; the first is the default
+ ('xmas', '🎄 Christmas', [
+   ('en', 'Merry Christmas!', 'Wishing you peace, joy and love this season and all year long.'),
+   ('fil', 'Maligayang Pasko!', 'At Manigong Bagong Taon sa inyong lahat!'),
+   ('es', '¡Feliz Navidad!', 'Les deseamos paz, alegría y amor en estas fiestas y todo el año.'),
+   ('fr', 'Joyeux Noël !', 'Paix, joie et amour pour les fêtes et toute l’année.'),
+   ('de', 'Frohe Weihnachten!', 'Frieden, Freude und Liebe für die Feiertage und das ganze Jahr.')]),
+ ('ny', '🎆 New Year', [
+   ('en', 'Happy New Year 2027!', 'Cheers to new beginnings, good health and many happy moments.'),
+   ('fil', 'Manigong Bagong Taon!', 'Nawa’y puno ng biyaya at saya ang 2027.'),
+   ('es', '¡Feliz Año Nuevo 2027!', 'Que el nuevo año traiga salud, amor y alegría.'),
+   ('fr', 'Bonne année 2027 !', 'Santé, bonheur et réussite pour la nouvelle année.'),
+   ('de', 'Frohes neues Jahr 2027!', 'Gesundheit, Glück und Erfolg im neuen Jahr.')]),
+ ('bday', '🎂 Birthday', [('en', 'Happy Birthday!', 'Wishing you a wonderful year ahead, full of laughter and love.')]),
+ ('thanks', '🙏 Thank you', [('en', 'Thank You!', 'We’re so grateful for your kindness and support.')]),
+ ('congrats', '🎉 Congratulations', [('en', 'Congratulations!', 'So proud of you. Here’s to your next adventure!')]),
+ ('love', '💗 Love', [('en', 'With Love', 'You make every day brighter.')]),
 ]
 
 HEAD = ('<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Great+Vibes&family=Poppins:wght@600;800&family=Baloo+2:wght@800&display=swap" rel="stylesheet">'
@@ -36,7 +46,8 @@ HEAD = ('<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:w
 def body(V):
     import json
     bgs = json.dumps([dict(id=i, t=t, o=o.split(), v=v) for i, t, o, v in BGS])
-    occ = json.dumps([dict(k=k, l=l, h=h, m=m) for k, l, h, m in OCC])
+    occ = json.dumps([dict(k=k, l=l, v=[dict(c=c, h=h, m=m) for c, h, m in vs]) for k, l, vs in OCC], ensure_ascii=False)
+    langs = json.dumps(dict(LANGS), ensure_ascii=False)
     return f'''
 <section class="wrap mk">
   <p class="crumb"><a href="/">Telar Clips</a> › Greeting video maker</p>
@@ -46,7 +57,7 @@ def body(V):
     <div class="mk-stage"><div class="mk-frame" id="frame"><canvas id="cv" width="1920" height="1080"></canvas></div>
       <div class="mk-row"><button class="btn btn-sm" id="play" type="button">❚❚ Pause</button><span class="muted" id="info"></span></div></div>
     <div class="mk-panel">
-      <div class="mk-step"><h2>1. Occasion</h2><div class="chips" id="occ"></div></div>
+      <div class="mk-step"><h2>1. Occasion</h2><div class="chips" id="occ"></div><div class="chips mk-lang" id="lang"></div></div>
       <div class="mk-step"><h2>2. Background</h2><div class="mk-bgs" id="bgs"></div></div>
       <div class="mk-step"><h2>3. Your message</h2>
         <label>Greeting<input id="tH" maxlength="40"></label>
@@ -76,7 +87,7 @@ def body(V):
 .mk-panel{{display:flex;flex-direction:column;gap:14px}}.mk-step{{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}}.mk-step h2{{font-size:17px;margin:0}}
 .mk label{{display:flex;flex-direction:column;gap:5px;font-weight:600;font-size:14px}}.mk input,.mk textarea,.mk select{{font:inherit;font-size:16px;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:#16131c;color:var(--text);min-width:0;width:100%}}
 .mk-two{{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}}
-.mk .chips{{display:flex;flex-wrap:wrap;gap:8px}}.mk .chips button{{border:1px solid var(--line);background:#16131c;color:var(--text);border-radius:99px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}}.mk .chips button[aria-pressed=true]{{border-color:var(--accent);background:var(--accent);color:#1b1206;font-weight:700}}
+.mk .chips{{display:flex;flex-wrap:wrap;gap:8px}}.mk [hidden]{{display:none!important}}.mk .mk-lang{{margin-top:2px}}.mk .mk-lang button{{padding:5px 11px;font-size:13px}}.mk .chips button{{border:1px solid var(--line);background:#16131c;color:var(--text);border-radius:99px;padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}}.mk .chips button[aria-pressed=true]{{border-color:var(--accent);background:var(--accent);color:#1b1206;font-weight:700}}
 .mk-bgs{{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}}@media(max-width:480px){{.mk-bgs{{grid-template-columns:repeat(3,minmax(0,1fr))}}}}
 .mk-bgs button{{padding:0;border:2px solid transparent;border-radius:9px;overflow:hidden;background:#000;cursor:pointer;position:relative;aspect-ratio:16/9}}.mk-bgs button[aria-pressed=true]{{border-color:var(--accent)}}.mk-bgs img{{width:100%;height:100%;object-fit:cover;display:block}}
 .mk-bgs span{{position:absolute;left:0;right:0;bottom:0;font-size:10px;line-height:1.2;padding:3px 4px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;text-align:left}}
@@ -86,22 +97,27 @@ def body(V):
 </style>
 <script>
 (function(){{
-var BGS={bgs},OCC={occ},V={json.dumps(V)};
+var BGS={bgs},OCC={occ},LANG={langs},V={json.dumps(V)};
 var $=function(s){{return document.querySelector(s)}},$$=function(s){{return [].slice.call(document.querySelectorAll(s))}};
 var FONTS={{serif:['700','Playfair Display',1],script:['400','Great Vibes',1.25],sans:['800','Poppins',.95],fun:['800','Baloo 2',1.05]}};
 var COLS=[['#ffffff','White'],['#ffe3a3','Gold'],['#fff4dc','Cream'],['#ff6b6b','Red'],['#9ee6b5','Mint'],['#1d1b24','Dark']];
-var q=new URLSearchParams(location.search),S={{occ:'xmas',bg:null,font:'serif',pos:'mid',col:'#ffe3a3',shape:'h',len:15,badge:true,edited:false}};
+var q=new URLSearchParams(location.search),S={{occ:'xmas',lang:'en',bg:null,font:'serif',pos:'mid',col:'#ffe3a3',shape:'h',len:15,badge:true,edited:false}};
 try{{var sv=JSON.parse(localStorage.getItem('tcMaker')||'null');if(sv)for(var k in sv)S[k]=sv[k]}}catch(e){{}}
 if(q.get('bg')&&BGS.some(function(b){{return b.id===q.get('bg')}}))S.bg=q.get('bg');
-if(q.get('occ')&&OCC.some(function(o){{return o.k===q.get('occ')}})){{S.occ=q.get('occ');S.edited=false}}
+if(q.get('occ')==='pasko'){{S.occ='xmas';S.lang='fil';S.edited=false}}else if(q.get('occ')&&OCC.some(function(o){{return o.k===q.get('occ')}})){{S.occ=q.get('occ');S.edited=false}}
+if(S.occ==='pasko'){{S.occ='xmas';S.lang='fil'}}if(!S.lang)S.lang='en';
 var cv=$('#cv'),cx=cv.getContext('2d'),vid=$('#vid'),playing=true,t0=performance.now(),busy=false;
 function save(){{try{{localStorage.setItem('tcMaker',JSON.stringify(S))}}catch(e){{}}}}
-function occ(){{return OCC.filter(function(o){{return o.k===S.occ}})[0]||OCC[0]}}
+function occO(){{return OCC.filter(function(o){{return o.k===S.occ}})[0]||OCC[0]}}
+function occ(){{var o=occO(),v=o.v.filter(function(x){{return x.c===S.lang}})[0]||o.v[0];return {{k:o.k,l:o.l,h:v.h,m:v.m}}}}
+function setText(){{if(!S.edited||confirmReplace()){{var o=occ();$('#tH').value=o.h;$('#tM').value=o.m;S.edited=false}}}}
 function dims(){{return S.shape==='v'?[1080,1920]:S.shape==='sq'?[1080,1080]:[1920,1080]}}
 function srcOf(id){{var b=BGS.filter(function(x){{return x.id===id}})[0];return '/media/maker/'+id+(S.shape==='v'&&b&&b.v?'-9x16':'')+'.mp4?v='+V}}
 function setBg(){{var u=srcOf(S.bg);if(vid.getAttribute('src')!==u){{vid.src=u;vid.load();if(playing&&!busy)vid.play().catch(function(){{}})}}}}
-function drawChips(){{$('#occ').innerHTML=OCC.map(function(o){{return '<button type="button" data-o="'+o.k+'" aria-pressed="'+(o.k===S.occ)+'">'+o.l+'</button>'}}).join('');
- $$('#occ button').forEach(function(b){{b.onclick=function(){{S.occ=b.dataset.o;if(!S.edited||confirmReplace()){{var o=occ();$('#tH').value=o.h;$('#tM').value=o.m;S.edited=false}}var l=sorted();if(!l.slice(0,6).some(function(x){{return x.id===S.bg}}))S.bg=l[0].id;drawChips();drawBgs();setBg();save()}}}})}}
+function drawChips(){{drawLang();$('#occ').innerHTML=OCC.map(function(o){{return '<button type="button" data-o="'+o.k+'" aria-pressed="'+(o.k===S.occ)+'">'+o.l+'</button>'}}).join('');
+ $$('#occ button').forEach(function(b){{b.onclick=function(){{S.occ=b.dataset.o;setText();var l=sorted();if(!l.slice(0,6).some(function(x){{return x.id===S.bg}}))S.bg=l[0].id;drawChips();drawBgs();setBg();save()}}}})}}
+function drawLang(){{var o=occO(),el=$('#lang');el.hidden=o.v.length<2;el.innerHTML=o.v.length<2?'':'<span class="muted small" style="align-self:center">Language:</span>'+o.v.map(function(v){{return '<button type="button" data-l="'+v.c+'" aria-pressed="'+(v.c===(o.v.some(function(x){{return x.c===S.lang}})?S.lang:o.v[0].c))+'">'+LANG[v.c]+'</button>'}}).join('');
+ $$('#lang button').forEach(function(b){{b.onclick=function(){{S.lang=b.dataset.l;setText();drawLang();save()}}}})}}
 function confirmReplace(){{return window.confirm('Replace your message with the '+occ().l.replace(/^\\S+ /,'')+' greeting?')}}
 function sorted(){{return BGS.slice().sort(function(a,b){{return (b.o.indexOf(S.occ)>=0)-(a.o.indexOf(S.occ)>=0)}})}}
 function drawBgs(){{$('#bgs').innerHTML=sorted().map(function(b){{return '<button type="button" data-b="'+b.id+'" aria-pressed="'+(b.id===S.bg)+'" title="'+b.t+'"><img src="/media/poster/'+b.id+'.webp" alt="" loading="lazy"><span>'+b.t+'</span></button>'}}).join('');
@@ -187,7 +203,7 @@ $('#go').onclick=async function(){{if(busy)return;var d=dims(),total=S.len,b=thi
 TEXT = '''
 <section class="wrap prose" style="margin-top:34px">
 <h2>How to make a greeting video</h2>
-<ol><li><b>Pick the occasion.</b> Christmas, Pasko, New Year, birthday, thank you, congratulations or love. It fills in a greeting you can change.</li>
+<ol><li><b>Pick the occasion.</b> Christmas, New Year, birthday, thank you, congratulations or love. It fills in a greeting you can change. Christmas and New Year greetings also come in Filipino, Spanish, French and German.</li>
 <li><b>Choose a background.</b> Moving snow, lights, fireworks, balloons, hearts and more, from the Telar Clips library.</li>
 <li><b>Type your message</b> and who it’s from.</li>
 <li><b>Style it:</b> font, color and where the text sits.</li>
