@@ -84,14 +84,17 @@ var $=function(s){return document.querySelector(s)},$$=function(s){return [].sli
 var FONTS={serif:['700','Playfair Display',1],script:['400','Great Vibes',1.25],sans:['800','Poppins',.95],fun:['800','Baloo 2',1.05]};
 var COLS=[['#ffffff','White'],['#ffe3a3','Gold'],['#fff4dc','Cream'],['#ff6b6b','Red'],['#9ee6b5','Mint'],['#1d1b24','Dark']];
 var q=new URLSearchParams(location.search),S={occ:'xmas',lang:'en',bg:null,font:'serif',pos:'mid',col:'#ffe3a3',shape:'h',len:15,badge:true,edited:false};
-try{var sv=JSON.parse(localStorage.getItem('tcMaker')||'null');if(sv)for(var k in sv)S[k]=sv[k]}catch(e){}
+// first visit: start on the occasion of the season (Nov 1–Dec 26 Christmas, Dec 27–Jan 15 New Year, Feb 1–14 Love, otherwise Birthday)
+function seasonal(d){d=d||new Date();var m=d.getMonth()+1,x=d.getDate();if(m===11||(m===12&&x<=26))return 'xmas';if((m===12&&x>=27)||(m===1&&x<=15))return 'ny';if(m===2&&x<=14)return 'love';return 'bday'}
+var sv=null;try{sv=JSON.parse(localStorage.getItem('tcMaker')||'null');if(sv)for(var k in sv)S[k]=sv[k]}catch(e){}
+if(!sv){var qd=q.get('date');S.occ=seasonal(qd?new Date(qd+'T12:00:00'):null)}
 if(q.get('bg')&&BGS.some(function(b){return b.id===q.get('bg')}))S.bg=q.get('bg');
 if(q.get('occ')==='pasko'){S.occ='xmas';S.lang='fil';S.edited=false}else if(q.get('occ')&&OCC.some(function(o){return o.k===q.get('occ')})){S.occ=q.get('occ');S.edited=false}
 if(S.occ==='pasko'){S.occ='xmas';S.lang='fil'}if(!S.lang)S.lang='en';
 var cv=$('#cv'),cx=cv.getContext('2d'),vid=$('#vid'),playing=true,t0=performance.now(),busy=false;
 function save(){try{localStorage.setItem('tcMaker',JSON.stringify(S))}catch(e){}}
 function occO(){return OCC.filter(function(o){return o.k===S.occ})[0]||OCC[0]}
-function occ(){var o=occO(),v=o.v.filter(function(x){return x.c===S.lang})[0]||o.v[0];return {k:o.k,l:o.l,h:v.h,m:v.m}}
+function occ(){var o=occO(),v=o.v.filter(function(x){return x.c===S.lang})[0]||o.v[0];var d=new Date(),y=String(d.getMonth()>=10?d.getFullYear()+1:d.getFullYear());return {k:o.k,l:o.l,h:v.h.replace('2027',y),m:v.m.replace('2027',y)}}
 function setText(){if(!S.edited||confirmReplace()){var o=occ();$('#tH').value=o.h;$('#tM').value=o.m;S.edited=false}}
 function dims(){return S.shape==='v'?[1080,1920]:S.shape==='sq'?[1080,1080]:[1920,1080]}
 function srcOf(id){var b=BGS.filter(function(x){return x.id===id})[0];return '/media/maker/'+id+(S.shape==='v'&&b&&b.v?'-9x16':'')+'.mp4?v='+V}
@@ -101,7 +104,8 @@ function drawChips(){drawLang();$('#occ').innerHTML=OCC.map(function(o){return '
 function drawLang(){var o=occO(),el=$('#lang');el.hidden=o.v.length<2;el.innerHTML=o.v.length<2?'':'<span class="muted small" style="align-self:center">Language:</span>'+o.v.map(function(v){return '<button type="button" data-l="'+v.c+'" aria-pressed="'+(v.c===(o.v.some(function(x){return x.c===S.lang})?S.lang:o.v[0].c))+'">'+LANG[v.c]+'</button>'}).join('');
  $$('#lang button').forEach(function(b){b.onclick=function(){S.lang=b.dataset.l;setText();drawLang();save()}})}
 function confirmReplace(){return window.confirm('Replace your message with the '+occ().l.replace(/^\S+ /,'')+' greeting?')}
-function sorted(){return BGS.slice().sort(function(a,b){return (b.o.indexOf(S.occ)>=0)-(a.o.indexOf(S.occ)>=0)})}
+var PREF={xmas:'snowy-christmas-tree-forest-night-loop',ny:'new-year-fireworks-city-loop',bday:'birthday-balloons-rising-loop',thanks:'golden-sunset-clouds-loop',congrats:'celebration-confetti-loop',love:'floating-hearts-loop'};
+function sorted(){var p=PREF[S.occ];return BGS.slice().sort(function(a,b){return ((b.o.indexOf(S.occ)>=0)-(a.o.indexOf(S.occ)>=0))||((b.id===p)-(a.id===p))})}
 function drawBgs(){$('#bgs').innerHTML=sorted().map(function(b){return '<button type="button" data-b="'+b.id+'" aria-pressed="'+(b.id===S.bg)+'" title="'+b.t+'"><img src="/media/poster/'+b.id+'.webp" alt="" loading="lazy"><span>'+b.t+'</span></button>'}).join('');
  $$('#bgs button').forEach(function(b){b.onclick=function(){S.bg=b.dataset.b;drawBgs();setBg();save()}})}
 function drawCols(){$('#cols').innerHTML=COLS.map(function(c){return '<button type="button" data-c="'+c[0]+'" aria-pressed="'+(c[0]===S.col)+'" title="'+c[1]+'" aria-label="'+c[1]+' text" style="background:'+c[0]+'"></button>'}).join('');
