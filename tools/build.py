@@ -189,7 +189,7 @@ def page(path, title, desc, body, extra_head='', og_image=None):
     <div class="foot-cols">
       <div><h4>Browse</h4>{''.join(f'<a href="/category/{slug(c)}/">{E(c)}</a>' for c in CATS[:5])}</div>
       <div><h4>More</h4>{''.join(f'<a href="/category/{slug(c)}/">{E(c)}</a>' for c in CATS[5:])}<a href="/how-to-use/">How to use</a><a href="/guides/">Guides</a></div>
-      <div><h4><a href="https://telarlabs.net" style="color:inherit;margin:0">{E(CFG["studio"])}</a></h4><a href="https://telarlabs.net">Telar Labs home</a><a href="https://telarlabs.net/guides/">Telar Labs guides</a><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/contact/">Contact</a></div>
+      <div><h4><a href="https://telarlabs.net" style="color:inherit;margin:0">{E(CFG["studio"])}</a></h4><a href="https://telarlabs.net">Telar Labs home</a><a href="https://telarlabs.net/guides/">Telar Labs guides</a><a href="/about/">About</a><a href="/license/">License</a><a href="/privacy/">Privacy policy</a><a href="/terms/">Terms</a><a href="/contact/">Contact</a></div>
     </div>
   </div>
   {family_row()}<div class="wrap fine">&copy; {date.today().year} {E(CFG["studio"])}. Motion graphics and illustrated scenes by {E(CFG["studio"])}.</div>
@@ -540,6 +540,26 @@ def static_pages():
 <h2>Contact</h2>
 <p>Questions about privacy: <a href="mailto:{E(mail)}">{E(mail)}</a></p>
 <p class="muted">Last updated {E(CFG["launch_date"])}.</p>''')
+    prose('/terms/', 'Terms of Use', f'Terms of use for {NAME}.', f'''
+<h1>Terms of use</h1>
+<p class="lead">These terms cover {E(NAME)} (clips.telarlabs.net), run by {E(st)}. By using the site you agree to them.</p>
+<h2>Using the clips</h2>
+<p>All clips are free to download and use in personal and commercial projects. What you can and can't do with them is explained on the <a href="/license/">License</a> page, which is part of these terms.</p>
+<h2>The greeting video maker</h2>
+<p>The <a href="/make/greeting-video/">greeting video maker</a> makes your video right in your browser. The names and messages you type are not uploaded to us. You're responsible for the words you add, so please don't use the maker for content that is illegal, hateful, misleading or that uses someone else's name or brand without permission.</p>
+<h2>Fair use of the site</h2>
+<p>Please don't download the clips in bulk with scripts, mirror the site, or try to disrupt it. Linking to any page is welcome.</p>
+<h2>Advertising</h2>
+<p>The site is free because of ads. Ads are shown by Google AdSense and are labeled as ads. See the <a href="/privacy/">Privacy policy</a> for how ads use cookies.</p>
+<h2>Links to other sites</h2>
+<p>We sometimes link to other websites and apps, such as video editors. We don't control them and aren't responsible for their content or practices.</p>
+<h2>No warranty</h2>
+<p>The site and clips are provided as is. We work to keep everything available and working, but we can't promise the site will always be online or error-free. To the extent the law allows, we aren't liable for losses that come from using the site or the clips.</p>
+<h2>Changes</h2>
+<p>We may update these terms. The date below shows the latest version.</p>
+<h2>Contact</h2>
+<p>Questions about these terms: <a href="mailto:{E(mail)}">{E(mail)}</a></p>
+<p class="muted">Last updated November 27, 2026.</p>''')
     prose('/how-to-use/', 'How to Use Green Screens, Overlays and Loop Backgrounds',
           'Step-by-step guide to using green screen clips, light overlays and looping backgrounds in CapCut, Canva, Premiere and DaVinci Resolve.', f'''
 <h1>How to use our clips</h1>
@@ -584,7 +604,7 @@ def maker_page():
 def extras():
     os.makedirs(os.path.join(PUB, 'assets'), exist_ok=True)
     open(os.path.join(PUB, 'favicon.svg'), 'w').write(LOGO.replace('class="logo-mark" ', 'xmlns="http://www.w3.org/2000/svg" ').replace('var(--accent)', '#ffb547'))
-    urls = ['/', '/make/greeting-video/', '/how-to-use/', '/guides/'] + [f'/guides/{g["slug"]}/' for g in GUIDES] + ['/about/', '/license/', '/privacy/', '/contact/'] + [f'/category/{slug(c)}/' for c in CATS] + [f'/clip/{c["id"]}/' for c in CLIPS]
+    urls = ['/', '/make/greeting-video/', '/how-to-use/', '/guides/'] + [f'/guides/{g["slug"]}/' for g in GUIDES] + ['/about/', '/license/', '/privacy/', '/terms/', '/contact/'] + [f'/category/{slug(c)}/' for c in CATS] + [f'/clip/{c["id"]}/' for c in CLIPS]
     open(os.path.join(PUB, 'sitemap.xml'), 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
         ''.join(f'<url><loc>{URL}{u}</loc></url>\n' for u in urls) + '</urlset>\n')
     open(os.path.join(PUB, 'robots.txt'), 'w').write(f'User-agent: *\nDisallow: /*?q=\nDisallow: /cdn-cgi/\n\nUser-agent: Mediapartners-Google\nAllow: /\n\nSitemap: {URL}/sitemap.xml\n')
@@ -596,7 +616,7 @@ def extras():
          '<section class="wrap prose"><h1>Page not found</h1><p class="lead">That page doesn\'t exist, but there are plenty of free clips.</p><p><a class="btn" href="/">Go to the homepage</a></p></section>')
 
 if __name__ == '__main__':
-    for d in ('clip', 'category', 'about', 'contact', 'license', 'privacy', 'how-to-use'):
+    for d in ('clip', 'category', 'about', 'contact', 'license', 'privacy', 'terms', 'how-to-use'):
         shutil.rmtree(os.path.join(PUB, d), ignore_errors=True)
     home(); [clip_page(c) for c in CLIPS]; [category(c) for c in CATS]; static_pages(); guides_pages(); maker_page(); extras(); X.save_colors()
     print(f'Built {len(CLIPS)} clip pages, {len(CATS)} categories into public/')
