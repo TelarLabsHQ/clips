@@ -253,10 +253,10 @@ HOWTO = {
 
 def jsonld(c):
     d = {"@context": "https://schema.org", "@type": "VideoObject", "name": c['title'], "description": c['description'],
-         "thumbnailUrl": [f"{URL}/media/poster/{c['id']}.webp"], "uploadDate": CFG['launch_date'],
+         "thumbnailUrl": [f"{URL}/media/poster/{c['id']}.webp"], "uploadDate": CFG['launch_date'] + "T09:00:00+08:00",
          "duration": f"PT{int(round(c['duration']))}S", "contentUrl": media_url(c),
          "isFamilyFriendly": True, "keywords": ', '.join(c['tags']),
-         "creator": {"@type": "Organization", "name": CFG['studio']},
+         "creator": {"@type": "Organization", "name": CFG['studio'], "url": "https://telarlabs.net/"},
          "license": URL + "/license/"}
     return '<script type="application/ld+json">' + json.dumps(d, ensure_ascii=False) + '</script>'
 
