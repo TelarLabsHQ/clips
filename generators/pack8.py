@@ -10,6 +10,7 @@ from pack2 import encode_raw
 from xmas import splat, glowify
 
 SS = 4  # supersampling for sprites
+VERT = H > W  # CLIP_VERT=1 renders 1080x1920
 
 def shrink(im, f=SS):
     return im.resize((im.width // f, im.height // f), Image.LANCZOS)
@@ -28,7 +29,8 @@ def stars_bg(top, bot, seed, n=260):
     return at
 
 # ---------------------------------------------------------------- 1. reindeer
-def deer_sprite(pose, col=(255, 214, 120, 255), h=230):
+def deer_sprite(pose, col=(255, 214, 120, 255), h=None):
+    h = h or (175 if VERT else 230)
     """reindeer silhouette facing right; pose 0..3 = gallop phases"""
     s = SS; Wd, Hd = int(h * 1.9) * s, int(h * 1.5) * s
     im = Image.new('RGBA', (Wd, Hd), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
@@ -75,12 +77,12 @@ def reindeer():
     m += np.exp(-(dist / 330) ** 2)[..., None] * np.array([.25, .27, .3], np.float32)
     poses = [deer_sprite(p) for p in range(4)]
     glow = [Image.fromarray((gaussian_filter(np.asarray(p.getchannel('A'), np.float32), 9) * .9).clip(0, 255).astype(np.uint8)) for p in poses]
-    team = [(0, 0), (-330, 34), (-660, 68)]     # follow the leader, a little lower each
-    L = 660 + W + 700; rng = np.random.default_rng(5)
+    sp = 250 if VERT else 330; team = [(0, 0), (-sp, 34), (-2 * sp, 68)]     # follow the leader, a little lower each
+    L = 2 * sp + W + 700; rng = np.random.default_rng(5)
     # sparkle trail: particles emitted along the path, period-safe (emission time wraps)
     ne = 900; et = rng.uniform(0, 1, ne); eo = rng.normal(0, 10, (ne, 2)); life = rng.uniform(.08, .22, ne)
     def path(tt):  # lead position for a phase tt in [0,1)
-        x = -350 + L * tt; y = H * .50 - 170 * math.sin(TAU * tt * .9 + .4) - (x / W) * 140
+        x = -350 + L * tt; y = H * (.44 if VERT else .50) - 170 * math.sin(TAU * tt * .9 + .4) - (x / W) * 140
         return x, y
     for f in range(N):
         t = f / N
@@ -235,7 +237,7 @@ def nutcrackers():
     # red curtain backdrop with soft folds, wooden floor, warm spotlight
     folds = .78 + .22 * np.cos(TAU * xx / 150) ** 2
     curtain = np.stack([.55 * folds, .05 * folds, .08 * folds], -1) * (1 - .35 * (yy / H))[..., None]
-    floor_y = int(H * .80)
+    floor_y = int(H * (.74 if VERT else .80))
     wood = np.stack([.42 + .04 * np.sin(yy * .9), .24 + .02 * np.sin(yy * .9), .12 + 0 * yy], -1)
     img = np.where((yy >= floor_y)[..., None], wood * (1 - .3 * (yy - floor_y) / (H - floor_y))[..., None], curtain)
     spot = np.exp(-(((xx - W / 2) / (W * .45)) ** 2 + ((yy - H * .62) / (H * .55)) ** 2))
@@ -265,7 +267,7 @@ def nutcrackers():
 
 # ---------------------------------------------------------------- 4. spiral of lights around a tree (on black)
 def tree_spiral():
-    cx, top, bot = W / 2, H * .16, H * .9; R = H * .36; turns = 7
+    cx, top, bot = W / 2, H * (.24 if VERT else .16), H * (.80 if VERT else .9); R = min(H * .36, W * .42); turns = 9 if VERT else 7
     n = 6000; sgrid = np.linspace(0, 1, n, dtype=np.float32)
     cols = np.array([[1, .25, .2], [1, .78, .3], [.3, 1, .45]], np.float32)
     seg = (sgrid * turns * 3).astype(int) % 3
@@ -304,8 +306,9 @@ def light_streaks():
     xs = np.linspace(-60, W + 60, 4200, dtype=np.float32)
     ribbons = []
     palette = [np.array(c, np.float32) for c in ([1, .22, .18], [1, .75, .28], [.25, .95, .4], [1, .85, .6], [.9, .15, .2], [.4, 1, .55])]
-    for i in range(9):
-        ribbons.append(dict(y0=H * (.18 + .64 * i / 8) + rng.uniform(-30, 30), A=rng.uniform(50, 140), k=TAU / rng.uniform(900, 1700),
+    nr = 14 if VERT else 9
+    for i in range(nr):
+        ribbons.append(dict(y0=H * (.14 + .72 * i / (nr - 1)) + rng.uniform(-30, 30), A=rng.uniform(50, 140), k=TAU / rng.uniform(900, 1700),
                             m=int(rng.choice([-1, 1])), ph=rng.uniform(0, TAU), col=palette[i % len(palette)], w=rng.uniform(.06, .12),
                             A2=rng.uniform(15, 40), k2=TAU / rng.uniform(300, 600), pulses=int(rng.integers(1, 3)), pp=rng.uniform(0, 1)))
     ns = 260; spx = rng.uniform(0, W, ns); spy = rng.uniform(0, H, ns); spk = rng.integers(1, 4, ns); spp = rng.uniform(0, TAU, ns)
@@ -336,7 +339,9 @@ C = {
 
 if __name__ == '__main__':
     for name in sys.argv[1:]:
-        gen, mode = C[name]
+        key = name[:-5] if name.endswith('-9x16') else name
+        if name.endswith('-9x16') != VERT: sys.exit(f'{name}: 9x16 names need CLIP_VERT=1 (and only they do)')
+        gen, mode = C[key]
         if mode == 0: encode(name, gen())
         else: encode_raw(name, gen())
         print('done', name, flush=True)
